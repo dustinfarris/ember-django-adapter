@@ -1,7 +1,7 @@
 # Ember Django Adapter
 
 This Ember addon enables the use of [Django REST Framework][] as an API backend.  The core functionality of the addon is
-in toranb/ember-data-django-rest-adapter.
+in [toranb/ember-data-django-rest-adapter][].
 
 ## Installation
 
@@ -29,3 +29,4 @@ If no API host is set, the adapter will use http://localhost:8000 by default.
 
 
 [Django REST Framework]: http://www.django-rest-framework.org/
+[toranb/ember-data-django-rest-adapter]: https://github.com/toranb/ember-data-django-rest-adapter
