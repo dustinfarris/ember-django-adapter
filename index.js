@@ -29,7 +29,7 @@
 
     this.app.import({
       development: 'vendor/ember-django-adapter/ember-data-django-rest-adapter.js',
-      production: 'vendor/ember-django-adapter/ember-data-django-rest-adapter.min.js'
+      production: 'vendor/ember-django-adapter/ember-data-django-rest-adapter.prod.js'
     });
   };
 
