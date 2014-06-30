@@ -17,7 +17,7 @@
   }
 
   EmberCLIDjangoAdapter.prototype.treeFor = function treeFor(name) {
-    var treePath = path.join('node_modules', 'ember-cli-django-adapter', name + '-addon');
+    var treePath = path.join('node_modules', 'ember-django-adapter', name + '-addon');
 
     if (fs.existsSync(treePath)) {
       return unwatchedTree(treePath);
