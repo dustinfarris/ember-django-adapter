@@ -5,11 +5,14 @@
 // ==========================================================================
 
 
-// v1.0.3
-// cbd7510 (2014-05-14 16:35:54 -0400)
+// v1.0.5
+// 21bb4d9 (2014-07-09 13:44:23 -0400)
 
 
 (function() {
+
+var map = Ember.ArrayPolyfills.map;
+var forEach = Ember.ArrayPolyfills.forEach;
 
 DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
 
@@ -17,22 +20,62 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
         this._super.apply(this, arguments);
     },
 
+    /**
+     @method keyForType
+     @param {String} key
+     @returns String
+     */
+    keyForType: function(key) {
+        return key + "_type";
+    },
+
+    /**
+     @method keyForEmbeddedType
+     @param {String} key
+     @returns String
+     */
+    keyForEmbeddedType: function(key) {
+        return 'type';
+    },
+
     extractDjangoPayload: function(store, type, payload) {
         type.eachRelationship(function(key, relationship){
+            var embeddedTypeKey, isPolymorphic = false;
+            if (relationship.options && relationship.options.polymorphic) {
+              isPolymorphic = true;
+            }
+
             if (!Ember.isNone(payload[key]) &&
                 typeof(payload[key][0]) !== 'number' &&
                 typeof(payload[key][0]) !== 'string' &&
                 relationship.kind ==='hasMany') {
               if (Ember.typeOf(payload[key]) === 'array' && payload[key].length > 0) {
-                var ids = payload[key].mapBy('id'); //todo find pk (not always id)
-                this.pushArrayPayload(store, relationship.type, payload[key]);
-                payload[key] = ids;
+                if(isPolymorphic) {
+                  // If there is a hasMany polymorphic relationship, push each
+                  // item to the store individually, since they might not all
+                  // be the same type
+                  forEach.call(payload[key],function(hash) {
+                    var type = this.typeForRoot(hash.type);
+                    this.pushSinglePayload(store,type,hash);
+                  }, this);
+                } else {
+                  var ids = payload[key].mapBy('id'); //todo find pk (not always id)
+                  this.pushArrayPayload(store, relationship.type, payload[key]);
+                  payload[key] = ids;
+                }
               }
             }
             else if (!Ember.isNone(payload[key]) && typeof(payload[key]) === 'object' && relationship.kind ==='belongsTo') {
-                var id=payload[key].id;
-                this.pushSinglePayload(store,relationship.type,payload[key]);
-                payload[key]=id;
+                var type = relationship.type;
+
+                if(isPolymorphic) {
+                  type = this.typeForRoot(payload[key].type);
+                }
+
+                var id = payload[key].id;
+                this.pushSinglePayload(store,type,payload[key]);
+
+                if(!isPolymorphic) payload[key] = id;
             }
         }, this);
     },
@@ -150,6 +193,11 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
       @method serializeHasMany
     */
     serializeHasMany: function(record, json, relationship) {
+        if (relationship.options.polymorphic) {
+            // TODO implement once it's implemented in DS.JSONSerializer
+            return;
+        }
+
         var key = relationship.key,
             json_key = this.keyForRelationship(key, "hasMany"),
             relationshipType = DS.RelationshipChange.determineRelationshipType(
@@ -158,8 +206,98 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
         if (relationshipType === 'manyToNone' ||
             relationshipType === 'manyToMany')
             json[json_key] = record.get(key).mapBy('id');
-    }
+    },
 
+    /**
+      Add the key for a polymorphic relationship by adding `_type` to the
+      attribute and value from the model's underscored name.
+
+      @method serializePolymorphicType
+      @param {DS.Model} record
+      @param {Object} json
+      @param {Object} relationship
+    */
+    serializePolymorphicType: function(record, json, relationship) {
+      var key = relationship.key,
+          belongsTo = Ember.get(record, key);
+      key = this.keyForAttribute ? this.keyForAttribute(key) : key;
+      if(belongsTo) {
+        json[this.keyForType(key)] = Ember.String.underscore(belongsTo.constructor.typeKey);
+      } else {
+        json[this.keyForType(key)] = null;
+      }
+    },
+
+    /**
+      @method normalizeRelationships
+
+      Normalize:
+      ```js
+        {
+          minion: "1"
+          minion_type: "evil_minion",
+          author: {
+            embeddedType: "user",
+            id: 1
+          }
+        }
+      ```
+
+      To:
+      ```js
+        {
+          minion: "1"
+          minionType: "evil_minion"
+          author: {
+            type: "user",
+            id: 1
+          }
+        }
+      ```
+
+      @private
+    */
+    normalizeRelationships: function(type,hash) {
+      this._super.apply(this, arguments);
+
+      if (this.keyForRelationship) {
+        type.eachRelationship(function(key, relationship) {
+          if (relationship.options.polymorphic) {
+            var typeKey = this.keyForType(relationship.key);
+            if(hash[typeKey]) {
+              var typeKeyCamelCase = typeKey.replace(/_type$/,'Type');
+              hash[typeKeyCamelCase] = hash[typeKey];
+              delete hash[typeKey];
+            }
+
+            if(hash[relationship.key]) {
+              var embeddedData = hash[relationship.key];
+              var embeddedTypeKey = this.keyForEmbeddedType(relationship.key);
+              if(embeddedTypeKey !== 'type') {
+                if(Ember.isArray(embeddedData) && embeddedData.length) {
+                  map.call(embeddedData, function(obj,i) {
+                    this.normalizeTypeKey(obj,embeddedTypeKey);
+                  }, this);
+                } else if(embeddedData[embeddedTypeKey]) {
+                  this.normalizeTypeKey(embeddedData,embeddedTypeKey);
+                }
+              }
+            }
+          }
+        }, this);
+      }
+    },
+
+    /**
+      Replace a custom type key with a key named `type`.
+
+      @method normalizeTypeKey
+      @param {Object} obj
+      @param {String} key
+    */
+    normalizeTypeKey: function(obj,key) {
+      obj.type = obj[key];
+    }
 });
 
 
@@ -223,6 +361,22 @@ DS.DjangoRESTAdapter = DS.RESTAdapter.extend({
         hash.cache = false;
 
         return this._super(url, type, hash);
+    },
+
+    ajaxError: function(jqXHR) {
+        var error = this._super(jqXHR);
+
+        if (jqXHR && jqXHR.status === 400) {
+            var response = Ember.$.parseJSON(jqXHR.responseText), errors = {};
+
+            Ember.EnumerableUtils.forEach(Ember.keys(response), function(key) {
+                errors[Ember.String.camelize(key)] = response[key];
+            });
+
+            return new DS.InvalidError(errors);
+        } else {
+            return error;
+        }
     },
 
     buildURL: function(type, id) {
@@ -304,7 +458,7 @@ DS.DjangoRESTAdapter = DS.RESTAdapter.extend({
 
 (function() {
 
-var VERSION = "1.0.3";
+var VERSION = "1.0.5";
 
 DS.DjangoRESTSerializer.VERSION = VERSION;
 DS.DjangoRESTAdapter.VERSION = VERSION;
