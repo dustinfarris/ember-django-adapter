@@ -1,9 +1,20 @@
-# Ember Django Adapter
+Ember Django Adapter
+====================
 
-This Ember addon enables the use of [Django REST Framework][] as an API backend.  The core functionality of the addon is
-in [toranb/ember-data-django-rest-adapter][].
+This Ember addon enables the use of [Django REST Framework][] as an API
+backend.  The core functionality of the adapter is in 
+[toranb/ember-data-django-rest-adapter][].
 
-## Installation
+
+Community
+---------
+
+* IRC: #ember-django-adapter on freenode
+* Issues: [ember-django-adapter/issues][]
+
+
+Installation
+------------
 
 From within your Ember CLI application (must be >= 0.0.37), run the following:
 
@@ -11,9 +22,12 @@ From within your Ember CLI application (must be >= 0.0.37), run the following:
 npm i --save-dev ember-django-adapter
 ```
 
-## Configuration
 
-In your app settings in `config/environment.js`, set the hostname for your API, e.g.:
+Configuration
+-------------
+
+In your app settings in `config/environment.js`, set the hostname for your API, 
+e.g.:
 
 ```js
 if (environment === 'development') {
@@ -27,47 +41,30 @@ if (environment === 'production') {
 
 If no API host is set, the adapter will use http://localhost:8000 by default.
 
-## Extending
 
-Installing the adapter and setting `API_HOST` should satisfy most requirements, but if you want to add your own 
-customizations:
+Extending
+---------
+
+Installing the adapter and setting `API_HOST` should satisfy most requirements, 
+but if you want to add your own customizations:
 
 ### Custom Adapter
 
-Generate a new adapter:
-
 ```console
-ember generate adapter my-custom-adapter
-```
-
-And modify it to extend DjangoAdapter (in `app/adapters/my-custom-adapter.js`):
-
-```js
-import DjangoAdapter from './django';
-
-export default DjangoAdapter.extend({
-  // ... your cusomtizations here
-});
+ember generate django-adapter my-custom-adapter
 ```
 
 ### Custom Serializer
 
-The serializer can also be extended:
-
 ```console
-ember generate serializer my-custom-serializer
+ember generate django-serializer my-custom-serializer
 ```
 
-And in `app/serializers/my-custom-serializer.js`:
+For examples extending the adapter, see [the cookbook][].
 
-```js
-import DjangoSerializer from './django';
-
-export default DjangoSerializer.extend({
-  // ... your customizations here
-});
-```
 
 
 [Django REST Framework]: http://www.django-rest-framework.org/
 [toranb/ember-data-django-rest-adapter]: https://github.com/toranb/ember-data-django-rest-adapter
+[ember-django-adapter/issues]: https://github.com/dustinfarris/ember-django-adapter/issues
+[the cookbook]: https://github.com/dustinfarris/ember-django-adapter/wiki/Cookbook

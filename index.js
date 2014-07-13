@@ -4,10 +4,14 @@
   var path = require('path');
   var fs   = require('fs');
 
-  function EmberCLIDjangoAdapter(project) {
+  function EmberDjangoAdapter(project) {
     this.project = project;
     this.name    = "Ember CLI Django Adapter";
   }
+
+  EmberDjangoAdapter.prototype.blueprintsPath = function() {
+    return __dirname + '/blueprints';
+  };
 
   function unwatchedTree(dir) {
     return {
@@ -16,7 +20,7 @@
       };
   }
 
-  EmberCLIDjangoAdapter.prototype.treeFor = function treeFor(name) {
+  EmberDjangoAdapter.prototype.treeFor = function treeFor(name) {
     var treePath = path.join('node_modules', 'ember-django-adapter', name + '-addon');
 
     if (fs.existsSync(treePath)) {
@@ -24,7 +28,7 @@
     }
   };
 
-  EmberCLIDjangoAdapter.prototype.included = function included(app) {
+  EmberDjangoAdapter.prototype.included = function included(app) {
     this.app = app;
 
     this.app.import({
@@ -33,5 +37,5 @@
     });
   };
 
-  module.exports = EmberCLIDjangoAdapter;
+  module.exports = EmberDjangoAdapter;
 }());
