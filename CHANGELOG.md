@@ -3,6 +3,7 @@ ember-django-adapter Changelog
 
 * [ENHANCEMENT] Add changelog
 * [ENHANCEMENT] Add adapter/serializer blueprints
+  ([#1](https://github.com/dustinfarris/ember-django-adapter/issues/1))
 
 
 0.2.0
