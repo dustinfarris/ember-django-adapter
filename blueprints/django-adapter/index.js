@@ -1,4 +1,7 @@
-var Blueprint = require('ember-cli/lib/models/blueprint');
-
-module.exports = Blueprint.extend({
-});
+module.exports = {
+  locals: function(options) {
+    return {
+      modelname: options.entity.name,
+    };
+  }
+};
