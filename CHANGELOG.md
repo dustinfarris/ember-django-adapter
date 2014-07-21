@@ -5,6 +5,9 @@ ember-django-adapter Changelog
 * [ENHANCEMENT] Add adapter/serializer blueprints
   ([#1](https://github.com/dustinfarris/ember-django-adapter/issues/1))
 * [ENHANCEMENT] Add namespace to available configuration options
+* [BREAKING ENHANCEMENT] Change default host/namespace properties to use ember-
+  cli's express server
+  ([#2](https://github.com/dustinfarris/ember-django-adapter/pull/2))
 
 
 0.2.0
