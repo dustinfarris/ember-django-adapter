@@ -40,7 +40,10 @@ if (environment === 'production') {
 }
 ```
 
-If no API host is set, the adapter will use http://localhost:8000 by default.
+### Configuration Options
+
+* API_HOST: The server hosting your API _(default: None)_
+* API_NAMESPACE: Your API namespace _(default: 'api')_
 
 
 Extending
