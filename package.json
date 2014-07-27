@@ -6,7 +6,6 @@
     "ember-addon"
   ],
   "ember-addon": {
-    "main": "index.js",
     "after": "ember-cli-ember-data"
   },
   "repository": "https://github.com/dustinfarris/ember-django-adapter",
