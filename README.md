@@ -2,7 +2,7 @@ Ember Django Adapter
 ====================
 
 This Ember addon enables the use of [Django REST Framework][] as an API
-backend.  The core functionality of the adapter is in 
+backend.  The core functionality of the adapter is in
 [toranb/ember-data-django-rest-adapter][].
 
 
@@ -16,7 +16,7 @@ Community
 Installation
 ------------
 
-From within your Ember CLI application (must be >= 0.0.37), run the following:
+From within your Ember CLI application (must be >= 0.0.40), run the following:
 
 ```console
 npm i --save-dev ember-django-adapter
@@ -26,7 +26,7 @@ npm i --save-dev ember-django-adapter
 Configuration
 -------------
 
-In your app settings in `config/environment.js`, set the hostname for your API, 
+In your app settings in `config/environment.js`, set the hostname for your API,
 e.g.:
 
 ```js
@@ -49,7 +49,7 @@ if (environment === 'production') {
 Extending
 ---------
 
-Installing the adapter and setting `API_HOST` should satisfy most requirements, 
+Installing the adapter and setting `API_HOST` should satisfy most requirements,
 but if you want to add your own customizations:
 
 ### Custom Adapter
