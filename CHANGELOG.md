@@ -1,6 +1,7 @@
 ember-django-adapter Changelog
 ==============================
 
+* [BUGFIX] Fix for #7
 * [ENHANCEMENT] Simplify addon packaging
   ([#5](https://github.com/dustinfarris/ember-django-adapter/pull/5))
 
