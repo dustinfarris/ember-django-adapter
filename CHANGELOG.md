@@ -1,6 +1,9 @@
 ember-django-adapter Changelog
 ==============================
 
+0.4.0
+-----
+
 * [ENHANCEMENT] Update ember-data dependency
   ([#8](https://github.com/dustinfarris/ember-django-adapter/pull/8))
 * [ENHANCEMENT] Simplify addon packaging
