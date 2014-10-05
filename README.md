@@ -33,11 +33,11 @@ e.g.:
 ```js
 if (environment === 'development') {
   ENV.APP.API_HOST = 'http://localhost:8000';
-  ENV.APP.API_NAMESPACE = 'api';
 }
 
 if (environment === 'production') {
   ENV.APP.API_HOST = 'https://api.myproject.org';
+  ENV.APP.API_NAMESPACE = '';
 }
 ```
 
