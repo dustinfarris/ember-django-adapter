@@ -3,7 +3,8 @@ Ember Django Adapter
 
 This Ember addon enables the use of [Django REST Framework][] as an API
 backend.  The core functionality of the adapter is in
-[toranb/ember-data-django-rest-adapter][].
+[toranb/ember-data-django-rest-adapter][].  The addon is compatible with ember-
+cli version 0.1.0 and higher.
 
 
 Community
@@ -16,7 +17,7 @@ Community
 Installation
 ------------
 
-From within your Ember CLI application (must be >= 0.0.40), run the following:
+From within your Ember CLI application, run the following:
 
 ```console
 npm i --save-dev ember-django-adapter
