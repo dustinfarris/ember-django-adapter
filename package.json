@@ -1,6 +1,6 @@
 {
   "name": "ember-django-adapter",
-  "version": "0.4.0",
+  "version": "1.0.0-dev",
   "description": "Include Ember Data Django REST Adapter in your Ember CLI project",
   "keywords": [
     "ember-addon"
