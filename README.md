@@ -2,9 +2,21 @@ Ember Django Adapter
 ====================
 
 This Ember addon enables the use of [Django REST Framework][] as an API
-backend.  The core functionality of the adapter is in
-[toranb/ember-data-django-rest-adapter][].  The addon is compatible with
-[ember-cli][] version 0.1.0 and higher.
+backend. The addon is compatible with [ember-cli][] version 0.1.0 and higher.
+
+Goals
+-----
+
+* Ability to support Django REST Framework APIs without modifications to the default configuration of Django REST
+  Framework.
+
+* Ensure as much as posslibe that the documentation on emberjs.com about adapters and serializers is accurate and
+  relevant when using the Django REST adapter and serializer. Deviations from the emberjs.com documentation should be
+  documented clearly.
+
+* Optionally enable some features from Django REST Framework which would require users to setup or configure their APIs
+  in a specific manner. An example of this is retrieving hasMany records using query params as configured with Django
+  REST Framework and django-filter.
 
 
 Community
@@ -65,12 +77,41 @@ ember generate django-adapter my-custom-adapter
 ember generate django-serializer my-custom-serializer
 ```
 
-For examples extending the adapter, see [the cookbook][].
+## Path Customization
+
+By default the DjangoRESTAdapter will attempt to use the lowercase model name to generate the path name. This matches
+the default behaviour of the `SimpleRouter` in Django REST Framework. If this convention is not suitable for your needs,
+you can override the pathForType method.
+
+For example, if you do not want to use the default lowercase model names and needed dashed-case instead, you would
+override the pathForType method like this:
+
+```js
+App.ApplicationAdapter = DS.DjangoRESTAdapter.extend({
+  pathForType: function(type) {
+    var dasherized = Ember.String.dasherize(type);
+    return Ember.String.pluralize(dasherized);
+  }
+});
+```
+
+Requests for App.User would now target /users/1. Requests for App.UserProfile would now target /user-profiles/1.
 
 
+## coalesceFindRequests option
+
+This adapter does not support the coalesceFindRequests option. The Django REST Framework does not offer easy to
+configure support for N+1 query requests in the format that Ember Data uses (e.g. `GET /comments?ids[]=1&ids[]=2`)
+
+See the Ember documentation about coalesceFindRequests for information about this option [coalesce-find-requests-option][].
+
+
+## More Examples
+
+For other examples extending the adapter, see [the cookbook][].
 
 [Django REST Framework]: http://www.django-rest-framework.org/
-[toranb/ember-data-django-rest-adapter]: https://github.com/toranb/ember-data-django-rest-adapter
 [ember-cli]: http://www.ember-cli.com/
 [ember-django-adapter/issues]: https://github.com/dustinfarris/ember-django-adapter/issues
+[coalesce-find-requests-option]: http://emberjs.com/api/data/classes/DS.RESTAdapter.html#property_coalesceFindRequests
 [the cookbook]: https://github.com/dustinfarris/ember-django-adapter/wiki/Cookbook
