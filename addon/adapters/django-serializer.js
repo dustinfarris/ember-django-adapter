@@ -13,7 +13,8 @@ DS.DjangoRESTSerializer = DS.RESTSerializer.extend({
   },
 
   extractArray: function(store, primaryType, rawPayload) {
-    // Convert rawPayload to json format expected by the RESTSerializer.
+    // Convert rawPayload to json format expected by the RESTSerializer. This function is being overridden instead of
+    // normalizePayload() because 'results' will only be in lists.
     var payload = {};
     payload[primaryType.typeKey] = rawPayload['results'] ? rawPayload['results'] : rawPayload;
     return this._super(store, primaryType, payload);
