@@ -79,8 +79,8 @@ ember generate django-serializer my-custom-serializer
 
 ## Path Customization
 
-By default the DjangoRESTAdapter will attempt to use the lowercase model name to generate the path name. This matches
-the default behaviour of the `SimpleRouter` in Django REST Framework. If this convention is not suitable for your needs,
+By default the DjangoRESTAdapter will attempt to use the pluralized lowercase model name to generate the path name. This
+allows some features in Django REST Framework to work by default. If this convention is not suitable for your needs,
 you can override the pathForType method.
 
 For example, if you do not want to use the default lowercase model names and needed dashed-case instead, you would
