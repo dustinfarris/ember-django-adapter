@@ -3,9 +3,3 @@ dependencies:
     - npm install -g bower
     - npm install
     - bower install
-  cache_directories:
-    - node_modules
-
-test:
-  override:
-    - npm test
