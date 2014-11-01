@@ -1,6 +1,7 @@
 {
   "name": "ember-django-adapter",
   "version": "1.0.0-dev",
+  "description": "Use Django REST Framework with your Ember project",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -10,7 +11,7 @@
     "build": "ember build",
     "test": "ember test"
   },
-  "repository": "https://github.com/stefanpenner/ember-cli",
+  "repository": "https://github.com/dustinfarris/ember-django-adapter",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -31,9 +32,13 @@
     "glob": "^4.0.5"
   },
   "keywords": [
-    "ember-addon"
+    "adapter",
+    "django",
+    "ember-addon",
+    "ember-data"
   ],
   "ember-addon": {
+    "after": "ember-data",
     "configPath": "tests/dummy/config"
   }
 }

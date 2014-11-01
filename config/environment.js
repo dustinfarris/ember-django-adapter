@@ -1,5 +1,11 @@
 'use strict';
 
 module.exports = function(/* environment, appConfig */) {
-  return { };
+  var ENV = {
+    APP: {
+      API_HOST: '',
+      API_NAMESPACE: 'api'
+    }
+  };
+  return ENV;
 };
