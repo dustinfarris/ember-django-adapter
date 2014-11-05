@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 export default DS.RESTAdapter.extend({
 
-  defaultSerializer: "DS/djangoREST",
+  defaultSerializer: "-drf",
 
   init: function() {
     this._super();
