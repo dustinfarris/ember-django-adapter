@@ -1,11 +1,12 @@
 import DRFAdapter from 'ember-django-adapter/adapters/drf';
+import ENV from '../config/environment';
 
 export default DRFAdapter.extend({
   host: function() {
-    return this.get('djangoAdapterConfig').apiHost;
-  }.property('djangoAdapterConfig'),
+    return ENV.APP.API_HOST;
+  }.property(),
 
   namespace: function() {
-    return this.get('djangoAdapterConfig').apiNamespace;
-  }.property('djangoAdapterConfig')
+    return ENV.APP.API_NAMESPACE;
+  }.property()
 });
