@@ -3,7 +3,7 @@ import Ember from 'ember';
 
 export default DS.RESTAdapter.extend({
 
-  defaultSerializer: "DS/djangoREST",
+  defaultSerializer: "-drf",
 
   init: function() {
     this._super();
@@ -18,6 +18,28 @@ export default DS.RESTAdapter.extend({
         "information about this option: " +
         "http://emberjs.com/api/data/classes/DS.RESTAdapter.html#property_coalesceFindRequests";
       throw new Ember.Error(error);
+    }
+  },
+
+  // TODO: Test with 500 error (and other errors).
+  ajaxError: function(jqXHR) {
+    var error = this._super(jqXHR);
+
+    if (jqXHR && jqXHR.status !== undefined && jqXHR.responseText !== undefined) {
+      var response = Ember.$.parseJSON(jqXHR.responseText);
+
+      if (jqXHR.status === 400) {
+        var errors = {};
+        forEach(Ember.keys(response), function(key) {
+          errors[Ember.String.camelize(key)] = response[key];
+        });
+        return new DS.InvalidError(errors);
+
+      } else if (jqXHR && jqXHR.status === 403) {
+        return new Error(response['detail']);
+      }
+    } else {
+      return error;
     }
   },
 
