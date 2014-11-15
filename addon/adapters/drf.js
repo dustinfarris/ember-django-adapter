@@ -21,6 +21,28 @@ export default DS.RESTAdapter.extend({
     }
   },
 
+  // TODO: Test with 500 error (and other errors).
+  ajaxError: function(jqXHR) {
+    var error = this._super(jqXHR);
+
+    if (jqXHR && jqXHR.status !== undefined && jqXHR.responseText !== undefined) {
+      var response = Ember.$.parseJSON(jqXHR.responseText);
+
+      if (jqXHR.status === 400) {
+        var errors = {};
+        forEach(Ember.keys(response), function(key) {
+          errors[Ember.String.camelize(key)] = response[key];
+        });
+        return new DS.InvalidError(errors);
+
+      } else if (jqXHR && jqXHR.status === 403) {
+        return new Error(response['detail']);
+      }
+    } else {
+      return error;
+    }
+  },
+
   pathForType: function(type) {
     var lowerCaseType = type.toLowerCase();
     return Ember.String.pluralize(lowerCaseType);
