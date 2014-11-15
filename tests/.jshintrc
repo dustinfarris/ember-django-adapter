@@ -44,7 +44,8 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "sinon"
   ],
   "node": false,
   "browser": false,
