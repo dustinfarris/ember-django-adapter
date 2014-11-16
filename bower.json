@@ -13,6 +13,7 @@
     "ember-qunit": "0.1.8",
     "ember-qunit-notifications": "0.0.4",
     "qunit": "~1.15.0",
-    "sinon": "http://sinonjs.org/releases/sinon-1.11.1.js"
+    "sinon": "http://sinonjs.org/releases/sinon-1.11.1.js",
+    "pretender": "0.1.0"
   }
 }
