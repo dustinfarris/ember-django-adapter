@@ -18,6 +18,12 @@ export default DS.RESTSerializer.extend({
     }
   },
 
+  extractSingle: function(store, primaryType, rawPayload, recordId, requestType) {
+    var payload = {};
+    payload[primaryType.typeKey] = rawPayload;
+    return this._super(store, primaryType, payload, recordId);
+  },
+
   extractArray: function(store, primaryType, rawPayload) {
     // Convert rawPayload to json format expected by the RESTSerializer. This
     // function is being overridden instead of normalizePayload() because
@@ -25,6 +31,10 @@ export default DS.RESTSerializer.extend({
     var payload = {};
     payload[primaryType.typeKey] = rawPayload['results'] ? rawPayload['results'] : rawPayload;
     return this._super(store, primaryType, payload);
+  },
+
+  serializeIntoHash: function(hash, type, record, options) {
+    Ember.merge(hash, this.serialize(record, options));
   },
 
   keyForAttribute: function(attr) {
