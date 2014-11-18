@@ -68,9 +68,16 @@ ember generate django-serializer my-custom-serializer
 For examples extending the adapter, see [the cookbook][].
 
 
+Roadmap
+-------
+
+There is currently a lot of work being done to bring in the core logic for the
+adapter which will be released as [version 1.0][].
+
 
 [Django REST Framework]: http://www.django-rest-framework.org/
 [toranb/ember-data-django-rest-adapter]: https://github.com/toranb/ember-data-django-rest-adapter
 [ember-cli]: http://www.ember-cli.com/
 [ember-django-adapter/issues]: https://github.com/dustinfarris/ember-django-adapter/issues
 [the cookbook]: https://github.com/dustinfarris/ember-django-adapter/wiki/Cookbook
+[version 1.0]: https://github.com/dustinfarris/ember-django-adapter/milestones/Version%201.0
