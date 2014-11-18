@@ -46,10 +46,9 @@ export default DS.RESTSerializer.extend({
    * @param {subclass of DS.Model} type
    * @param {Object} payload
    * @param {String or Number} id
-   * @param {String} requestType
    * @return {Object} json The deserialized payload
    */
-  extractSingle: function(store, type, payload, id, requestType) {
+  extractSingle: function(store, type, payload, id) {
     var convertedPayload = {};
     convertedPayload[type.typeKey] = payload;
     return this._super(store, type, convertedPayload, id);
@@ -64,10 +63,9 @@ export default DS.RESTSerializer.extend({
    * @param {subclass of DS.Model} type
    * @param {Object} payload
    * @param {String or Number} id
-   * @param {String} requestType
    * @return {Array} array An array of deserialized objects
    */
-  extractArray: function(store, type, payload, id, requestType) {
+  extractArray: function(store, type, payload, id) {
     // Convert payload to json format expected by the RESTSerializer.
     // This function is being overridden instead of normalizePayload()
     // because `results` will only be in lists.
