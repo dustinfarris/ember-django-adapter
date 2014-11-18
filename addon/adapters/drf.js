@@ -1,8 +1,19 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+/**
+ * The Django REST Framework adapter allows your store to communicate
+ * with Django REST Framework-built APIs by adjusting the JSON and URL
+ * structure implemented by Ember Data to match that of DRF.
+ *
+ * The source code for the RESTAdapter superclass can be found at:
+ * https://github.com/emberjs/data/blob/master/packages/ember-data/lib/adapters/rest_adapter.js
+ *
+ * @class DRFAdapter
+ * @constructor
+ * @extends DS.RESTAdapter
+ */
 export default DS.RESTAdapter.extend({
-
   defaultSerializer: "DS/djangoREST",
 
   init: function() {
@@ -21,11 +32,33 @@ export default DS.RESTAdapter.extend({
     }
   },
 
+  /**
+   * Determine the pathname for a given type.
+   *
+   * @method pathForType
+   * @param {String} type
+   * @return {String} path
+   */
   pathForType: function(type) {
     var lowerCaseType = type.toLowerCase();
     return Ember.String.pluralize(lowerCaseType);
   },
 
+  /**
+   * Build a URL for a given type and optional ID.
+   *
+   * By default, it pluralizes the type's name (for example, 'post'
+   * becomes 'posts' and 'person' becomes 'people').
+   *
+   * If an ID is specified, it adds the ID to the path generated for
+   * the type, separated by a `/`.
+   *
+   * @method buildURL
+   * @param {String} type
+   * @param {String} id
+   * @param {DS.Model} record
+   * @return {String} url
+   */
   buildURL: function(type, id, record) {
     var url = this._super(type, id, record);
     if (url.charAt(url.length - 1) !== '/') {
