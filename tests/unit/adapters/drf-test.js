@@ -20,9 +20,11 @@ test('namespace config override', function() {
 test('pathForType', function() {
   var adapter = this.subject();
   equal(adapter.pathForType('Animal'), 'animals');
+  equal(adapter.pathForType('FurryAnimals'), 'furry-animals');
 });
 
 test('buildURL', function() {
   var adapter = this.subject();
   equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5/');
+  equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5/');
 });
