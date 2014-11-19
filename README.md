@@ -81,23 +81,24 @@ ember generate django-serializer my-custom-serializer
 
 ## Path Customization
 
-By default the DjangoRESTAdapter will attempt to use the pluralized lowercase model name to generate the path name. This
-allows some features in Django REST Framework to work by default. If this convention is not suitable for your needs,
-you can override the pathForType method.
+By default the `DRFAdapter` will attempt to pluralize and
+dasherize the  model name to generate the path name. This allows the
+convention of URLs in Django. If this convention is not suitable for
+your needs, you can override the pathForType method.
 
-For example, if you do not want to use the default lowercase model names and needed dashed-case instead, you would
-override the pathForType method like this:
+For example, if you do not want to pluralize and dasherize the model
+names and needed underscore_case instead, you would override the
+pathForType method like this:
 
 ```js
 App.ApplicationAdapter = DS.DjangoRESTAdapter.extend({
   pathForType: function(type) {
-    var dasherized = Ember.String.dasherize(type);
-    return Ember.String.pluralize(dasherized);
+    return Ember.String.underscore(type);
   }
 });
 ```
 
-Requests for App.User would now target /users/1. Requests for App.UserProfile would now target /user-profiles/1.
+Requests for App.User would now target /user/1. Requests for App.UserProfile would now target /user_profile/1.
 
 
 ## coalesceFindRequests option

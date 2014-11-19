@@ -40,8 +40,8 @@ export default DS.RESTAdapter.extend({
    * @return {String} path
    */
   pathForType: function(type) {
-    var lowerCaseType = type.toLowerCase();
-    return Ember.String.pluralize(lowerCaseType);
+    var dasherized = Ember.String.dasherize(type);
+    return Ember.String.pluralize(dasherized);
   },
 
   /**
