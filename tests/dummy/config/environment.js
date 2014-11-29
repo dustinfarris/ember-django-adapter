@@ -14,9 +14,9 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-      API_HOST: 'test-host',
+      // The integration tests don't work with the API_HOST setting set
+      // because Pretender doesn't work when a host set.
+      API_HOST: '',
       API_NAMESPACE: 'test-api'
     }
   };
