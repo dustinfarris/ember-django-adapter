@@ -18,7 +18,7 @@ module('CRUD Failure', {
 
       // Permission denied error
       this.get('/test-api/posts/1/', function(request) {
-        return [403, {'Content-Type': 'application/json'}, JSON.stringify({detail: 'Authentication credentials were not provided.'})];
+        return [401, {'Content-Type': 'application/json'}, JSON.stringify({detail: 'Authentication credentials were not provided.'})];
       });
 
       // Server error
@@ -105,8 +105,12 @@ test('Create field errors', function() {
       ok(response.errors);
 
       var errors = response.errors;
+
+      // Test camelCase field.
       equal(errors.postTitle.length, 1);
       equal(errors.postTitle[0], 'This field is required.');
+
+      // Test non-camelCase field.
       equal(errors.body.length, 1);
       equal(errors.body[0], 'This field is required.');
 
@@ -133,8 +137,12 @@ test('Update field errors', function() {
         ok(updateResponse.errors);
 
         var errors = updateResponse.errors;
+
+        // Test camelCase field.
         equal(errors.postTitle.length, 1);
         equal(errors.postTitle[0], 'Ensure this value has at most 50 characters (it has 53).');
+
+        // Test non-camelCase field.
         equal(errors.body.length, 1);
         equal(errors.body[0], 'This field is required.');
 

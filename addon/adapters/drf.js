@@ -92,10 +92,13 @@ export default DS.RESTAdapter.extend({
         jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
       } catch (SyntaxError) {
         // This happens with some errors (e.g. 500).
-        jsonErrors = {'detail': jqXHR.statusText};
+        return Error(jqXHR.statusText);
       }
 
       if (jqXHR.status === 400) {
+        // The field errors need to be in an `errors` hash to ensure
+        // `extractErrors` / `normalizeErrors` functions get called
+        // on the serializer.
         var convertedJsonErrors = {};
         convertedJsonErrors['errors'] = jsonErrors;
         return new DS.InvalidError(convertedJsonErrors);
