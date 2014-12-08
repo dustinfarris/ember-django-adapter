@@ -65,5 +65,49 @@ export default DS.RESTAdapter.extend({
       url += '/';
     }
     return url;
+  },
+
+  /**
+   * Takes an ajax response, and returns an error payload.
+   *
+   * Returning a `DS.InvalidError` from this method will cause the
+   * record to transition into the `invalid` state and make the
+   * `errors` object available on the record.
+   *
+   * This function should return the entire payload as received from the
+   * server. Error object extraction and normalization of model errors
+   * should be performed by `extractErrors` on the serializer.
+   *
+   * @method ajaxError
+   * @param  {Object} jqXHR
+   * @return {Object} jqXHR
+   */
+  ajaxError: function(jqXHR) {
+    var error = this._super(jqXHR);
+
+    if (jqXHR && jqXHR.status !== undefined) {
+
+      var jsonErrors;
+      try {
+        jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
+      } catch (SyntaxError) {
+        // This happens with some errors (e.g. 500).
+        return Error(jqXHR.statusText);
+      }
+
+      if (jqXHR.status === 400) {
+        // The field errors need to be in an `errors` hash to ensure
+        // `extractErrors` / `normalizeErrors` functions get called
+        // on the serializer.
+        var convertedJsonErrors = {};
+        convertedJsonErrors['errors'] = jsonErrors;
+        return new DS.InvalidError(convertedJsonErrors);
+      } else {
+        return new Error(jsonErrors['detail']);
+      }
+
+    } else {
+      return error;
+    }
   }
 });

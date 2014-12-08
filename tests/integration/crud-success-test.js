@@ -10,49 +10,61 @@ var server;
 var posts = [
   {
     id: 1,
-    title: 'post title 1',
+    post_title: 'post title 1',
     body: 'post body 1',
     comments: []
   },
   {
     id: 2,
-    title: 'post title 2',
+    post_title: 'post title 2',
     body: 'post body 2',
     comments: []
   },
   {
     id: 3,
-    title: 'post title 3',
+    post_title: 'post title 3',
     body: 'post body 3',
     comments: []
   }
 ];
 
-module('CRUD Integration', {
+module('CRUD Success', {
   setup: function() {
     App = startApp();
 
     store = App.__container__.lookup('store:main');
 
     server = new Pretender(function() {
+
+      // Retrieve list of non-paginated records
       this.get('/test-api/posts/', function(request) {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts)];
       });
+
+      // Retrieve list of paginated records
+      this.get('/test-api/paginated-posts/', function(request) {
+        return [200, {'Content-Type': 'application/json'}, JSON.stringify({results: posts})];
+      });
+
+      // Retrieve single record
+      this.get('/test-api/posts/1/', function(request) {
+        return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts[0])];
+      });
+
+      // Create record
       this.post('/test-api/posts/', function(request) {
         var data = Ember.$.parseJSON(request.requestBody);
         data['id'] = 4;
         return [201, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
-      this.get('/test-api/paginated-posts/', function(request) {
-        return [200, {'Content-Type': 'application/json'}, JSON.stringify({results: posts})];
-      });
-      this.get('/test-api/posts/1/', function(request) {
-        return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts[0])];
-      });
+
+      // Update record
       this.put('/test-api/posts/1/', function(request) {
         var data = Ember.merge(posts[0], Ember.$.parseJSON(request.requestBody));
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
+
+      // Delete record
       this.delete('/test-api/posts/1/', function(request) {
         return [204];
       });
@@ -65,11 +77,13 @@ module('CRUD Integration', {
   }
 });
 
-// Need to use the stop() / start() pattern for these integration tests to work. See this stackoverflow question for
-// details:
-// https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
-//
-test('Retrieving a list of records works', function() {
+/*
+ * These integration tests need to use the QUnit.stop() / QUnit.start()
+ * pattern as described in the following stackoverflow question:
+ *
+ * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
+ */
+test('Retrieve list of non-paginated records', function() {
   expect(4);
 
   stop();
@@ -77,17 +91,18 @@ test('Retrieving a list of records works', function() {
     store.find('post').then(function(response) {
       ok(response);
 
-      start();
       equal(response.get('length'), 3);
 
       var post = response.objectAt(2);
-      equal(post.get('title'), 'post title 3');
+      equal(post.get('postTitle'), 'post title 3');
       equal(post.get('body'), 'post body 3');
+
+      start();
     });
   });
 });
 
-test('Retrieving a list of paginated records works', function() {
+test('Retrieve list of paginated records', function() {
   expect(4);
 
   stop();
@@ -95,17 +110,18 @@ test('Retrieving a list of paginated records works', function() {
     store.find('paginatedPost').then(function(response) {
       ok(response);
 
-      start();
       equal(response.get('length'), 3);
 
       var post = response.objectAt(1);
-      equal(post.get('title'), 'post title 2');
+      equal(post.get('postTitle'), 'post title 2');
       equal(post.get('body'), 'post body 2');
+
+      start();
     });
   });
 });
 
-test('Retrieving a single record works', function() {
+test('Retrieve single record', function() {
   expect(3);
 
   stop();
@@ -113,18 +129,19 @@ test('Retrieving a single record works', function() {
     store.find('post', 1).then(function(response) {
       ok(response);
 
-      start();
-      equal(response.get('title'), 'post title 1');
+      equal(response.get('postTitle'), 'post title 1');
       equal(response.get('body'), 'post body 1');
+
+      start();
     });
   });
 });
 
-test('Creating a record works', function() {
+test('Create record', function() {
   expect(4);
 
   var record,
-    data = {title: 'post title 4', body: 'post body 4'};
+    data = {postTitle: 'post title 4', body: 'post body 4'};
 
   stop();
   Ember.run(function() {
@@ -132,18 +149,20 @@ test('Creating a record works', function() {
     record.save().then(function(response) {
       ok(response);
 
-      start();
       equal(response.get('id'), 4);
       equal(response.get('title'), data['title']);
       equal(response.get('body'), data['body']);
+
+      start();
     });
   });
 });
 
-test('Updating a record works', function() {
-  expect(6);
+test('Update record', function() {
+  expect(7);
 
-  var body_update = 'updated post body 1';
+  var postTitleUpdate = 'updated post title 1',
+    bodyUpdate = 'updated post body 1';
 
   stop();
   Ember.run(function() {
@@ -151,21 +170,24 @@ test('Updating a record works', function() {
       ok(response);
 
       equal(response.get('isDirty'), false);
-      response.set('body', body_update);
+      response.set('postTitle', postTitleUpdate);
+      response.set('body', bodyUpdate);
       equal(response.get('isDirty'), true);
 
       response.save().then(function(updateResponse) {
         ok(updateResponse);
 
-        start();
         equal(updateResponse.get('isDirty'), false);
-        equal(updateResponse.get('body', body_update), body_update);
-        });
+        equal(updateResponse.get('postTitle'), postTitleUpdate);
+        equal(updateResponse.get('body'), bodyUpdate);
+
+        start();
+      });
     });
   });
 });
 
-test('Deleting a record works', function() {
+test('Delete record', function() {
   expect(2);
 
   stop();
@@ -175,6 +197,7 @@ test('Deleting a record works', function() {
 
       response.destroyRecord().then(function(deleteResponse) {
         ok(deleteResponse);
+
         start();
       });
     });
