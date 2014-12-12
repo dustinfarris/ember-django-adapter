@@ -41,11 +41,6 @@ module('CRUD Success', {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts)];
       });
 
-      // Retrieve list of paginated records
-      this.get('/test-api/paginated-posts/', function(request) {
-        return [200, {'Content-Type': 'application/json'}, JSON.stringify({results: posts})];
-      });
-
       // Retrieve single record
       this.get('/test-api/posts/1/', function(request) {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts[0])];
@@ -96,25 +91,6 @@ test('Retrieve list of non-paginated records', function() {
       var post = response.objectAt(2);
       equal(post.get('postTitle'), 'post title 3');
       equal(post.get('body'), 'post body 3');
-
-      start();
-    });
-  });
-});
-
-test('Retrieve list of paginated records', function() {
-  expect(4);
-
-  stop();
-  Ember.run(function() {
-    store.find('paginatedPost').then(function(response) {
-      ok(response);
-
-      equal(response.get('length'), 3);
-
-      var post = response.objectAt(1);
-      equal(post.get('postTitle'), 'post title 2');
-      equal(post.get('body'), 'post body 2');
 
       start();
     });
