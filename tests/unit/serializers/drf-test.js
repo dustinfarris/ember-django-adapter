@@ -7,26 +7,6 @@ import {
 // see app/serializers/application.js
 moduleFor('serializer:application', 'DRFSerializer', { });
 
-test('extractMeta', function() {
-  var serializer = this.subject();
-  var store = { metaForType: sinon.spy() };
-  var payload = {
-    results: 'mock',
-    count: 'count',
-    next: 'next',
-    previous: 'previous'
-  };
-
-  serializer.extractMeta(store, 'type', payload);
-
-  ok(store.metaForType.calledWith('type', {
-    total: 'count', next: 'next', previous: 'previous'
-  }), 'metaForType not called properly');
-  ok(!payload.count, 'payload.count not removed');
-  ok(!payload.next, 'payload.next not removed');
-  ok(!payload.previous, 'payload.previous not removed');
-});
-
 test('extractSingle', function() {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted single');

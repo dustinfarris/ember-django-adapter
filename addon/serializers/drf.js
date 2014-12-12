@@ -23,13 +23,30 @@ export default DS.RESTSerializer.extend({
    * @param {Object} payload
    */
   extractMeta: function(store, type, payload) {
+
+    function extractPageNumber(url) {
+      var match = /.*?[\?&]page=(\d+).*?/.exec(url);
+      if (match) {
+        return Number(match[1]).valueOf();
+      }
+      return -1;
+    }
+
     if (payload && payload.results) {
       // Sets the metadata for the type.
-      store.metaForType(type, {
-        total: payload.count,
-        next: payload.next,
-        previous: payload.previous
-      });
+      var metadata = {count: payload.count};
+
+      var nextPageNumber = extractPageNumber(payload.next);
+      if (nextPageNumber !== -1) {
+        metadata['next'] = nextPageNumber;
+      }
+
+      var previousPageNumber = extractPageNumber(payload.previous);
+      if (previousPageNumber !== -1) {
+        metadata['previous'] = previousPageNumber;
+      }
+      store.metaForType(type, metadata);
+
       // Keep ember data from trying to parse the metadata as a records
       delete payload.count;
       delete payload.next;
