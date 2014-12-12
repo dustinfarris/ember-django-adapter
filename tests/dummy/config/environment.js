@@ -14,6 +14,9 @@ module.exports = function(environment) {
     },
 
     APP: {
+      // Here you can pass flags/options to your application instance
+      // when it is created
+
       // The integration tests don't work with the API_HOST setting set
       // because Pretender doesn't work when a host set.
       API_HOST: '',
@@ -32,7 +35,7 @@ module.exports = function(environment) {
   if (environment === 'test') {
     // Testem prefers this...
     ENV.baseURL = '/';
-    ENV.locationType = 'auto';
+    ENV.locationType = 'none';
 
     // keep test console output quieter
     ENV.APP.LOG_ACTIVE_GENERATION = false;
