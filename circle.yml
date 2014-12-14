@@ -3,3 +3,10 @@ dependencies:
     - npm install -g bower
     - npm install
     - bower install
+
+deployment:
+  production:
+    branch: version-1.0
+    commands:
+      - sudo pip install mkdocs
+      - mkdocs gh-deploy
