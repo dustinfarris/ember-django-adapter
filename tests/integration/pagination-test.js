@@ -47,7 +47,7 @@ var posts = [
 ];
 
 module('Pagination', {
-  setup: function () {
+  setup: function() {
     App = startApp();
 
     store = App.__container__.lookup('store:main');
@@ -56,31 +56,31 @@ module('Pagination', {
     // so it can be used with all of the pagination tests. Otherwise,
     // different urls would need to be used which would require new
     // models.
-    server = new Pretender(function () {
-      this.get('/test-api/posts/', function (request) {
+    server = new Pretender(function() {
+      this.get('/test-api/posts/', function(request) {
         var page = 1,
-          page_size = 4;
+          pageSize = 4;
 
         if (request.queryParams.page_size !== undefined) {
-          page_size = Number(request.queryParams.page_size).valueOf();
+          pageSize = Number(request.queryParams.page_size).valueOf();
         }
 
-        var max_pages = posts.length / page_size;
+        var maxPages = posts.length / pageSize;
 
-        if (posts.length % page_size > 0) {
-          max_pages++;
+        if (posts.length % pageSize > 0) {
+          maxPages++;
         }
 
         if (request.queryParams.page !== undefined) {
           page = Number(request.queryParams.page).valueOf();
-          if (page > max_pages) {
+          if (page > maxPages) {
             return [404, {'Content-Type': 'text/html'}, '<h1>Page not found</h1>'];
           }
         }
 
         var nextPage = page + 1;
         var nextUrl = null;
-        if (nextPage <= max_pages) {
+        if (nextPage <= maxPages) {
           nextUrl = '/test-api/posts/?page=' + nextPage;
         }
 
@@ -90,18 +90,18 @@ module('Pagination', {
           previousUrl = '/test-api/posts/?page=' + previousPage;
         }
 
-        var offset = (page - 1) * page_size;
+        var offset = (page - 1) * pageSize;
         return [200, {'Content-Type': 'application/json'}, JSON.stringify({
           count: posts.length,
           next: nextUrl,
           previous: previousUrl,
-          results: posts.slice(offset, offset + page_size)
+          results: posts.slice(offset, offset + pageSize)
         })];
       });
     });
   },
 
-  teardown: function () {
+  teardown: function() {
     Ember.run(App, 'destroy');
     server.shutdown();
   }
@@ -113,12 +113,12 @@ module('Pagination', {
  *
  * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
  */
-test('Retrieve list of paginated records', function () {
+test('Retrieve list of paginated records', function() {
   expect(8);
 
   stop();
-  Ember.run(function () {
-    store.find('post').then(function (response) {
+  Ember.run(function() {
+    store.find('post').then(function(response) {
       ok(response);
 
 
@@ -144,12 +144,12 @@ test('Retrieve list of paginated records', function () {
 });
 
 
-test("Type metadata doesn't have previous", function () {
+test("Type metadata doesn't have previous", function() {
   expect(5);
 
   stop();
-  Ember.run(function () {
-    store.find('post').then(function (response) {
+  Ember.run(function() {
+    store.find('post').then(function(response) {
       ok(response);
 
       // Test the type metadata.
@@ -167,12 +167,12 @@ test("Type metadata doesn't have previous", function () {
 });
 
 
-test("Type metadata doesn't have next", function () {
+test("Type metadata doesn't have next", function() {
   expect(8);
 
   stop();
-  Ember.run(function () {
-    store.find('post', {page: 2}).then(function (response) {
+  Ember.run(function() {
+    store.find('post', {page: 2}).then(function(response) {
       ok(response);
       equal(response.get('length'), 2);
 
@@ -194,12 +194,12 @@ test("Type metadata doesn't have next", function () {
 });
 
 
-test("Test page_size query param", function () {
+test("Test page_size query param", function() {
   expect(8);
 
   stop();
-  Ember.run(function () {
-    store.find('post', {page: 2, page_size: 2}).then(function (response) {
+  Ember.run(function() {
+    store.find('post', {page: 2, page_size: 2}).then(function(response) {
       ok(response);
       equal(response.get('length'), 2);
 
