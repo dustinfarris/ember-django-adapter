@@ -76,3 +76,44 @@ test('keyForRelationship', function() {
 
   equal(result, 'project_managers');
 });
+
+test('extractMeta', function() {
+  var serializer = this.subject();
+  var store = { metaForType: sinon.spy() };
+  var payload = {
+    results: 'mock',
+    count: 'count',
+    next: '/api/posts/?page=3',
+    previous: '/api/posts/?page=1'
+  };
+
+  serializer.extractMeta(store, 'type', payload);
+
+  ok(store.metaForType.calledWith('type', {count: 'count', next: 3, previous: 1}),
+    'metaForType not called properly');
+  ok(!payload.count, 'payload.count not removed');
+  ok(!payload.next, 'payload.next not removed');
+  ok(!payload.previous, 'payload.previous not removed');
+});
+
+test('extractPageNumber', function() {
+  var serializer = this.subject();
+
+  equal(serializer.extractPageNumber('http://xmpl.com/a/p/?page=3234'), 3234,
+    'extractPageNumber failed on absolute URL');
+
+  equal(serializer.extractPageNumber('/a/p/?page=3234'), 3234,
+    'extractPageNumber failed on relative URL');
+
+  equal(serializer.extractPageNumber(null), null,
+    'extractPageNumber failed on null URL');
+
+  equal(serializer.extractPageNumber('/a/p/'), null,
+    'extractPageNumber failed on URL without query params');
+
+  equal(serializer.extractPageNumber('/a/p/?ordering=-timestamp&user=123'), null,
+    'extractPageNumber failed on URL with other query params');
+
+  equal(serializer.extractPageNumber('/a/p/?fpage=23&pages=[1,2,3],page=123g&page=g123'), null,
+    'extractPageNumber failed on URL with similar query params');
+});

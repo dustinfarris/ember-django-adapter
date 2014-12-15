@@ -130,14 +130,13 @@ test('Retrieve list of paginated records', function () {
       equal(post.get('body'), 'post body 2');
 
       // Test the type metadata.
-      var typeMetadata = store.metadataFor('post');
-      equal(typeMetadata.count, 6);
-      equal(typeMetadata.next, 2);
-      ok(!typeMetadata['previous']);
+      var metadata = store.metadataFor('post');
+      equal(metadata.count, 6);
+      equal(metadata.next, 2);
+      equal(metadata.previous, null);
 
       // No metadata on results when using find without query params.
-      var resultMetadata = response.get('meta');
-      ok(!resultMetadata);
+      ok(!response.get('meta'));
 
       start();
     });
@@ -154,14 +153,13 @@ test("Type metadata doesn't have previous", function () {
       ok(response);
 
       // Test the type metadata.
-      var typeMetadata = store.metadataFor('post');
-      equal(typeMetadata.count, 6);
-      equal(typeMetadata.next, 2);
-      ok(!typeMetadata['previous']);
+      var metadata = store.metadataFor('post');
+      equal(metadata.count, 6);
+      equal(metadata.next, 2);
+      equal(metadata.previous, null);
 
       // No metadata on results when using find without query params.
-      var resultMetadata = response.get('meta');
-      ok(!resultMetadata);
+      ok(!response.get('meta'));
 
       start();
     });
@@ -181,14 +179,14 @@ test("Type metadata doesn't have next", function () {
       // Test the type metadata.
       var typeMetadata = store.metadataFor('post');
       equal(typeMetadata.count, 6);
+      equal(typeMetadata.next, null);
       equal(typeMetadata.previous, 1);
-      ok(!typeMetadata['next']);
 
-      // Test the result metadata.
-      var resultMetadata = response.get('meta');
-      equal(resultMetadata.count, 6);
-      equal(resultMetadata.previous, 1);
-      ok(!resultMetadata['next']);
+      // Test the results metadata.
+      var resultsMetadata = response.get('meta');
+      equal(resultsMetadata.count, 6);
+      equal(resultsMetadata.next, null);
+      equal(resultsMetadata.previous, 1);
 
       start();
     });
@@ -211,11 +209,11 @@ test("Test page_size query param", function () {
       equal(typeMetadata.previous, 1);
       equal(typeMetadata.next, 3);
 
-      // Test the result metadata.
-      var resultMetadata = response.get('meta');
-      equal(resultMetadata.count, 6);
-      equal(resultMetadata.previous, 1);
-      equal(resultMetadata.next, 3);
+      // Test the results metadata.
+      var resultsMetadata = response.get('meta');
+      equal(resultsMetadata.count, 6);
+      equal(resultsMetadata.previous, 1);
+      equal(resultsMetadata.next, 3);
 
       start();
     });
