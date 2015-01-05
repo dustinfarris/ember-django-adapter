@@ -1,6 +1,17 @@
 ember-django-adapter Changelog
 ==============================
 
+0.5.0
+-----
+
+This version is a complete rewrite of the adapter.  It represents a cherry-
+picking of the original adapter from toranb, implemented using ember-cli's
+addon framework.  This version is required for recent versions of Ember Data
+and Ember CLI, but it is still very much a work-in-progress.
+
+**All CHANGELOG history before this point is inapplicable.**
+
+
 0.4.0
 -----
 
