@@ -6,7 +6,7 @@ dependencies:
 
 deployment:
   production:
-    branch: version-1.0
+    branch: master
     commands:
       - sudo pip install mkdocs
       - mkdocs gh-deploy
