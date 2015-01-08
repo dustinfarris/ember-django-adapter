@@ -91,6 +91,25 @@
               <h1 id="contributing-to-ember-django-adapter">Contributing to Ember Django Adapter</h1>
 <p>We welcome all bug reports and pull requests.</p>
 <p>Issues: <a href="https://github.com/dustinfarris/ember-django-adapter/issues">github.com/dustinfarris/ember-django-adapter/issues</a></p>
+<h2 id="local-development">Local Development</h2>
+<p>To run ember-django-adapter locally, you will have to use <code>npm link</code>.</p>
+<pre><code>git clone git@github.com:dustinfarris/ember-django-adapter
+cd ember-django-adapter
+npm i &amp;&amp; bower i
+npm link
+</code></pre>
+
+<p>Then in a test ember-cli project, you will have to install a couple bower dependencies separately.
+These are not actually required in the test ember-cli project, but errors will be thrown if they
+are not present.</p>
+<pre><code>cd test-ember-cli-project
+bower i pretender
+bower i http://sinonjs.org/releases/sinon-1.12.1.js
+npm link ember-django-adapter
+</code></pre>
+
+<p>Now your test project is using a symlinked copy of your local ember-django-adapter, and any changes
+you make to the adapter will be reflected in your project in real-time.</p>
 
             </div>
           </div>
