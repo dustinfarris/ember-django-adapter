@@ -13,6 +13,25 @@ import Ember from 'ember';
 export default DS.RESTSerializer.extend({
 
   /**
+   *  Returns the number extracted from the page number query param of
+   *  a `url`. `null` is returned when the page number query param
+   *  isn't present in the url. `null` is also returned when `url` is
+   *  `null`.
+   *
+   * @method extractPageNumber
+   * @private
+   * @param {String} url
+   * @return {Number} page number
+   */
+  extractPageNumber: function(url) {
+    var match = /.*?[\?&]page=(\d+).*?/.exec(url);
+    if (match) {
+      return Number(match[1]).valueOf();
+    }
+    return null;
+  },
+
+  /**
    * `extractMeta` is used to deserialize any meta information in the
    * adapter payload. By default Ember Data expects meta information to
    * be located on the `meta` property of the payload object.
@@ -26,10 +45,11 @@ export default DS.RESTSerializer.extend({
     if (payload && payload.results) {
       // Sets the metadata for the type.
       store.metaForType(type, {
-        total: payload.count,
-        next: payload.next,
-        previous: payload.previous
+        count: payload.count,
+        next: this.extractPageNumber(payload.next),
+        previous: this.extractPageNumber(payload.previous)
       });
+
       // Keep ember data from trying to parse the metadata as a records
       delete payload.count;
       delete payload.next;

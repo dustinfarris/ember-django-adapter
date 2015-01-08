@@ -2,6 +2,7 @@ site_name: Ember Django Adapter
 repo_url: https://github.com/dustinfarris/ember-django-adapter
 pages:
   - ['index.md', 'Introduction']
+  - ['pagination.md']
   - ['contributing.md']
   - ['changelog.md']
 theme: readthedocs
