@@ -53,6 +53,9 @@ export default DS.RESTAdapter.extend({
    * If an ID is specified, it adds the ID to the path generated for
    * the type, separated by a `/`.
    *
+   * If the adapter has the property `add_trailing_slashes` set to
+   * true, a trailing slash will be appended to the result.
+   *
    * @method buildURL
    * @param {String} type
    * @param {String} id
@@ -61,8 +64,10 @@ export default DS.RESTAdapter.extend({
    */
   buildURL: function(type, id, record) {
     var url = this._super(type, id, record);
-    if (url.charAt(url.length - 1) !== '/') {
-      url += '/';
+    if (this.get('add_trailing_slashes')) {
+      if (url.charAt(url.length - 1) !== '/') {
+        url += '/';
+      }
     }
     return url;
   },

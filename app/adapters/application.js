@@ -8,5 +8,9 @@ export default DRFAdapter.extend({
 
   namespace: function() {
     return ENV.APP.API_NAMESPACE;
+  }.property(),
+
+  add_trailing_slashes: function() {
+    return ENV.APP.API_ADD_TRAILING_SLASHES;
   }.property()
 });

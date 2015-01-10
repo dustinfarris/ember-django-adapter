@@ -32,6 +32,13 @@ test('buildURL', function() {
   equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5/');
 });
 
+test('buildURL - no trailing slashes', function() {
+  var adapter = this.subject();
+  adapter.set('add_trailing_slashes', false);
+  equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5');
+  equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5');
+});
+
 test('ajaxError - returns invalid error if 400 response', function() {
   var error = new DS.InvalidError({errors: {name: ['This field cannot be blank.']}});
 
