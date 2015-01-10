@@ -6,6 +6,8 @@ Master
 
 * [ENHANCEMENT] Add support for pagination metadata
   ([#45](https://github.com/dustinfarris/ember-django-adapter/pull/45))
+* [ENHANCEMENT] Add documentation for contributing
+  ([#49](https://github.com/dustinfarris/ember-django-adapter/pull/49))
 
 
 0.5.0
