@@ -3,6 +3,8 @@ repo_url: https://github.com/dustinfarris/ember-django-adapter
 pages:
   - ['index.md', 'Introduction']
   - ['configuring.md']
+  - ['extending.md']
+  - ['usage.md']
   - ['pagination.md']
   - ['contributing.md']
   - ['changelog.md']

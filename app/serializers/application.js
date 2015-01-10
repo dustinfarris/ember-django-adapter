@@ -1,3 +1,3 @@
-import DRFSerializer from 'ember-django-adapter/serializers/drf';
+import DRFSerializer from './drf';
 
 export default DRFSerializer;
