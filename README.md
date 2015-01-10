@@ -13,7 +13,7 @@ Goals
 * Ability to support Django REST Framework APIs without modifications to the default configuration of Django REST
   Framework.
 
-* Ensure as much as posslibe that the documentation on emberjs.com about adapters and serializers is accurate and
+* Ensure as much as possible that the documentation on emberjs.com about adapters and serializers is accurate and
   relevant when using the Django REST adapter and serializer. Deviations from the emberjs.com documentation should be
   documented clearly.
 
