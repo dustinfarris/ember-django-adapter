@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changelog - Ember Django Adapter</title>
+  <title>Configuring - Ember Django Adapter</title>
   
 
   
@@ -42,8 +42,8 @@
       <ul class="current">
     
         
-            <li class="toctree-l1 ">
-                <a class="" href="../configuring">Configuring</a>
+            <li class="toctree-l1 current">
+                <a class="current" href=".">Configuring</a>
             </li>
         
 
@@ -63,8 +63,8 @@
 
     
         
-            <li class="toctree-l1 current">
-                <a class="current" href=".">Changelog</a>
+            <li class="toctree-l1 ">
+                <a class="" href="../changelog">Changelog</a>
             </li>
         
 
@@ -89,7 +89,7 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
-    <li>Changelog</li>
+    <li>Configuring</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -102,55 +102,41 @@
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="ember-django-adapter-changelog">ember-django-adapter Changelog</h1>
-<h2 id="master">Master</h2>
-<ul>
-<li>[ENHANCEMENT] Add support for pagination metadata
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/45">#45</a>)</li>
-<li>[ENHANCEMENT] Add documentation for contributing
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/49">#49</a>)</li>
-</ul>
-<h2 id="050">0.5.0</h2>
-<p>This version is a complete rewrite of the adapter.  It represents a
-cherry-picking of the original adapter from toranb, implemented using
-ember-cli's addon framework.  This version is required for recent versions of
-Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
-<p><strong>All CHANGELOG history before this point is inapplicable.</strong></p>
-<h2 id="040">0.4.0</h2>
-<ul>
-<li>[ENHANCEMENT] Update ember-data dependency
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/8">#8</a>)</li>
-<li>[ENHANCEMENT] Simplify addon packaging
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/5">#5</a>)</li>
-</ul>
-<h2 id="030">0.3.0</h2>
-<ul>
-<li>[ENHANCEMENT] Add changelog</li>
-<li>[ENHANCEMENT] Add adapter/serializer blueprints
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/issues/1">#1</a>)</li>
-<li>[ENHANCEMENT] Add namespace to available configuration options</li>
-<li>[BREAKING ENHANCEMENT] Change default host/namespace properties to use ember-
-  cli's express server
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/2">#2</a>)</li>
-<li>[ENHANCEMENT] Bump ember-data-django-rest-adapter to v1.0.6
-  (<a href="https://github.com/toranb/ember-data-django-rest-adapter/blob/master/CHANGELOG.md#106">see changelog</a>)</li>
-</ul>
-<h2 id="020">0.2.0</h2>
-<ul>
-<li>[ENHANCEMENT] Upgrade ember-data-django-rest-adapter to v1.0.5</li>
-</ul>
-<h2 id="010">0.1.0</h2>
-<ul>
-<li>[ENHANCEMENT] Add documentation</li>
-</ul>
-<h2 id="002">0.0.2</h2>
-<ul>
-<li>[BUGFIX] Use non-minified production build of the adapter</li>
-</ul>
-<h2 id="001">0.0.1</h2>
-<ul>
-<li>Initial release</li>
-</ul>
+              <h1 id="configuring">Configuring</h1>
+<p>There are a number of configuration variables you can set in your environment.js file.</p>
+<h2 id="api_host">API_HOST</h2>
+<p><strong>Default:</strong> <code>''</code></p>
+<p>The fully-qualified host of your API server.</p>
+<h2 id="api_namespace">API_NAMESPACE</h2>
+<p><strong>Default:</strong> <code>'api'</code></p>
+<p>The URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all
+API requests will look like /my-api/v1/users/56/, or similar.</p>
+<h2 id="api_add_trailing_slashes">API_ADD_TRAILING_SLASHES</h2>
+<p><strong>Default:</strong> <code>true</code></p>
+<p>Whether to append a trailing slash to API URL endpoints.</p>
+<h2 id="example">Example</h2>
+<pre><code class="js">// my-ember-cli-project/config/environment.js
+
+module.exports = function(environment) {
+  var ENV = {
+    APP: {
+      API_ADD_TRAILING_SLASHES: false
+    }
+  };
+
+  if (environment === 'development') {
+    ENV.APP.API_HOST = 'http://localhost:8000';
+  }
+
+  if (environment === 'production') {
+    ENV.APP.API_HOST = 'https://api.myproject.com';
+    ENV.APP.NAMESPACE = 'v2';
+  }
+
+  return ENV;
+};
+</code></pre>
+
 
             </div>
           </div>
@@ -158,8 +144,10 @@ Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../pagination" class="btn btn-neutral float-right" title="Pagination"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../contributing" class="btn btn-neutral" title="Contributing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href=".." class="btn btn-neutral" title="Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -187,8 +175,8 @@ Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
         
             <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
         
-      <span><a href="../contributing" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="../pagination" style="color: #fcfcfc">Next &raquo;</a></span>
     </span>
 </div>
 </body>
