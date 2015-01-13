@@ -23,3 +23,5 @@ In your Ember CLI project, install Ember Django Adapter from the command line:
 ```bash
 npm install --save-dev ember-django-adapter
 ```
+
+See [configuring](configuring.md) for more information on customizing the adapter.
