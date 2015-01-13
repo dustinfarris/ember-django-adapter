@@ -1,10 +1,4 @@
-# Usage
-
-After installing and configuring the adapter for your API server, most basic operations will just
-work.  There are several instances where you will need to do some tweaking either on the server
-side or on the adapter side.  These are summarized here.
-
-## Embedded Records
+# Embedded Records
 
 Let's say you've set up a serializer in DRF that has embedded records.  For example:
 
@@ -93,7 +87,6 @@ export default DRFSerializer.extend(DS.EmbeddedRecordsMixin, {
 ```
 
 
-## Stuck?
+### Writable nested records
 
-If you run into any trouble using the adapter for your DRF project, please don't hesitate to yell
-at us on IRC or open an issue on StackOverflow or GitHub.
+Writable nested records are not supported by the adapter at this time.
