@@ -10,7 +10,7 @@ ember generate drf-serializer user
 
 This will create app/serializers/user.js for you to customize.
 
-Similarly, if you wanted to, say, extend the adapter on the application level:
+Similarly, if you wanted to, for example, extend the adapter on the application level:
 
 ```console
 ember generate drf-adapter application
