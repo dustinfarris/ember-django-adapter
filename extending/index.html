@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuring - Ember Django Adapter</title>
+  <title>Extending - Ember Django Adapter</title>
   
 
   
@@ -42,15 +42,15 @@
       <ul class="current">
     
         
-            <li class="toctree-l1 current">
-                <a class="current" href=".">Configuring</a>
+            <li class="toctree-l1 ">
+                <a class="" href="../configuring">Configuring</a>
             </li>
         
 
     
         
-            <li class="toctree-l1 ">
-                <a class="" href="../extending">Extending</a>
+            <li class="toctree-l1 current">
+                <a class="current" href=".">Extending</a>
             </li>
         
 
@@ -103,7 +103,7 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
-    <li>Configuring</li>
+    <li>Extending</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -116,41 +116,19 @@
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="configuring">Configuring</h1>
-<p>There are a number of configuration variables you can set in your environment.js file.</p>
-<h2 id="api_host">API_HOST</h2>
-<p><strong>Default:</strong> <code>''</code></p>
-<p>The fully-qualified host of your API server.</p>
-<h2 id="api_namespace">API_NAMESPACE</h2>
-<p><strong>Default:</strong> <code>'api'</code></p>
-<p>The URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all
-API requests will look like /my-api/v1/users/56/, or similar.</p>
-<h2 id="api_add_trailing_slashes">API_ADD_TRAILING_SLASHES</h2>
-<p><strong>Default:</strong> <code>true</code></p>
-<p>Whether to append a trailing slash to API URL endpoints.</p>
-<h2 id="example">Example</h2>
-<pre><code class="js">// my-ember-cli-project/config/environment.js
-
-module.exports = function(environment) {
-  var ENV = {
-    APP: {
-      API_ADD_TRAILING_SLASHES: false
-    }
-  };
-
-  if (environment === 'development') {
-    ENV.APP.API_HOST = 'http://localhost:8000';
-  }
-
-  if (environment === 'production') {
-    ENV.APP.API_HOST = 'https://api.myproject.com';
-    ENV.APP.NAMESPACE = 'v2';
-  }
-
-  return ENV;
-};
+              <h1 id="extending-the-adapterserializer">Extending the adapter/serializer</h1>
+<p>More than likely, you will need to add you own tweaks to the adapter adapter and (more often) the
+serializer.  EDA provides blueprints to make this easy.  For example, to make a customizable
+serializer for a User model:</p>
+<pre><code class="console">ember generate drf-serializer user
 </code></pre>
 
+<p>This will create app/serializers/user.js for you to customize.</p>
+<p>Similarly, if you wanted to, for example, extend the adapter on the application level:</p>
+<pre><code class="console">ember generate drf-adapter application
+</code></pre>
+
+<p>This will create app/adapters/application.js for you to customize.</p>
 
             </div>
           </div>
@@ -158,10 +136,10 @@ module.exports = function(environment) {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../extending" class="btn btn-neutral float-right" title="Extending"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../embedded-records" class="btn btn-neutral float-right" title="Embedded records"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../configuring" class="btn btn-neutral" title="Configuring"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -189,8 +167,8 @@ module.exports = function(environment) {
         
             <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
         
-      <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="../extending" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../configuring" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="../embedded-records" style="color: #fcfcfc">Next &raquo;</a></span>
     </span>
 </div>
 </body>

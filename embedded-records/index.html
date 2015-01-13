@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuring - Ember Django Adapter</title>
+  <title>Embedded records - Ember Django Adapter</title>
   
 
   
@@ -42,8 +42,8 @@
       <ul class="current">
     
         
-            <li class="toctree-l1 current">
-                <a class="current" href=".">Configuring</a>
+            <li class="toctree-l1 ">
+                <a class="" href="../configuring">Configuring</a>
             </li>
         
 
@@ -56,8 +56,8 @@
 
     
         
-            <li class="toctree-l1 ">
-                <a class="" href="../embedded-records">Embedded records</a>
+            <li class="toctree-l1 current">
+                <a class="current" href=".">Embedded records</a>
             </li>
         
 
@@ -103,7 +103,7 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
-    <li>Configuring</li>
+    <li>Embedded records</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -116,41 +116,83 @@
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="configuring">Configuring</h1>
-<p>There are a number of configuration variables you can set in your environment.js file.</p>
-<h2 id="api_host">API_HOST</h2>
-<p><strong>Default:</strong> <code>''</code></p>
-<p>The fully-qualified host of your API server.</p>
-<h2 id="api_namespace">API_NAMESPACE</h2>
-<p><strong>Default:</strong> <code>'api'</code></p>
-<p>The URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all
-API requests will look like /my-api/v1/users/56/, or similar.</p>
-<h2 id="api_add_trailing_slashes">API_ADD_TRAILING_SLASHES</h2>
-<p><strong>Default:</strong> <code>true</code></p>
-<p>Whether to append a trailing slash to API URL endpoints.</p>
-<h2 id="example">Example</h2>
-<pre><code class="js">// my-ember-cli-project/config/environment.js
+              <h1 id="embedded-records">Embedded Records</h1>
+<p>Let's say you've set up a serializer in DRF that has embedded records.  For example:</p>
+<pre><code class="python">class Person(models.Model):
+    name = models.CharField(max_length=20)
 
-module.exports = function(environment) {
-  var ENV = {
-    APP: {
-      API_ADD_TRAILING_SLASHES: false
-    }
-  };
 
-  if (environment === 'development') {
-    ENV.APP.API_HOST = 'http://localhost:8000';
-  }
+class Pet(models.Model):
+    name = models.CharField(max_length=20)
+    owner = models.ForeignKey(Person, related_name='pets')
 
-  if (environment === 'production') {
-    ENV.APP.API_HOST = 'https://api.myproject.com';
-    ENV.APP.NAMESPACE = 'v2';
-  }
 
-  return ENV;
-};
+class PetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+
+
+class PersonSerializer(serializers.ModelSerializer):
+    pets = PetSerializer(many=True)
+
+    class Meta:
+        model = Person
 </code></pre>
 
+<p>On the Ember side, your models would look like this:</p>
+<pre><code class="js">// app/models/pet.js
+
+import DS from 'ember-data';
+
+export default DS.Model.extend({
+  person: DS.belongsTo('person'),
+  name: DS.attr('string')
+});
+</code></pre>
+
+<pre><code class="js">// app/models/person.js
+
+import DS from 'ember-data';
+
+export default DS.Model.extend({
+  name: DS.attr('string'),
+  pets: DS.hasMany('pet')
+});
+</code></pre>
+
+<p>The API's JSON response from such a setup would look something like this:</p>
+<pre><code class="json">{
+  &quot;id&quot;: 2,
+  &quot;name&quot;: &quot;Frank&quot;,
+  &quot;pets&quot;: [
+    { &quot;id&quot;: 1, &quot;name&quot;: &quot;Spot&quot; },
+    { &quot;id&quot;: 2, &quot;name&quot;: &quot;Fido&quot; }
+  ]
+}
+</code></pre>
+
+<p>Ember Data supports this sort of response (since 1.0.0-beta.10), but you will have to extend the
+serializer for this model to make Ember Data aware of it.</p>
+<p>In your Ember project, create a DRF serializer for your Person model.</p>
+<pre><code class="console">ember generate drf-serializer person
+</code></pre>
+
+<p>This creates a skeleton serializer that extends the DRF serializer in app/serializers/person.js.
+Modify this file to support the embedded records:</p>
+<pre><code class="js">// app/serializers/person.js
+
+import DRFSerializer from './drf';
+import DS from 'ember-data';
+
+export default DRFSerializer.extend(DS.EmbeddedRecordsMixin, {
+  attrs: {
+    pets: { embedded: 'always' }
+  }
+});
+</code></pre>
+
+<h3 id="writable-nested-records">Writable nested records</h3>
+<p>Writable nested records are not supported by the adapter at this time.</p>
 
             </div>
           </div>
@@ -158,10 +200,10 @@ module.exports = function(environment) {
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../extending" class="btn btn-neutral float-right" title="Extending"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../pagination" class="btn btn-neutral float-right" title="Pagination"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href=".." class="btn btn-neutral" title="Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../extending" class="btn btn-neutral" title="Extending"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -189,8 +231,8 @@ module.exports = function(environment) {
         
             <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
         
-      <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="../extending" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../extending" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="../pagination" style="color: #fcfcfc">Next &raquo;</a></span>
     </span>
 </div>
 </body>
