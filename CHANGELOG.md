@@ -10,6 +10,8 @@ Master
   ([#49](https://github.com/dustinfarris/ember-django-adapter/pull/49))
 * [ENHANCEMENT] Add blueprints and support for embedded records
   ([#51](https://github.com/dustinfarris/ember-django-adapter/pull/51))
+* [ENHANCEMENT] Add option to remove trailing slashes
+  ([#50](https://github.com/dustinfarris/ember-django-adapter/pull/50))
 
 
 0.5.0
