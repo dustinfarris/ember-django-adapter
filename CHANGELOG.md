@@ -1,8 +1,13 @@
 ember-django-adapter Changelog
 ==============================
 
+
 Master
 ------
+
+
+0.5.1
+-----
 
 * [ENHANCEMENT] Add support for pagination metadata
   ([#45](https://github.com/dustinfarris/ember-django-adapter/pull/45))
