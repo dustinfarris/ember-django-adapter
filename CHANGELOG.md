@@ -12,6 +12,8 @@ Master
   ([#51](https://github.com/dustinfarris/ember-django-adapter/pull/51))
 * [ENHANCEMENT] Add option to remove trailing slashes
   ([#50](https://github.com/dustinfarris/ember-django-adapter/pull/50))
+* [ENHANCEMENT] Test coverage for all supported versions of ember-data
+  ([#56](https://github.com/dustinfarris/ember-django-adapter/pull/56))
 
 
 0.5.0
