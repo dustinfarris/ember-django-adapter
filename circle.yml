@@ -10,3 +10,9 @@ deployment:
     commands:
       - sudo pip install mkdocs
       - mkdocs gh-deploy
+
+test:
+  override:
+    - npm test
+    - sed -i "s/ \"1.0.0-beta.12\"/ \"1.0.0-beta.14\"/" package.json bower.json && npm i && bower i && npm test
+    - sed -i "s/ \"1.0.0-beta.14\"/ \"1.0.0-beta.14.1\"/" package.json bower.json && npm i && bower i && npm test
