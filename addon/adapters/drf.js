@@ -16,11 +16,13 @@ import Ember from 'ember';
 export default DS.RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
 
+  useHasManyRelatedFilterUrl: true,
+
   init: function() {
     this._super();
 
     if (this.get('coalesceFindRequests')) {
-      var error = "Please ensure coalesceFindRequests is not present or set " +
+      var error = "Please ensure coalesceFindRequests is not present or is set " +
         "to false in your adapter. This adapter does not support the " +
         "coalesceFindRequests option. The Django REST Framework does not " +
         "offer easy to configure support for N+1 query requests in the " +
