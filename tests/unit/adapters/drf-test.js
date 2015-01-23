@@ -52,20 +52,16 @@ test('ajaxError - returns invalid error if 400 response', function() {
 });
 
 test('ajaxError - returns error if not 400 response', function() {
-  var error = new Error('You do not have permission to perform this action.');
-
   var jqXHR = {
     status: 403,
     responseText: JSON.stringify({detail: 'You do not have permission to perform this action.'})
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), error.toString());
+  equal(adapter.ajaxError(jqXHR), jqXHR);
 });
 
 test('ajaxError - returns error if no responseText to parse', function() {
-  var error = new Error('Internal Server Error');
-
   var jqXHR = {
     status: 500,
     statusText: 'Internal Server Error',
@@ -73,7 +69,7 @@ test('ajaxError - returns error if no responseText to parse', function() {
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), error.toString());
+  equal(adapter.ajaxError(jqXHR), jqXHR);
 });
 
 test('ajaxError - returns ajax response if no status returned', function() {

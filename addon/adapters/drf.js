@@ -85,31 +85,27 @@ export default DS.RESTAdapter.extend({
    *
    * @method ajaxError
    * @param  {Object} jqXHR
-   * @return {Object} jqXHR
+   * @return {DS.InvalidError} or {Object} jqXHR
    */
   ajaxError: function(jqXHR) {
     var error = this._super(jqXHR);
 
-    if (jqXHR && jqXHR.status !== undefined) {
+    if (jqXHR && jqXHR.status === 400) {
 
       var jsonErrors;
       try {
         jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
       } catch (SyntaxError) {
         // This happens with some errors (e.g. 500).
-        return Error(jqXHR.statusText);
+        return error;
       }
 
-      if (jqXHR.status === 400) {
-        // The field errors need to be in an `errors` hash to ensure
-        // `extractErrors` / `normalizeErrors` functions get called
-        // on the serializer.
-        var convertedJsonErrors = {};
-        convertedJsonErrors['errors'] = jsonErrors;
-        return new DS.InvalidError(convertedJsonErrors);
-      } else {
-        return new Error(jsonErrors['detail']);
-      }
+      // The field errors need to be in an `errors` hash to ensure
+      // `extractErrors` / `normalizeErrors` functions get called
+      // on the serializer.
+      var convertedJsonErrors = {};
+      convertedJsonErrors['errors'] = jsonErrors;
+      return new DS.InvalidError(convertedJsonErrors);
 
     } else {
       return error;
