@@ -43,7 +43,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.APP.API_HOST = 'https://api.myproject.com';
-    ENV.APP.NAMESPACE = 'v2';
+    ENV.APP.API_NAMESPACE = 'v2';
   }
 
   return ENV;
