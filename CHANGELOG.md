@@ -5,6 +5,9 @@ ember-django-adapter Changelog
 Master
 ------
 
+* [BUGFIX] Return jqXHR for non-400 errors
+  ([#59](https://github.com/dustinfarris/ember-django-adapter/issues/59))
+  ([#62](https://github.com/dustinfarris/ember-django-adapter/pull/62))
 
 0.5.1
 -----

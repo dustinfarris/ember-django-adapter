@@ -66,27 +66,31 @@ module('CRUD Failure', {
  * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
  */
 test('Permission denied error', function() {
-  expect(2);
+  expect(4);
 
   stop();
   Ember.run(function() {
     store.find('post', 1).then({}, function(response) {
       ok(response);
       start();
-      equal(response.toString(), 'Error: Authentication credentials were not provided.');
+      equal(response.status, 401);
+      equal(response.statusText, 'Unauthorized');
+      equal(response.responseText, JSON.stringify({detail: 'Authentication credentials were not provided.'}));
     });
   });
 });
 
 test('Server error', function() {
-  expect(2);
+  expect(4);
 
   stop();
   Ember.run(function() {
     store.find('post', 2).then({}, function(response) {
       ok(response);
       start();
-      equal(response.toString(), 'Error: Internal Server Error');
+      equal(response.status, 500);
+      equal(response.statusText, 'Internal Server Error');
+      equal(response.responseText, '<h1>Server Error (500)</h1>');
     });
   });
 });
