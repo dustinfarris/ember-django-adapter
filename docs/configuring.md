@@ -5,7 +5,7 @@ There are a number of configuration variables you can set in your environment.js
 
 ## API_HOST
 
-**Default:** `''`
+**Default:** `'http://localhost:8000'`
 
 The fully-qualified host of your API server.
 
