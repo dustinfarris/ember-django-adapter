@@ -5,6 +5,10 @@ ember-django-adapter Changelog
 Master
 ------
 
+
+0.5.2
+-----
+
 * [BUGFIX] Return jqXHR for non-400 errors
   ([#62](https://github.com/dustinfarris/ember-django-adapter/pull/62))
 * [BREAKING BUGFIX] Set default host to localhost:8000
