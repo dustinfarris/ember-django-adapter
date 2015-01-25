@@ -6,8 +6,12 @@ Master
 ------
 
 * [BUGFIX] Return jqXHR for non-400 errors
-  ([#59](https://github.com/dustinfarris/ember-django-adapter/issues/59))
   ([#62](https://github.com/dustinfarris/ember-django-adapter/pull/62))
+* [BREAKING BUGFIX] Set default host to localhost:8000
+  ([#64](https://github.com/dustinfarris/ember-django-adapter/pull/64))
+* [DOCS] Update installation instructions
+  ([#65](https://github.com/dustinfarris/ember-django-adapter/pull/65))
+
 
 0.5.1
 -----
