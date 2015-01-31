@@ -15,23 +15,8 @@ import Ember from 'ember';
  */
 export default DS.RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
-
-  init: function() {
-    this._super();
-
-    if (this.get('coalesceFindRequests')) {
-      var error = "Please ensure coalesceFindRequests is not present or set " +
-        "to false in your adapter. This adapter does not support the " +
-        "coalesceFindRequests option. The Django REST Framework does not " +
-        "offer easy to configure support for N+1 query requests in the " +
-        "format that Ember Data uses (e.g. GET /comments?ids[]=1&ids[]=2) " +
-        "See the Ember documentation about coalesceFindRequests for " +
-        "information about this option: " +
-        "http://emberjs.com/api/data/classes/DS.RESTAdapter.html#property_coalesceFindRequests";
-      throw new Ember.Error(error);
-    }
-  },
   addTrailingSlashes: true,
+  coalesceFindRequests: false,
 
   /**
    * Determine the pathname for a given type.
@@ -111,5 +96,21 @@ export default DS.RESTAdapter.extend({
     } else {
       return error;
     }
+  },
+
+  /**
+   * This is used by RESTAdapter.groupRecordsForFindMany.
+   *
+   * The original implementation is a complex stripping of the id from
+   * the URL, which can be dramatically simplified by just returning
+   * the base URL for the type.
+   *
+   * @method _stripIDFromURL
+   * @param {DS.Store} store
+   * @param {DS.Model} record
+   * @return {String} url
+   */
+  _stripIDFromURL: function(store, record) {
+    return this.buildURL(record.constructor.typeKey);
   }
 });

@@ -7,6 +7,7 @@ pages:
   - ['trailing-slashes.md']
   - ['embedded-records.md']
   - ['pagination.md']
+  - ['coalesce-find-requests.md']
   - ['contributing.md']
   - ['changelog.md']
 theme: readthedocs

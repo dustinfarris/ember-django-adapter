@@ -80,3 +80,22 @@ test('ajaxError - returns ajax response if no status returned', function() {
   var adapter = this.subject();
   equal(adapter.ajaxError(jqXHR), jqXHR);
 });
+
+test('_stripIDFromURL - returns base URL for type', function() {
+  var record = {
+    constructor: { typeKey: 'furry-animal' }
+  };
+  var adapter = this.subject();
+
+  equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals/');
+});
+
+test('_stripIDFromURL without trailing slash - returns base URL for type', function() {
+  var record = {
+    constructor: { typeKey: 'furry-animal' }
+  };
+  var adapter = this.subject();
+  adapter.set('addTrailingSlashes', false);
+
+  equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals');
+});
