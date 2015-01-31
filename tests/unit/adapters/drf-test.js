@@ -34,7 +34,7 @@ test('buildURL', function() {
 
 test('buildURL - no trailing slashes', function() {
   var adapter = this.subject();
-  adapter.set('add_trailing_slashes', false);
+  adapter.set('addTrailingSlashes', false);
   equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5');
   equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5');
 });

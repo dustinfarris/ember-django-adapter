@@ -31,6 +31,7 @@ export default DS.RESTAdapter.extend({
       throw new Ember.Error(error);
     }
   },
+  addTrailingSlashes: true,
 
   /**
    * Determine the pathname for a given type.
@@ -53,7 +54,7 @@ export default DS.RESTAdapter.extend({
    * If an ID is specified, it adds the ID to the path generated for
    * the type, separated by a `/`.
    *
-   * If the adapter has the property `add_trailing_slashes` set to
+   * If the adapter has the property `addTrailingSlashes` set to
    * true, a trailing slash will be appended to the result.
    *
    * @method buildURL
@@ -64,7 +65,7 @@ export default DS.RESTAdapter.extend({
    */
   buildURL: function(type, id, record) {
     var url = this._super(type, id, record);
-    if (this.get('add_trailing_slashes')) {
+    if (this.get('addTrailingSlashes')) {
       if (url.charAt(url.length - 1) !== '/') {
         url += '/';
       }

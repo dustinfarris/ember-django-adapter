@@ -18,13 +18,6 @@ The URL prefix (namespace) for your API.  In other words, if you set this to my-
 API requests will look like /my-api/v1/users/56/, or similar.
 
 
-## API_ADD_TRAILING_SLASHES
-
-**Default:** `true`
-
-Whether to append a trailing slash to API URL endpoints.
-
-
 ## Example
 
 ```js
@@ -33,7 +26,6 @@ Whether to append a trailing slash to API URL endpoints.
 module.exports = function(environment) {
   var ENV = {
     APP: {
-      API_ADD_TRAILING_SLASHES: false
     }
   };
 
