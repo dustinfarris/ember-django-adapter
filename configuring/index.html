@@ -57,6 +57,13 @@
     
         
             <li class="toctree-l1 ">
+                <a class="" href="../trailing-slashes">Trailing slashes</a>
+            </li>
+        
+
+    
+        
+            <li class="toctree-l1 ">
                 <a class="" href="../embedded-records">Embedded records</a>
             </li>
         
@@ -125,16 +132,12 @@
 <p><strong>Default:</strong> <code>'api'</code></p>
 <p>The URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all
 API requests will look like /my-api/v1/users/56/, or similar.</p>
-<h2 id="api_add_trailing_slashes">API_ADD_TRAILING_SLASHES</h2>
-<p><strong>Default:</strong> <code>true</code></p>
-<p>Whether to append a trailing slash to API URL endpoints.</p>
 <h2 id="example">Example</h2>
 <pre><code class="js">// my-ember-cli-project/config/environment.js
 
 module.exports = function(environment) {
   var ENV = {
     APP: {
-      API_ADD_TRAILING_SLASHES: false
     }
   };
 

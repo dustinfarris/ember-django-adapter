@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Changelog - Ember Django Adapter</title>
+  <title>Trailing slashes - Ember Django Adapter</title>
   
 
   
@@ -56,8 +56,8 @@
 
     
         
-            <li class="toctree-l1 ">
-                <a class="" href="../trailing-slashes">Trailing slashes</a>
+            <li class="toctree-l1 current">
+                <a class="current" href=".">Trailing slashes</a>
             </li>
         
 
@@ -84,8 +84,8 @@
 
     
         
-            <li class="toctree-l1 current">
-                <a class="current" href=".">Changelog</a>
+            <li class="toctree-l1 ">
+                <a class="" href="../changelog">Changelog</a>
             </li>
         
 
@@ -110,7 +110,7 @@
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
-    <li>Changelog</li>
+    <li>Trailing slashes</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -123,71 +123,28 @@
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="ember-django-adapter-changelog">ember-django-adapter Changelog</h1>
-<h2 id="master">Master</h2>
-<h2 id="052">0.5.2</h2>
-<ul>
-<li>[BUGFIX] Return jqXHR for non-400 errors
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/62">#62</a>)</li>
-<li>[BREAKING BUGFIX] Set default host to localhost:8000
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/64">#64</a>)</li>
-<li>[DOCS] Update installation instructions
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/65">#65</a>)</li>
-</ul>
-<h2 id="051">0.5.1</h2>
-<ul>
-<li>[ENHANCEMENT] Add support for pagination metadata
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/45">#45</a>)</li>
-<li>[ENHANCEMENT] Add documentation for contributing
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/49">#49</a>)</li>
-<li>[ENHANCEMENT] Add blueprints and support for embedded records
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/51">#51</a>)</li>
-<li>[ENHANCEMENT] Add option to remove trailing slashes
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/50">#50</a>)</li>
-<li>[ENHANCEMENT] Test coverage for all supported versions of ember-data
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/56">#56</a>)</li>
-</ul>
-<h2 id="050">0.5.0</h2>
-<p>This version is a complete rewrite of the adapter.  It represents a
-cherry-picking of the original adapter from toranb, implemented using
-ember-cli's addon framework.  This version is required for recent versions of
-Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
-<p><strong>All CHANGELOG history before this point is inapplicable.</strong></p>
-<h2 id="040">0.4.0</h2>
-<ul>
-<li>[ENHANCEMENT] Update ember-data dependency
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/8">#8</a>)</li>
-<li>[ENHANCEMENT] Simplify addon packaging
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/5">#5</a>)</li>
-</ul>
-<h2 id="030">0.3.0</h2>
-<ul>
-<li>[ENHANCEMENT] Add changelog</li>
-<li>[ENHANCEMENT] Add adapter/serializer blueprints
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/issues/1">#1</a>)</li>
-<li>[ENHANCEMENT] Add namespace to available configuration options</li>
-<li>[BREAKING ENHANCEMENT] Change default host/namespace properties to use ember-
-  cli's express server
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/2">#2</a>)</li>
-<li>[ENHANCEMENT] Bump ember-data-django-rest-adapter to v1.0.6
-  (<a href="https://github.com/toranb/ember-data-django-rest-adapter/blob/master/CHANGELOG.md#106">see changelog</a>)</li>
-</ul>
-<h2 id="020">0.2.0</h2>
-<ul>
-<li>[ENHANCEMENT] Upgrade ember-data-django-rest-adapter to v1.0.5</li>
-</ul>
-<h2 id="010">0.1.0</h2>
-<ul>
-<li>[ENHANCEMENT] Add documentation</li>
-</ul>
-<h2 id="002">0.0.2</h2>
-<ul>
-<li>[BUGFIX] Use non-minified production build of the adapter</li>
-</ul>
-<h2 id="001">0.0.1</h2>
-<ul>
-<li>Initial release</li>
-</ul>
+              <h1 id="trailing-slashes">Trailing Slashes</h1>
+<p>By default, Django REST Framework adds trailing slashes to its generated URLs.
+EDA is set up to handle this, however, if you have decided to opt out of
+trailing slashes, you will need to extend the adapter with this configuration.</p>
+<p>e.g., if you have set up a router in DRF that is instantiated like this:</p>
+<pre><code class="python">from rest_framework import routers
+
+
+router = routers.DefaultRouter(trailing_slash=False)
+</code></pre>
+
+<p>then you will need to <a href="../extending">extend</a> the adapter and switch off
+<code>addTrailingSlashes</code> in <code>app/adapters/application.js</code>:</p>
+<pre><code class="js">// app/adapters/application.js
+
+import DRFAdapter from './drf';
+
+export default DRFAdapter.extend({
+  addTrailingSlashes: false
+});
+</code></pre>
+
 
             </div>
           </div>
@@ -195,8 +152,10 @@ Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="../embedded-records" class="btn btn-neutral float-right" title="Embedded records"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
-        <a href="../contributing" class="btn btn-neutral" title="Contributing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+        <a href="../extending" class="btn btn-neutral" title="Extending"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -224,8 +183,8 @@ Ember Data and Ember CLI, but it is still very much a work-in-progress.</p>
         
             <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
         
-      <span><a href="../contributing" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../extending" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="../embedded-records" style="color: #fcfcfc">Next &raquo;</a></span>
     </span>
 </div>
 </body>
