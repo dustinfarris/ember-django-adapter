@@ -10,3 +10,4 @@ pages:
   - ['contributing.md']
   - ['changelog.md']
 theme: readthedocs
+google_analytics: ['UA-13275015-13', 'auto']
