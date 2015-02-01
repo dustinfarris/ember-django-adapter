@@ -5,6 +5,9 @@ ember-django-adapter Changelog
 Master
 ------
 
+* [BREAKING ENHANCEMENT] Remove trailing slashes environment config
+  ([#67](https://github.com/dustinfarris/ember-django-adapter/pull/67))
+
 
 0.5.2
 -----
