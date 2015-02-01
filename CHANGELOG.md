@@ -7,6 +7,8 @@ Master
 
 * [BREAKING ENHANCEMENT] Remove trailing slashes environment config
   ([#67](https://github.com/dustinfarris/ember-django-adapter/pull/67))
+* [DOCS] Add Google Analytics to documentation site
+  ([#69](https://github.com/dustinfarris/ember-django-adapter/pull/69))
 
 
 0.5.2
