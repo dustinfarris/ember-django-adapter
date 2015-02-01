@@ -4,6 +4,7 @@ pages:
   - ['index.md', 'Introduction']
   - ['configuring.md']
   - ['extending.md']
+  - ['trailing-slashes.md']
   - ['embedded-records.md']
   - ['pagination.md']
   - ['contributing.md']
