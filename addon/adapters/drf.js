@@ -99,11 +99,31 @@ export default DS.RESTAdapter.extend({
   },
 
   /**
+   * Fetch several records together if `coalesceFindRequests` is true.
+   *
+   * @method findMany
+   * @param {DS.Store} store
+   * @param {subclass of DS.Model} type
+   * @param {Array} ids
+   * @param {Array} records
+   * @return {Promise} promise
+   */
+  findMany: function(store, type, ids, records) {
+    Ember.Logger.warn('WARNING: You are fetching several records in a single request because ' +
+                      'you have set `coalesceFindRequests=true` on the adapter.  For this to ' +
+                      'work, you MUST implement a custom filter in Django REST Framework.  See ' +
+                      'http://dustinfarris.com/ember-django-adapter/coalesce-find-requests/ ' +
+                      'for more information.');
+    return this._super(store, type, ids, records);
+  },
+
+  /**
    * This is used by RESTAdapter.groupRecordsForFindMany.
    *
-   * The original implementation is a complex stripping of the id from
-   * the URL, which can be dramatically simplified by just returning
-   * the base URL for the type.
+   * The original implementation does not handle trailing slashes well.
+   * Additionally, it is a complex stripping of the id from the URL,
+   * which can be dramatically simplified by just returning the base
+   * URL for the type.
    *
    * @method _stripIDFromURL
    * @param {DS.Store} store
