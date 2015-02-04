@@ -19,16 +19,15 @@ Community
 Goals
 -----
 
-* Ability to support Django REST Framework APIs without modifications to the default configuration of Django REST
-  Framework.
+* Support applications built with Django REST Framework and Ember.js by
+  offering easy-to-use addons, and providing documentation and guidance.
 
-* Ensure as much as possible that the documentation on emberjs.com about adapters and serializers is accurate and
-  relevant when using the Django REST adapter and serializer. Deviations from the emberjs.com documentation should be
-  documented clearly.
+* Ensure as much as possible that the Ember.js and Django REST Framework
+  documentation is up-to-date and accurate as it pertains to their combined
+  usage.
 
-* Optionally enable some features from Django REST Framework which would require users to setup or configure their APIs
-  in a specific manner. An example of this is retrieving hasMany records using query params as configured with Django
-  REST Framework and django-filter.
+* Promote the adoption of Ember.js and Django REST Framework and actively take
+  part in their respective communities.
 
 
 
