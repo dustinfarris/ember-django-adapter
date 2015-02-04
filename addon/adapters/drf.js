@@ -16,7 +16,6 @@ import Ember from 'ember';
 export default DS.RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
   addTrailingSlashes: true,
-  coalesceFindRequests: false,
 
   /**
    * Determine the pathname for a given type.
