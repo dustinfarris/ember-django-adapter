@@ -12,6 +12,40 @@ import Ember from 'ember';
  */
 export default DS.RESTSerializer.extend({
 
+  normalize: function(type, hash, prop) {
+    this.addRelationshipsToLinks(type, hash);
+    return this._super(type, hash, prop);
+  },
+
+  addRelationshipsToLinks: function(type, hash) {
+    // Adds relationships to the links hash as expected by the RESTSerializer.
+    var payloadRelKey;
+    if (!hash.hasOwnProperty('links')) {
+      hash['links'] = {};
+    }
+
+    type.eachRelationship(function (key, relationship) {
+      payloadRelKey = this.keyForRelationship(key, relationship.kind);
+      if (!hash.hasOwnProperty(payloadRelKey)) {
+        return;
+      }
+      var adapter = type.store.adapterFor(type);
+
+      if (relationship.kind === 'hasMany' && adapter.useHasManyRelatedFilterUrl) {
+        // FIXME This is the wrong approach. Inverse maybe?
+        var parentTypeKey = relationship.parentType.typeKey;
+        if (parentTypeKey === 'trainerProductGroup') {
+          parentTypeKey = 'ProductGroup';
+        }
+        var payloadParentRelKey = this.keyForAttribute(parentTypeKey);
+        hash['links'][key] = adapter.buildURL(relationship.type.typeKey) + '?' + payloadParentRelKey + '=' + hash['id'];
+        delete hash[payloadRelKey];
+      }
+
+    }, this);
+  },
+
+
   /**
    *  Returns the number extracted from the page number query param of
    *  a `url`. `null` is returned when the page number query param
