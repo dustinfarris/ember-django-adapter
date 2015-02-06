@@ -9,6 +9,10 @@ Master
   ([#67](https://github.com/dustinfarris/ember-django-adapter/pull/67))
 * [DOCS] Add Google Analytics to documentation site
   ([#69](https://github.com/dustinfarris/ember-django-adapter/pull/69))
+* [ENHANCEMENT] Support added for coalesceFindRequests
+  ([#68](https://github.com/dustinfarris/ember-django-adapter/pull/68))
+* [INTERNAL] Revised goals for the adapter
+  ([#70](https://github.com/dustinfarris/ember-django-adapter/pull/70))
 
 
 0.5.2
