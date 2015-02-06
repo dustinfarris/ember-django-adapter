@@ -15,22 +15,6 @@ import Ember from 'ember';
  */
 export default DS.RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
-
-  init: function() {
-    this._super();
-
-    if (this.get('coalesceFindRequests')) {
-      var error = "Please ensure coalesceFindRequests is not present or set " +
-        "to false in your adapter. This adapter does not support the " +
-        "coalesceFindRequests option. The Django REST Framework does not " +
-        "offer easy to configure support for N+1 query requests in the " +
-        "format that Ember Data uses (e.g. GET /comments?ids[]=1&ids[]=2) " +
-        "See the Ember documentation about coalesceFindRequests for " +
-        "information about this option: " +
-        "http://emberjs.com/api/data/classes/DS.RESTAdapter.html#property_coalesceFindRequests";
-      throw new Ember.Error(error);
-    }
-  },
   addTrailingSlashes: true,
 
   /**
@@ -111,5 +95,41 @@ export default DS.RESTAdapter.extend({
     } else {
       return error;
     }
+  },
+
+  /**
+   * Fetch several records together if `coalesceFindRequests` is true.
+   *
+   * @method findMany
+   * @param {DS.Store} store
+   * @param {subclass of DS.Model} type
+   * @param {Array} ids
+   * @param {Array} records
+   * @return {Promise} promise
+   */
+  findMany: function(store, type, ids, records) {
+    Ember.Logger.warn('WARNING: You are fetching several records in a single request because ' +
+                      'you have set `coalesceFindRequests=true` on the adapter.  For this to ' +
+                      'work, you MUST implement a custom filter in Django REST Framework.  See ' +
+                      'http://dustinfarris.com/ember-django-adapter/coalesce-find-requests/ ' +
+                      'for more information.');
+    return this._super(store, type, ids, records);
+  },
+
+  /**
+   * This is used by RESTAdapter.groupRecordsForFindMany.
+   *
+   * The original implementation does not handle trailing slashes well.
+   * Additionally, it is a complex stripping of the id from the URL,
+   * which can be dramatically simplified by just returning the base
+   * URL for the type.
+   *
+   * @method _stripIDFromURL
+   * @param {DS.Store} store
+   * @param {DS.Model} record
+   * @return {String} url
+   */
+  _stripIDFromURL: function(store, record) {
+    return this.buildURL(record.constructor.typeKey);
   }
 });
