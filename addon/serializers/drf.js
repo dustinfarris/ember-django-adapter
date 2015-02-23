@@ -113,11 +113,11 @@ export default DS.RESTSerializer.extend({
    * @method serializeIntoHash
    * @param {Object} hash
    * @param {subclass of DS.Model} type
-   * @param {DS.Model} record
+   * @param {DS.Snapshot} snapshot
    * @param {Object} options
    */
-  serializeIntoHash: function(hash, type, record, options) {
-    Ember.merge(hash, this.serialize(record, options));
+  serializeIntoHash: function(hash, type, snapshot, options) {
+    Ember.merge(hash, this.serialize(snapshot, options));
   },
 
   /**
