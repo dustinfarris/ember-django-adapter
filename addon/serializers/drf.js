@@ -44,7 +44,7 @@ export default DS.RESTSerializer.extend({
   extractMeta: function(store, type, payload) {
     if (payload && payload.results) {
       // Sets the metadata for the type.
-      store.metaForType(type, {
+      store.setMetadataFor(type, {
         count: payload.count,
         next: this.extractPageNumber(payload.next),
         previous: this.extractPageNumber(payload.previous)
