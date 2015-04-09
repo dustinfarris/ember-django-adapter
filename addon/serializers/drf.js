@@ -85,7 +85,7 @@ export default DS.RESTSerializer.extend({
    * @param {String or Number} id
    * @return {Array} array An array of deserialized objects
    */
-  extractArray: function(store, type, payload, id) {
+  extractArray: function(store, type, payload) {
     // Convert payload to json format expected by the RESTSerializer.
     // This function is being overridden instead of normalizePayload()
     // because `results` will only be in lists.
@@ -142,7 +142,7 @@ export default DS.RESTSerializer.extend({
    * @param {String} type The type of relationship
    * @return {String} normalized key
    */
-  keyForRelationship: function(key, type) {
+  keyForRelationship: function(key) {
     return Ember.String.decamelize(key);
   }
 });
