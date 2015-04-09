@@ -7,20 +7,20 @@ import {
 // see app/serializers/application.js
 moduleFor('serializer:application', 'DRFSerializer', { });
 
-test('extractSingle', function() {
+test('extractSingle', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted single');
   var type = { typeKey: 'person' };
 
   var result = serializer.extractSingle('store', type, 'payload', 'id');
 
-  ok(serializer._super.calledWith(
+  assert.ok(serializer._super.calledWith(
     'store', type, { person: 'payload' }, 'id'
   ), '_super not called properly');
-  equal(result, 'extracted single');
+  assert.equal(result, 'extracted single');
 });
 
-test('extractArray - results', function() {
+test('extractArray - results', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
   var type = { typeKey: 'person' };
@@ -28,13 +28,13 @@ test('extractArray - results', function() {
 
   var result = serializer.extractArray('store', type, payload);
 
-  ok(serializer._super.calledWith(
+  assert.ok(serializer._super.calledWith(
     'store', type, { person: ['result'] }
   ), '_super not called properly');
-  equal(result, 'extracted array');
+  assert.equal(result, 'extracted array');
 });
 
-test('extractArray - no results', function() {
+test('extractArray - no results', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
   var type = { typeKey: 'person' };
@@ -42,42 +42,42 @@ test('extractArray - no results', function() {
 
   var result = serializer.extractArray('store', type, payload);
 
-  ok(serializer._super.calledWith(
+  assert.ok(serializer._super.calledWith(
     'store', type, { person: { other: 'stuff' } }
   ), '_super not called properly');
-  equal(result, 'extracted array');
+  assert.equal(result, 'extracted array');
 });
 
-test('serializeIntoHash', function() {
+test('serializeIntoHash', function(assert) {
   var serializer = this.subject();
   serializer.serialize = sinon.stub().returns({ serialized: 'record' });
   var hash = { existing: 'hash' };
 
   serializer.serializeIntoHash(hash, 'type', 'record', 'options');
 
-  ok(serializer.serialize.calledWith(
+  assert.ok(serializer.serialize.calledWith(
     'record', 'options'
   ), 'serialize not called properly');
-  deepEqual(hash, { serialized: 'record', existing: 'hash' });
+  assert.deepEqual(hash, { serialized: 'record', existing: 'hash' });
 });
 
-test('keyForAttribute', function() {
+test('keyForAttribute', function(assert) {
   var serializer = this.subject();
 
   var result = serializer.keyForAttribute('firstName');
 
-  equal(result, 'first_name');
+  assert.equal(result, 'first_name');
 });
 
-test('keyForRelationship', function() {
+test('keyForRelationship', function(assert) {
   var serializer = this.subject();
 
   var result = serializer.keyForRelationship('projectManagers', 'hasMany');
 
-  equal(result, 'project_managers');
+  assert.equal(result, 'project_managers');
 });
 
-test('extractMeta', function() {
+test('extractMeta', function(assert) {
   var serializer = this.subject();
   var store = { metaForType: sinon.spy() };
   var payload = {
@@ -89,31 +89,31 @@ test('extractMeta', function() {
 
   serializer.extractMeta(store, 'type', payload);
 
-  ok(store.metaForType.calledWith('type', {count: 'count', next: 3, previous: 1}),
+  assert.ok(store.metaForType.calledWith('type', {count: 'count', next: 3, previous: 1}),
     'metaForType not called properly');
-  ok(!payload.count, 'payload.count not removed');
-  ok(!payload.next, 'payload.next not removed');
-  ok(!payload.previous, 'payload.previous not removed');
+  assert.ok(!payload.count, 'payload.count not removed');
+  assert.ok(!payload.next, 'payload.next not removed');
+  assert.ok(!payload.previous, 'payload.previous not removed');
 });
 
-test('extractPageNumber', function() {
+test('extractPageNumber', function(assert) {
   var serializer = this.subject();
 
-  equal(serializer.extractPageNumber('http://xmpl.com/a/p/?page=3234'), 3234,
+  assert.equal(serializer.extractPageNumber('http://xmpl.com/a/p/?page=3234'), 3234,
     'extractPageNumber failed on absolute URL');
 
-  equal(serializer.extractPageNumber('/a/p/?page=3234'), 3234,
+  assert.equal(serializer.extractPageNumber('/a/p/?page=3234'), 3234,
     'extractPageNumber failed on relative URL');
 
-  equal(serializer.extractPageNumber(null), null,
+  assert.equal(serializer.extractPageNumber(null), null,
     'extractPageNumber failed on null URL');
 
-  equal(serializer.extractPageNumber('/a/p/'), null,
+  assert.equal(serializer.extractPageNumber('/a/p/'), null,
     'extractPageNumber failed on URL without query params');
 
-  equal(serializer.extractPageNumber('/a/p/?ordering=-timestamp&user=123'), null,
+  assert.equal(serializer.extractPageNumber('/a/p/?ordering=-timestamp&user=123'), null,
     'extractPageNumber failed on URL with other query params');
 
-  equal(serializer.extractPageNumber('/a/p/?fpage=23&pages=[1,2,3],page=123g&page=g123'), null,
+  assert.equal(serializer.extractPageNumber('/a/p/?fpage=23&pages=[1,2,3],page=123g&page=g123'), null,
     'extractPageNumber failed on URL with similar query params');
 });

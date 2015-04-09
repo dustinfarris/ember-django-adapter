@@ -1,18 +1,21 @@
 import Ember from 'ember';
-import { test } from 'ember-qunit';
+import {
+  module,
+  test,
+} from 'qunit';
 import Pretender from 'pretender';
-import startApp from '../helpers/start-app';
+import startApp from 'ember-django-adapter/tests/helpers/start-app';
 
-var App;
+var application;
 var store;
 var server;
 
 
-module('CRUD Failure', {
-  setup: function() {
-    App = startApp();
+module('Acceptance: CRUD Failure', {
+  beforeEach: function() {
+    application = startApp();
 
-    store = App.__container__.lookup('store:main');
+    store = application.__container__.lookup('store:main');
 
     server = new Pretender(function() {
 
@@ -53,8 +56,8 @@ module('CRUD Failure', {
     });
   },
 
-  teardown: function() {
-    Ember.run(App, 'destroy');
+  afterEach: function() {
+    Ember.run(application, 'destroy');
     server.shutdown();
   }
 });
@@ -65,38 +68,38 @@ module('CRUD Failure', {
  *
  * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
  */
-test('Permission denied error', function() {
-  expect(4);
+test('Permission denied error', function(assert) {
+  assert.expect(4);
 
   stop();
   Ember.run(function() {
     store.find('post', 1).then({}, function(response) {
-      ok(response);
+      assert.ok(response);
       start();
-      equal(response.status, 401);
-      equal(response.statusText, 'Unauthorized');
-      equal(response.responseText, JSON.stringify({detail: 'Authentication credentials were not provided.'}));
+      assert.equal(response.status, 401);
+      assert.equal(response.statusText, 'Unauthorized');
+      assert.equal(response.responseText, JSON.stringify({detail: 'Authentication credentials were not provided.'}));
     });
   });
 });
 
-test('Server error', function() {
-  expect(4);
+test('Server error', function(assert) {
+  assert.expect(4);
 
   stop();
   Ember.run(function() {
     store.find('post', 2).then({}, function(response) {
-      ok(response);
+      assert.ok(response);
       start();
-      equal(response.status, 500);
-      equal(response.statusText, 'Internal Server Error');
-      equal(response.responseText, '<h1>Server Error (500)</h1>');
+      assert.equal(response.status, 500);
+      assert.equal(response.statusText, 'Internal Server Error');
+      assert.equal(response.responseText, '<h1>Server Error (500)</h1>');
     });
   });
 });
 
-test('Create field errors', function() {
-  expect(6);
+test('Create field errors', function(assert) {
+  assert.expect(6);
 
   var record,
     data = {postTitle: '', body: ''};
@@ -105,50 +108,50 @@ test('Create field errors', function() {
   Ember.run(function() {
     record = store.createRecord('post', data);
     record.save().then({}, function(response) {
-      ok(response);
-      ok(response.errors);
+      assert.ok(response);
+      assert.ok(response.errors);
 
       var errors = response.errors;
 
       // Test camelCase field.
-      equal(errors.postTitle.length, 1);
-      equal(errors.postTitle[0], 'This field is required.');
+      assert.equal(errors.postTitle.length, 1);
+      assert.equal(errors.postTitle[0], 'This field is required.');
 
       // Test non-camelCase field.
-      equal(errors.body.length, 1);
-      equal(errors.body[0], 'This field is required.');
+      assert.equal(errors.body.length, 1);
+      assert.equal(errors.body[0], 'This field is required.');
 
       start();
     });
   });
 });
 
-test('Update field errors', function() {
-  expect(9);
+test('Update field errors', function(assert) {
+  assert.expect(9);
 
   stop();
   Ember.run(function() {
     store.find('post', 3).then(function(response) {
-      ok(response);
+      assert.ok(response);
 
-      equal(response.get('isDirty'), false);
+      assert.equal(response.get('isDirty'), false);
       response.set('postTitle', 'Lorem ipsum dolor sit amet, consectetur adipiscing el');
       response.set('body', '');
-      equal(response.get('isDirty'), true);
+      assert.equal(response.get('isDirty'), true);
 
       response.save().then({}, function(updateResponse) {
-        ok(updateResponse);
-        ok(updateResponse.errors);
+        assert.ok(updateResponse);
+        assert.ok(updateResponse.errors);
 
         var errors = updateResponse.errors;
 
         // Test camelCase field.
-        equal(errors.postTitle.length, 1);
-        equal(errors.postTitle[0], 'Ensure this value has at most 50 characters (it has 53).');
+        assert.equal(errors.postTitle.length, 1);
+        assert.equal(errors.postTitle[0], 'Ensure this value has at most 50 characters (it has 53).');
 
         // Test non-camelCase field.
-        equal(errors.body.length, 1);
-        equal(errors.body[0], 'This field is required.');
+        assert.equal(errors.body.length, 1);
+        assert.equal(errors.body[0], 'This field is required.');
 
         start();
       });

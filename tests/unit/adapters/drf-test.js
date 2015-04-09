@@ -1,4 +1,7 @@
-import { moduleFor, test } from 'ember-qunit';
+import {
+  moduleFor,
+  test
+} from 'ember-qunit';
 
 // The default (application) adapter is the DRF adapter.
 // see app/adapters/application.js
@@ -10,36 +13,36 @@ moduleFor('adapter:application', 'DRFAdapter', {
   }
 });
 
-test('host config override', function() {
+test('host config override', function(assert) {
   var adapter = this.subject();
-  equal(adapter.get('host'), 'test-host');
+  assert.equal(adapter.get('host'), 'test-host');
 });
 
-test('namespace config override', function() {
+test('namespace config override', function(assert) {
   var adapter = this.subject();
-  equal(adapter.get('namespace'), 'test-api');
+  assert.equal(adapter.get('namespace'), 'test-api');
 });
 
-test('pathForType', function() {
+test('pathForType', function(assert) {
   var adapter = this.subject();
-  equal(adapter.pathForType('Animal'), 'animals');
-  equal(adapter.pathForType('FurryAnimals'), 'furry-animals');
+  assert.equal(adapter.pathForType('Animal'), 'animals');
+  assert.equal(adapter.pathForType('FurryAnimals'), 'furry-animals');
 });
 
-test('buildURL', function() {
+test('buildURL', function(assert) {
   var adapter = this.subject();
-  equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5/');
-  equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5/');
+  assert.equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5/');
+  assert.equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5/');
 });
 
-test('buildURL - no trailing slashes', function() {
+test('buildURL - no trailing slashes', function(assert) {
   var adapter = this.subject();
   adapter.set('addTrailingSlashes', false);
-  equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5');
-  equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5');
+  assert.equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5');
+  assert.equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5');
 });
 
-test('ajaxError - returns invalid error if 400 response', function() {
+test('ajaxError - returns invalid error if 400 response', function(assert) {
   var error = new DS.InvalidError({errors: {name: ['This field cannot be blank.']}});
 
   var jqXHR = {
@@ -48,20 +51,20 @@ test('ajaxError - returns invalid error if 400 response', function() {
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), error.toString());
+  assert.equal(adapter.ajaxError(jqXHR), error.toString());
 });
 
-test('ajaxError - returns error if not 400 response', function() {
+test('ajaxError - returns error if not 400 response', function(assert) {
   var jqXHR = {
     status: 403,
     responseText: JSON.stringify({detail: 'You do not have permission to perform this action.'})
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), jqXHR);
+  assert.equal(adapter.ajaxError(jqXHR), jqXHR);
 });
 
-test('ajaxError - returns error if no responseText to parse', function() {
+test('ajaxError - returns error if no responseText to parse', function(assert) {
   var jqXHR = {
     status: 500,
     statusText: 'Internal Server Error',
@@ -69,33 +72,33 @@ test('ajaxError - returns error if no responseText to parse', function() {
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), jqXHR);
+  assert.equal(adapter.ajaxError(jqXHR), jqXHR);
 });
 
-test('ajaxError - returns ajax response if no status returned', function() {
+test('ajaxError - returns ajax response if no status returned', function(assert) {
   var jqXHR = {
     responseText: 'Something went wrong'
   };
 
   var adapter = this.subject();
-  equal(adapter.ajaxError(jqXHR), jqXHR);
+  assert.equal(adapter.ajaxError(jqXHR), jqXHR);
 });
 
-test('_stripIDFromURL - returns base URL for type', function() {
+test('_stripIDFromURL - returns base URL for type', function(assert) {
   var record = {
     constructor: { typeKey: 'furry-animal' }
   };
   var adapter = this.subject();
 
-  equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals/');
+  assert.equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals/');
 });
 
-test('_stripIDFromURL without trailing slash - returns base URL for type', function() {
+test('_stripIDFromURL without trailing slash - returns base URL for type', function(assert) {
   var record = {
     constructor: { typeKey: 'furry-animal' }
   };
   var adapter = this.subject();
   adapter.set('addTrailingSlashes', false);
 
-  equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals');
+  assert.equal(adapter._stripIDFromURL('store', record), 'test-host/test-api/furry-animals');
 });
