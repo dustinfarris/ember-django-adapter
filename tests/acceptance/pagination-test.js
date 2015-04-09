@@ -4,7 +4,7 @@ import {
   test
 } from 'qunit';
 import Pretender from 'pretender';
-import startApp from 'ember-django-adapter/tests/helpers/start-app';
+import startApp from 'dummy/tests/helpers/start-app';
 
 var application;
 var store;
@@ -110,38 +110,27 @@ module('Acceptance: Pagination', {
   }
 });
 
-/*
- * These integration tests need to use the QUnit.stop() / QUnit.start()
- * pattern as described in the following stackoverflow question:
- *
- * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
- */
 test('Retrieve list of paginated records', function(assert) {
   assert.expect(8);
 
-  stop();
-  Ember.run(function() {
-    store.find('post').then(function(response) {
-      assert.ok(response);
+  return store.find('post').then(function(response) {
+    assert.ok(response);
 
-      assert.equal(response.get('length'), 4);
+    assert.equal(response.get('length'), 4);
 
-      // Test the camelCase and non-camelCase fields of a paginated result.
-      var post = response.objectAt(1);
-      assert.equal(post.get('postTitle'), 'post title 2');
-      assert.equal(post.get('body'), 'post body 2');
+    // Test the camelCase and non-camelCase fields of a paginated result.
+    var post = response.objectAt(1);
+    assert.equal(post.get('postTitle'), 'post title 2');
+    assert.equal(post.get('body'), 'post body 2');
 
-      // Test the type metadata.
-      var metadata = store.metadataFor('post');
-      assert.equal(metadata.count, 6);
-      assert.equal(metadata.next, 2);
-      assert.equal(metadata.previous, null);
+    // Test the type metadata.
+    var metadata = store.metadataFor('post');
+    assert.equal(metadata.count, 6);
+    assert.equal(metadata.next, 2);
+    assert.equal(metadata.previous, null);
 
-      // No metadata on results when using find without query params.
-      assert.ok(!response.get('meta'));
-
-      start();
-    });
+    // No metadata on results when using find without query params.
+    assert.ok(!response.get('meta'));
   });
 });
 
@@ -149,22 +138,17 @@ test('Retrieve list of paginated records', function(assert) {
 test("Type metadata doesn't have previous", function(assert) {
   assert.expect(5);
 
-  stop();
-  Ember.run(function() {
-    store.find('post').then(function(response) {
-      assert.ok(response);
+  return store.find('post').then(function(response) {
+    assert.ok(response);
 
-      // Test the type metadata.
-      var metadata = store.metadataFor('post');
-      assert.equal(metadata.count, 6);
-      assert.equal(metadata.next, 2);
-      assert.equal(metadata.previous, null);
+    // Test the type metadata.
+    var metadata = store.metadataFor('post');
+    assert.equal(metadata.count, 6);
+    assert.equal(metadata.next, 2);
+    assert.equal(metadata.previous, null);
 
-      // No metadata on results when using find without query params.
-      assert.ok(!response.get('meta'));
-
-      start();
-    });
+    // No metadata on results when using find without query params.
+    assert.ok(!response.get('meta'));
   });
 });
 
@@ -172,26 +156,21 @@ test("Type metadata doesn't have previous", function(assert) {
 test("Type metadata doesn't have next", function(assert) {
   assert.expect(8);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', {page: 2}).then(function(response) {
-      assert.ok(response);
-      assert.equal(response.get('length'), 2);
+  return store.find('post', {page: 2}).then(function(response) {
+    assert.ok(response);
+    assert.equal(response.get('length'), 2);
 
-      // Test the type metadata.
-      var typeMetadata = store.metadataFor('post');
-      assert.equal(typeMetadata.count, 6);
-      assert.equal(typeMetadata.next, null);
-      assert.equal(typeMetadata.previous, 1);
+    // Test the type metadata.
+    var typeMetadata = store.metadataFor('post');
+    assert.equal(typeMetadata.count, 6);
+    assert.equal(typeMetadata.next, null);
+    assert.equal(typeMetadata.previous, 1);
 
-      // Test the results metadata.
-      var resultsMetadata = response.get('meta');
-      assert.equal(resultsMetadata.count, 6);
-      assert.equal(resultsMetadata.next, null);
-      assert.equal(resultsMetadata.previous, 1);
-
-      start();
-    });
+    // Test the results metadata.
+    var resultsMetadata = response.get('meta');
+    assert.equal(resultsMetadata.count, 6);
+    assert.equal(resultsMetadata.next, null);
+    assert.equal(resultsMetadata.previous, 1);
   });
 });
 
@@ -199,25 +178,20 @@ test("Type metadata doesn't have next", function(assert) {
 test("Test page_size query param", function(assert) {
   assert.expect(8);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', {page: 2, page_size: 2}).then(function(response) {
-      assert.ok(response);
-      assert.equal(response.get('length'), 2);
+  return store.find('post', {page: 2, page_size: 2}).then(function(response) {
+    assert.ok(response);
+    assert.equal(response.get('length'), 2);
 
-      // Test the type metadata.
-      var typeMetadata = store.metadataFor('post');
-      assert.equal(typeMetadata.count, 6);
-      assert.equal(typeMetadata.previous, 1);
-      assert.equal(typeMetadata.next, 3);
+    // Test the type metadata.
+    var typeMetadata = store.metadataFor('post');
+    assert.equal(typeMetadata.count, 6);
+    assert.equal(typeMetadata.previous, 1);
+    assert.equal(typeMetadata.next, 3);
 
-      // Test the results metadata.
-      var resultsMetadata = response.get('meta');
-      assert.equal(resultsMetadata.count, 6);
-      assert.equal(resultsMetadata.previous, 1);
-      assert.equal(resultsMetadata.next, 3);
-
-      start();
-    });
+    // Test the results metadata.
+    var resultsMetadata = response.get('meta');
+    assert.equal(resultsMetadata.count, 6);
+    assert.equal(resultsMetadata.previous, 1);
+    assert.equal(resultsMetadata.next, 3);
   });
 });

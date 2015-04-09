@@ -4,7 +4,7 @@ import {
   test
 } from 'qunit';
 import Pretender from 'pretender';
-import startApp from 'ember-django-adapter/tests/helpers/start-app';
+import startApp from 'dummy/tests/helpers/start-app';
 
 var application;
 var store;
@@ -75,43 +75,31 @@ module('Acceptance: CRUD Success', {
   }
 });
 
-/*
- * These integration tests need to use the QUnit.stop() / QUnit.start()
- * pattern as described in the following stackoverflow question:
- *
- * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
- */
 test('Retrieve list of non-paginated records', function(assert) {
   assert.expect(4);
 
-  stop();
-  Ember.run(function() {
-    store.find('post').then(function(response) {
-      assert.ok(response);
+  return store.find('post').then(function(posts) {
 
-      assert.equal(response.get('length'), 3);
+    assert.ok(posts);
+    assert.equal(posts.get('length'), 3);
 
-      var post = response.objectAt(2);
-      assert.equal(post.get('postTitle'), 'post title 3');
-      assert.equal(post.get('body'), 'post body 3');
+    var post = posts.objectAt(2);
 
-      start();
-    });
+    assert.equal(post.get('postTitle'), 'post title 3');
+    assert.equal(post.get('body'), 'post body 3');
   });
 });
 
 test('Retrieve single record', function(assert) {
   assert.expect(3);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 1).then(function(response) {
-      assert.ok(response);
+  return Ember.run(function() {
 
-      assert.equal(response.get('postTitle'), 'post title 1');
-      assert.equal(response.get('body'), 'post body 1');
+    return store.find('post', 1).then(function(post) {
 
-      start();
+      assert.ok(post);
+      assert.equal(post.get('postTitle'), 'post title 1');
+      assert.equal(post.get('body'), 'post body 1');
     });
   });
 });
@@ -119,20 +107,19 @@ test('Retrieve single record', function(assert) {
 test('Create record', function(assert) {
   assert.expect(4);
 
-  var record,
-    data = {postTitle: 'post title 4', body: 'post body 4'};
+  return Ember.run(function() {
 
-  stop();
-  Ember.run(function() {
-    record = store.createRecord('post', data);
-    record.save().then(function(response) {
-      assert.ok(response);
+    var post = store.createRecord('post', {
+      postTitle: 'my new post title',
+      body: 'my new post body'
+    });
 
-      assert.equal(response.get('id'), 4);
-      assert.equal(response.get('title'), data['title']);
-      assert.equal(response.get('body'), data['body']);
+    return post.save().then(function(post) {
 
-      start();
+      assert.ok(post);
+      assert.equal(post.get('id'), 4);
+      assert.equal(post.get('postTitle'), 'my new post title');
+      assert.equal(post.get('body'), 'my new post body');
     });
   });
 });
@@ -140,27 +127,26 @@ test('Create record', function(assert) {
 test('Update record', function(assert) {
   assert.expect(7);
 
-  var postTitleUpdate = 'updated post title 1',
-    bodyUpdate = 'updated post body 1';
+  return Ember.run(function() {
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 1).then(function(response) {
-      assert.ok(response);
+    return store.find('post', 1).then(function(post) {
 
-      assert.equal(response.get('isDirty'), false);
-      response.set('postTitle', postTitleUpdate);
-      response.set('body', bodyUpdate);
-      assert.equal(response.get('isDirty'), true);
+      assert.ok(post);
+      assert.equal(post.get('isDirty'), false);
 
-      response.save().then(function(updateResponse) {
-        assert.ok(updateResponse);
+      return Ember.run(function() {
 
-        assert.equal(updateResponse.get('isDirty'), false);
-        assert.equal(updateResponse.get('postTitle'), postTitleUpdate);
-        assert.equal(updateResponse.get('body'), bodyUpdate);
+        post.set('postTitle', 'new post title');
+        post.set('body', 'new post body');
+        assert.equal(post.get('isDirty'), true);
 
-        start();
+        return post.save().then(function(post) {
+
+          assert.ok(post);
+          assert.equal(post.get('isDirty'), false);
+          assert.equal(post.get('postTitle'), 'new post title');
+          assert.equal(post.get('body'), 'new post body');
+        });
       });
     });
   });
@@ -169,15 +155,15 @@ test('Update record', function(assert) {
 test('Delete record', function(assert) {
   assert.expect(2);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 1).then(function(response) {
-      assert.ok(response);
+  return Ember.run(function() {
 
-      response.destroyRecord().then(function(deleteResponse) {
-        assert.ok(deleteResponse);
+    return store.find('post', 1).then(function(post) {
 
-        start();
+      assert.ok(post);
+
+      return post.destroyRecord().then(function(post) {
+
+        assert.ok(post);
       });
     });
   });

@@ -79,7 +79,7 @@ test('keyForRelationship', function(assert) {
 
 test('extractMeta', function(assert) {
   var serializer = this.subject();
-  var store = { metaForType: sinon.spy() };
+  var store = { setMetadataFor: sinon.spy() };
   var payload = {
     results: 'mock',
     count: 'count',
@@ -89,7 +89,7 @@ test('extractMeta', function(assert) {
 
   serializer.extractMeta(store, 'type', payload);
 
-  assert.ok(store.metaForType.calledWith('type', {count: 'count', next: 3, previous: 1}),
+  assert.ok(store.setMetadataFor.calledWith('type', {count: 'count', next: 3, previous: 1}),
     'metaForType not called properly');
   assert.ok(!payload.count, 'payload.count not removed');
   assert.ok(!payload.next, 'payload.next not removed');

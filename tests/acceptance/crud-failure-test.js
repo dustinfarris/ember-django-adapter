@@ -4,7 +4,7 @@ import {
   test,
 } from 'qunit';
 import Pretender from 'pretender';
-import startApp from 'ember-django-adapter/tests/helpers/start-app';
+import startApp from 'dummy/tests/helpers/start-app';
 
 var application;
 var store;
@@ -62,20 +62,14 @@ module('Acceptance: CRUD Failure', {
   }
 });
 
-/*
- * These integration tests need to use the QUnit.stop() / QUnit.start()
- * pattern as described in the following stackoverflow question:
- *
- * https://stackoverflow.com/questions/26317855/ember-cli-how-to-do-asynchronous-model-unit-testing-with-restadapter
- */
 test('Permission denied error', function(assert) {
   assert.expect(4);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 1).then({}, function(response) {
+  return Ember.run(function() {
+
+    return store.find('post', 1).then({}, function(response) {
+
       assert.ok(response);
-      start();
       assert.equal(response.status, 401);
       assert.equal(response.statusText, 'Unauthorized');
       assert.equal(response.responseText, JSON.stringify({detail: 'Authentication credentials were not provided.'}));
@@ -86,11 +80,11 @@ test('Permission denied error', function(assert) {
 test('Server error', function(assert) {
   assert.expect(4);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 2).then({}, function(response) {
+  return Ember.run(function() {
+
+    return store.find('post', 2).then({}, function(response) {
+
       assert.ok(response);
-      start();
       assert.equal(response.status, 500);
       assert.equal(response.statusText, 'Internal Server Error');
       assert.equal(response.responseText, '<h1>Server Error (500)</h1>');
@@ -101,27 +95,25 @@ test('Server error', function(assert) {
 test('Create field errors', function(assert) {
   assert.expect(6);
 
-  var record,
-    data = {postTitle: '', body: ''};
+  return Ember.run(function() {
 
-  stop();
-  Ember.run(function() {
-    record = store.createRecord('post', data);
-    record.save().then({}, function(response) {
+    var post = store.createRecord('post', {
+      postTitle: '',
+      body: ''
+    });
+
+    return post.save().then({}, function(response) {
+
       assert.ok(response);
       assert.ok(response.errors);
 
-      var errors = response.errors;
-
       // Test camelCase field.
-      assert.equal(errors.postTitle.length, 1);
-      assert.equal(errors.postTitle[0], 'This field is required.');
+      assert.equal(response.errors.postTitle.length, 1);
+      assert.equal(response.errors.postTitle[0], 'This field is required.');
 
       // Test non-camelCase field.
-      assert.equal(errors.body.length, 1);
-      assert.equal(errors.body[0], 'This field is required.');
-
-      start();
+      assert.equal(response.errors.body.length, 1);
+      assert.equal(response.errors.body[0], 'This field is required.');
     });
   });
 });
@@ -129,31 +121,28 @@ test('Create field errors', function(assert) {
 test('Update field errors', function(assert) {
   assert.expect(9);
 
-  stop();
-  Ember.run(function() {
-    store.find('post', 3).then(function(response) {
-      assert.ok(response);
+  return Ember.run(function() {
 
-      assert.equal(response.get('isDirty'), false);
-      response.set('postTitle', 'Lorem ipsum dolor sit amet, consectetur adipiscing el');
-      response.set('body', '');
-      assert.equal(response.get('isDirty'), true);
+    return store.find('post', 3).then(function(post) {
 
-      response.save().then({}, function(updateResponse) {
-        assert.ok(updateResponse);
-        assert.ok(updateResponse.errors);
+      assert.ok(post);
+      assert.equal(post.get('isDirty'), false);
+      post.set('postTitle', 'Lorem ipsum dolor sit amet, consectetur adipiscing el');
+      post.set('body', '');
+      assert.equal(post.get('isDirty'), true);
 
-        var errors = updateResponse.errors;
+      post.save().then({}, function(response) {
+
+        assert.ok(response);
+        assert.ok(response.errors);
 
         // Test camelCase field.
-        assert.equal(errors.postTitle.length, 1);
-        assert.equal(errors.postTitle[0], 'Ensure this value has at most 50 characters (it has 53).');
+        assert.equal(response.errors.postTitle.length, 1);
+        assert.equal(response.errors.postTitle[0], 'Ensure this value has at most 50 characters (it has 53).');
 
         // Test non-camelCase field.
-        assert.equal(errors.body.length, 1);
-        assert.equal(errors.body[0], 'This field is required.');
-
-        start();
+        assert.equal(response.errors.body.length, 1);
+        assert.equal(response.errors.body[0], 'This field is required.');
       });
     });
   });
