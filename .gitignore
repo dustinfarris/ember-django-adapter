@@ -9,6 +9,7 @@
 /bower_components
 
 # misc
+/.travis.yml
 /.idea
 /.sass-cache
 /connect.lock

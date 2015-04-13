@@ -4,8 +4,8 @@ Ember Django Adapter
 [![Circle CI](https://circleci.com/gh/dustinfarris/ember-django-adapter/tree/master.png?style=badge)](https://circleci.com/gh/dustinfarris/ember-django-adapter/tree/master)
 
 This Ember addon enables the use of [Django REST Framework][] as an API
-backend. The addon is compatible with [ember-cli][] version 0.1.5 and
-higher and Ember Data v1.0.0-beta.12.
+backend. The addon is compatible with [ember-cli][] version 0.2.3 and
+higher, Ember 1.11.1, and Ember Data v1.0.0-beta.16.1.
 
 
 Community

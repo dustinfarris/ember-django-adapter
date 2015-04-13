@@ -1,4 +1,12 @@
+machine:
+  node:
+    version: 0.12
+
 dependencies:
+  pre:
+    - npm config set spin false
+    - npm install -g npm@^2
+
   override:
     - npm install -g bower
     - npm install
@@ -14,5 +22,3 @@ deployment:
 test:
   override:
     - npm test
-    - sed -i "s/ \"1.0.0-beta.12\"/ \"1.0.0-beta.14\"/" package.json bower.json && npm i && bower i && npm test
-    - sed -i "s/ \"1.0.0-beta.14\"/ \"1.0.0-beta.14.1\"/" package.json bower.json && npm i && bower i && npm test
