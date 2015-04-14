@@ -44,11 +44,11 @@ export default DS.RESTAdapter.extend({
    * @method buildURL
    * @param {String} type
    * @param {String} id
-   * @param {DS.Model} record
+   * @param {DS.Snapshot} snapshot
    * @return {String} url
    */
-  buildURL: function(type, id, record) {
-    var url = this._super(type, id, record);
+  buildURL: function(type, id, snapshot) {
+    var url = this._super(type, id, snapshot);
     if (this.get('addTrailingSlashes')) {
       if (url.charAt(url.length - 1) !== '/') {
         url += '/';
@@ -104,16 +104,16 @@ export default DS.RESTAdapter.extend({
    * @param {DS.Store} store
    * @param {subclass of DS.Model} type
    * @param {Array} ids
-   * @param {Array} records
+   * @param {Array} snapshots
    * @return {Promise} promise
    */
-  findMany: function(store, type, ids, records) {
+  findMany: function(store, type, ids, snapshots) {
     Ember.Logger.warn('WARNING: You are fetching several records in a single request because ' +
                       'you have set `coalesceFindRequests=true` on the adapter.  For this to ' +
                       'work, you MUST implement a custom filter in Django REST Framework.  See ' +
                       'http://dustinfarris.com/ember-django-adapter/coalesce-find-requests/ ' +
                       'for more information.');
-    return this._super(store, type, ids, records);
+    return this._super(store, type, ids, snapshots);
   },
 
   /**
@@ -126,10 +126,10 @@ export default DS.RESTAdapter.extend({
    *
    * @method _stripIDFromURL
    * @param {DS.Store} store
-   * @param {DS.Model} record
+   * @param {DS.Snapshot} snapshot
    * @return {String} url
    */
-  _stripIDFromURL: function(store, record) {
-    return this.buildURL(record.constructor.typeKey);
+  _stripIDFromURL: function(store, snapshot) {
+    return this.buildURL(snapshot.constructor.typeKey);
   }
 });
