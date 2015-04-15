@@ -21,7 +21,7 @@ To build a project using Ember Django Adapter, you will need to be using:
 In your Ember CLI project, install Ember Django Adapter from the command line:
 
 ```bash
-ember install:addon ember-django-adapter
+ember install ember-django-adapter
 ```
 
 See [configuring](configuring.md) for more information on customizing the adapter.
