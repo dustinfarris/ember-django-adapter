@@ -31,5 +31,19 @@ Now your test project is using a symlinked copy of your local ember-django-adapt
 you make to the adapter will be reflected in your project in real-time.
 
 
+## Running tests
+
+You can run tests with the latest supported Ember Data beta with:
+
+```
+ember test
+```
+
+You can also run tests against Ember Data canary with:
+
+```
+ember try ember-data-canary
+```
+
 
 [1]: https://github.com/dustinfarris/ember-django-adapter/issues
