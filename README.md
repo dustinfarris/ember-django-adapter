@@ -2,6 +2,7 @@ Ember Django Adapter
 ====================
 
 [![Circle CI](https://circleci.com/gh/dustinfarris/ember-django-adapter/tree/master.png?style=badge)](https://circleci.com/gh/dustinfarris/ember-django-adapter/tree/master)
+
 [![Ember Observer Score](http://emberobserver.com/badges/ember-django-adapter.svg)](http://emberobserver.com/addons/ember-django-adapter)
 
 This Ember addon enables the use of [Django REST Framework][] as an API
