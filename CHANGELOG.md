@@ -4,7 +4,7 @@ ember-django-adapter Changelog
 Master
 ------
 
-* [ENHANCEMENT] Updated ember-cli version to latest (0.2.3)
+* [INTERNAL] Updated ember-cli version to latest (0.2.3)
   ([#81](https://github.com/dustinfarris/ember-django-adapter/pull/81))
 * [ENHANCEMENT] Modified signatures of methods in serializer and adapter
   to comply with changes introduced in ember-data v1.0.0-beta.15 and in
@@ -12,6 +12,8 @@ Master
   ([#74](https://github.com/dustinfarris/ember-django-adapter/pull/74))
   ([#77](https://github.com/dustinfarris/ember-django-adapter/pull/77))
   ([#84](https://github.com/dustinfarris/ember-django-adapter/pull/84))
+* [INTERNAL] Use ember-try to enable a test matrix
+  ([#85](https://github.com/dustinfarris/ember-django-adapter/pull/85))
 
 
 0.5.3
