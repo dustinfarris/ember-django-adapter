@@ -4,6 +4,10 @@ ember-django-adapter Changelog
 Master
 ------
 
+
+0.5.4
+-----
+
 * [INTERNAL] Updated ember-cli version to latest (0.2.3)
   ([#81](https://github.com/dustinfarris/ember-django-adapter/pull/81))
 * [ENHANCEMENT] Modified signatures of methods in serializer and adapter
