@@ -130,6 +130,6 @@ export default DS.RESTAdapter.extend({
    * @return {String} url
    */
   _stripIDFromURL: function(store, snapshot) {
-    return this.buildURL(snapshot.constructor.typeKey);
+    return this.buildURL(snapshot.typeKey);
   }
 });
