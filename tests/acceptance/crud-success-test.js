@@ -41,7 +41,11 @@ module('Acceptance: CRUD Success', {
 
       // Retrieve list of non-paginated records
       this.get('/test-api/posts/', function(request) {
-        return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts)];
+        if (request.queryParams.post_title === 'post title 2') {
+          return [200, {'Content-Type': 'application/json'}, JSON.stringify([posts[1]])];
+        } else {
+          return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts)];
+        }
       });
 
       // Retrieve single record
@@ -100,6 +104,22 @@ test('Retrieve single record', function(assert) {
       assert.ok(post);
       assert.equal(post.get('postTitle'), 'post title 1');
       assert.equal(post.get('body'), 'post body 1');
+    });
+  });
+});
+
+test('Retrieve via query', function(assert) {
+  assert.expect(3);
+
+  return Ember.run(function() {
+
+    return store.find('post', {post_title: 'post title 2'}).then(function(post) {
+
+      assert.ok(post);
+
+      post = post.objectAt(0);
+      assert.equal(post.get('postTitle'), 'post title 2');
+      assert.equal(post.get('body'), 'post body 2');
     });
   });
 });
