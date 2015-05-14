@@ -1,12 +1,13 @@
+import Ember from 'ember';
 import DRFAdapter from 'ember-django-adapter/adapters/drf';
 import ENV from '../config/environment';
 
 export default DRFAdapter.extend({
-  host: function() {
+  host: Ember.computed(function() {
     return ENV.APP.API_HOST;
-  }.property(),
+  }),
 
-  namespace: function() {
+  namespace: Ember.computed(function() {
     return ENV.APP.API_NAMESPACE;
-  }.property()
+  })
 });

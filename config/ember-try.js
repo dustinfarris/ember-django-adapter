@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'ember-data-beta',
       dependencies: {
-        'ember-data': '1.0.0-beta.16.1'
+        'ember-data': '1.0.0-beta.17'
       }
     },
     {
