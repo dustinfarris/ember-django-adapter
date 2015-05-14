@@ -3,7 +3,10 @@ ember-django-adapter Changelog
 
 Master
 ------
-
+* [INTERNAL] Updated ember-cli version to latest (0.2.3)
+  ([#89](https://github.com/dustinfarris/ember-django-adapter/pull/89))
+* [BUGFIX] All find queries are now handled properly
+  ([#88](https://github.com/dustinfarris/ember-django-adapter/pull/88))
 
 0.5.4
 -----
