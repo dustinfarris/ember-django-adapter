@@ -4,6 +4,7 @@ ember-django-adapter Changelog
 
 Master
 ------
+* [INTERNAL] Updated ember-cli version to latest (0.2.5)
 
 
 0.5.5
