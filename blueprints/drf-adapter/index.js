@@ -1,5 +1,5 @@
 module.exports = {
-  description: ''
+  description: 'Generates a drf-adapter for you to customize.'
 
   // locals: function(options) {
   //   // Return custom template variables here.
