@@ -23,11 +23,9 @@ Goals
 
 * Support applications built with Django REST Framework and Ember.js by
   offering easy-to-use addons, and providing documentation and guidance.
-
 * Ensure as much as possible that the Ember.js and Django REST Framework
   documentation is up-to-date and accurate as it pertains to their combined
   usage.
-
 * Promote the adoption of Ember.js and Django REST Framework and actively take
   part in their respective communities.
 
