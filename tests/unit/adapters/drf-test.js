@@ -86,7 +86,7 @@ test('ajaxError - returns ajax response if no status returned', function(assert)
 
 test('_stripIDFromURL - returns base URL for type', function(assert) {
   var snapshot = {
-    typeKey: 'furry-animal'
+    modelName: 'furry-animal'
   };
   var adapter = this.subject();
 
@@ -95,7 +95,7 @@ test('_stripIDFromURL - returns base URL for type', function(assert) {
 
 test('_stripIDFromURL without trailing slash - returns base URL for type', function(assert) {
   var snapshot = {
-    typeKey: 'furry-animal'
+    modelName: 'furry-animal'
   };
   var adapter = this.subject();
   adapter.set('addTrailingSlashes', false);

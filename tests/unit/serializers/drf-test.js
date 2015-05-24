@@ -10,7 +10,7 @@ moduleFor('serializer:application', 'DRFSerializer', { });
 test('extractSingle', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted single');
-  var type = { typeKey: 'person' };
+  var type = { modelName: 'person' };
 
   var result = serializer.extractSingle('store', type, 'payload', 'id');
 
@@ -23,7 +23,7 @@ test('extractSingle', function(assert) {
 test('extractArray - results', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
-  var type = { typeKey: 'person' };
+  var type = { modelName: 'person' };
   var payload = { other: 'stuff', results: ['result'] };
 
   var result = serializer.extractArray('store', type, payload);
@@ -37,7 +37,7 @@ test('extractArray - results', function(assert) {
 test('extractArray - no results', function(assert) {
   var serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
-  var type = { typeKey: 'person' };
+  var type = { modelName: 'person' };
   var payload = { other: 'stuff' };
 
   var result = serializer.extractArray('store', type, payload);

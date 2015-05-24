@@ -70,7 +70,7 @@ export default DS.RESTSerializer.extend({
    */
   extractSingle: function(store, type, payload, id) {
     var convertedPayload = {};
-    convertedPayload[type.typeKey] = payload;
+    convertedPayload[type.modelName] = payload;
     return this._super(store, type, convertedPayload, id);
   },
 
@@ -91,9 +91,9 @@ export default DS.RESTSerializer.extend({
     // because `results` will only be in lists.
     var convertedPayload = {};
     if (payload.results) {
-      convertedPayload[type.typeKey] = payload.results;
+      convertedPayload[type.modelName] = payload.results;
     } else {
-      convertedPayload[type.typeKey] = payload;
+      convertedPayload[type.modelName] = payload;
     }
     return this._super(store, type, convertedPayload);
   },
