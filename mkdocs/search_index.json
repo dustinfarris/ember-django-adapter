@@ -1,0 +1,194 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Ember Django Adapter Documentation\n\n\nEmber Django Adapter (EDA) enables users to build applications using Django REST Framework and\nEmber.js.  The two packages work with REST APIs, but differ on certain JSON formatting and\nsemantics.  Fortunately, Ember Data (the library powering Ember.js models) provides an opportunity\nto write custom adapters to bridge these differences.  EDA is one such adapter specifically\ndesigned to work with Django REST Framework.\n\n\nRequirements\n\n\nTo build a project using Ember Django Adapter, you will need to be using:\n\n\n\n\nDjango REST Framwork \n= 3.0\n\n\nEmber Data \n= 1.0.0-beta.17\n\n\nEmber CLI \n= 0.2.5\n\n\n\n\nQuickstart\n\n\nIn your Ember CLI project, install Ember Django Adapter from the command line:\n\n\nember install ember-django-adapter\n\n\n\n\nSee \nconfiguring\n for more information on customizing the adapter.", 
+            "title": "Introduction"
+        }, 
+        {
+            "location": "/#ember-django-adapter-documentation", 
+            "text": "Ember Django Adapter (EDA) enables users to build applications using Django REST Framework and\nEmber.js.  The two packages work with REST APIs, but differ on certain JSON formatting and\nsemantics.  Fortunately, Ember Data (the library powering Ember.js models) provides an opportunity\nto write custom adapters to bridge these differences.  EDA is one such adapter specifically\ndesigned to work with Django REST Framework.", 
+            "title": "Ember Django Adapter Documentation"
+        }, 
+        {
+            "location": "/#requirements", 
+            "text": "To build a project using Ember Django Adapter, you will need to be using:   Django REST Framwork  = 3.0  Ember Data  = 1.0.0-beta.17  Ember CLI  = 0.2.5", 
+            "title": "Requirements"
+        }, 
+        {
+            "location": "/#quickstart", 
+            "text": "In your Ember CLI project, install Ember Django Adapter from the command line:  ember install ember-django-adapter  See  configuring  for more information on customizing the adapter.", 
+            "title": "Quickstart"
+        }, 
+        {
+            "location": "/configuring/", 
+            "text": "Configuring\n\n\nThere are a number of configuration variables you can set in your environment.js file.\n\n\nAPI_HOST\n\n\nDefault:\n \n'http://localhost:8000'\n\n\nThe fully-qualified host of your API server.\n\n\nAPI_NAMESPACE\n\n\nDefault:\n \n'api'\n\n\nThe URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all\nAPI requests will look like /my-api/v1/users/56/, or similar.\n\n\nExample\n\n\n// my-ember-cli-project/config/environment.js\n\nmodule.exports = function(environment) {\n  var ENV = {\n    APP: {\n    }\n  };\n\n  if (environment === 'development') {\n    ENV.APP.API_HOST = 'http://localhost:8000';\n  }\n\n  if (environment === 'production') {\n    ENV.APP.API_HOST = 'https://api.myproject.com';\n    ENV.APP.API_NAMESPACE = 'v2';\n  }\n\n  return ENV;\n};", 
+            "title": "Configuring"
+        }, 
+        {
+            "location": "/configuring/#configuring", 
+            "text": "There are a number of configuration variables you can set in your environment.js file.", 
+            "title": "Configuring"
+        }, 
+        {
+            "location": "/configuring/#api_host", 
+            "text": "Default:   'http://localhost:8000'  The fully-qualified host of your API server.", 
+            "title": "API_HOST"
+        }, 
+        {
+            "location": "/configuring/#api_namespace", 
+            "text": "Default:   'api'  The URL prefix (namespace) for your API.  In other words, if you set this to my-api/v1, then all\nAPI requests will look like /my-api/v1/users/56/, or similar.", 
+            "title": "API_NAMESPACE"
+        }, 
+        {
+            "location": "/configuring/#example", 
+            "text": "// my-ember-cli-project/config/environment.js\n\nmodule.exports = function(environment) {\n  var ENV = {\n    APP: {\n    }\n  };\n\n  if (environment === 'development') {\n    ENV.APP.API_HOST = 'http://localhost:8000';\n  }\n\n  if (environment === 'production') {\n    ENV.APP.API_HOST = 'https://api.myproject.com';\n    ENV.APP.API_NAMESPACE = 'v2';\n  }\n\n  return ENV;\n};", 
+            "title": "Example"
+        }, 
+        {
+            "location": "/extending/", 
+            "text": "Extending the adapter/serializer\n\n\nMore than likely, you will need to add you own tweaks to the adapter and (more often) the\nserializer.  EDA provides blueprints to make this easy.  For example, to make a customizable\nserializer for a User model:\n\n\nember generate drf-serializer user\n\n\n\n\nThis will create app/serializers/user.js for you to customize.\n\n\nSimilarly, if you wanted to, for example, extend the adapter on the application level:\n\n\nember generate drf-adapter application\n\n\n\n\nThis will create app/adapters/application.js for you to customize.", 
+            "title": "Extending"
+        }, 
+        {
+            "location": "/extending/#extending-the-adapterserializer", 
+            "text": "More than likely, you will need to add you own tweaks to the adapter and (more often) the\nserializer.  EDA provides blueprints to make this easy.  For example, to make a customizable\nserializer for a User model:  ember generate drf-serializer user  This will create app/serializers/user.js for you to customize.  Similarly, if you wanted to, for example, extend the adapter on the application level:  ember generate drf-adapter application  This will create app/adapters/application.js for you to customize.", 
+            "title": "Extending the adapter/serializer"
+        }, 
+        {
+            "location": "/trailing-slashes/", 
+            "text": "Trailing Slashes\n\n\nBy default, Django REST Framework adds trailing slashes to its generated URLs.\nEDA is set up to handle this, however, if you have decided to opt out of\ntrailing slashes, you will need to extend the adapter with this configuration.\n\n\ne.g., if you have set up a router in DRF that is instantiated like this:\n\n\nfrom rest_framework import routers\n\n\nrouter = routers.DefaultRouter(trailing_slash=False)\n\n\n\n\nthen you will need to \nextend\n the adapter and switch off\n\naddTrailingSlashes\n in \napp/adapters/application.js\n:\n\n\n// app/adapters/application.js\n\nimport DRFAdapter from './drf';\n\nexport default DRFAdapter.extend({\n  addTrailingSlashes: false\n});", 
+            "title": "Trailing slashes"
+        }, 
+        {
+            "location": "/trailing-slashes/#trailing-slashes", 
+            "text": "By default, Django REST Framework adds trailing slashes to its generated URLs.\nEDA is set up to handle this, however, if you have decided to opt out of\ntrailing slashes, you will need to extend the adapter with this configuration.  e.g., if you have set up a router in DRF that is instantiated like this:  from rest_framework import routers\n\n\nrouter = routers.DefaultRouter(trailing_slash=False)  then you will need to  extend  the adapter and switch off addTrailingSlashes  in  app/adapters/application.js :  // app/adapters/application.js\n\nimport DRFAdapter from './drf';\n\nexport default DRFAdapter.extend({\n  addTrailingSlashes: false\n});", 
+            "title": "Trailing Slashes"
+        }, 
+        {
+            "location": "/embedded-records/", 
+            "text": "Embedded Records\n\n\nLet's say you've set up a serializer in DRF that has embedded records.  For example:\n\n\nclass Person(models.Model):\n    name = models.CharField(max_length=20)\n\n\nclass Pet(models.Model):\n    name = models.CharField(max_length=20)\n    owner = models.ForeignKey(Person, related_name='pets')\n\n\nclass PetSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Pet\n\n\nclass PersonSerializer(serializers.ModelSerializer):\n    pets = PetSerializer(many=True)\n\n    class Meta:\n        model = Person\n\n\n\n\nOn the Ember side, your models would look like this:\n\n\n// app/models/pet.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  person: DS.belongsTo('person'),\n  name: DS.attr('string')\n});\n\n\n\n\n// app/models/person.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  name: DS.attr('string'),\n  pets: DS.hasMany('pet')\n});\n\n\n\n\nThe API's JSON response from such a setup would look something like this:\n\n\n{\n  \nid\n: 2,\n  \nname\n: \nFrank\n,\n  \npets\n: [\n    { \nid\n: 1, \nname\n: \nSpot\n },\n    { \nid\n: 2, \nname\n: \nFido\n }\n  ]\n}\n\n\n\n\nEmber Data supports this sort of response (since 1.0.0-beta.10), but you will have to extend the\nserializer for this model to make Ember Data aware of it.\n\n\nIn your Ember project, create a DRF serializer for your Person model.\n\n\nember generate drf-serializer person\n\n\n\n\nThis creates a skeleton serializer that extends the DRF serializer in app/serializers/person.js.\nModify this file to support the embedded records:\n\n\n// app/serializers/person.js\n\nimport DRFSerializer from './drf';\nimport DS from 'ember-data';\n\nexport default DRFSerializer.extend(DS.EmbeddedRecordsMixin, {\n  attrs: {\n    pets: { embedded: 'always' }\n  }\n});\n\n\n\n\nWritable nested records\n\n\nWritable nested records are not supported by the adapter at this time.", 
+            "title": "Embedded records"
+        }, 
+        {
+            "location": "/embedded-records/#embedded-records", 
+            "text": "Let's say you've set up a serializer in DRF that has embedded records.  For example:  class Person(models.Model):\n    name = models.CharField(max_length=20)\n\n\nclass Pet(models.Model):\n    name = models.CharField(max_length=20)\n    owner = models.ForeignKey(Person, related_name='pets')\n\n\nclass PetSerializer(serializers.ModelSerializer):\n    class Meta:\n        model = Pet\n\n\nclass PersonSerializer(serializers.ModelSerializer):\n    pets = PetSerializer(many=True)\n\n    class Meta:\n        model = Person  On the Ember side, your models would look like this:  // app/models/pet.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  person: DS.belongsTo('person'),\n  name: DS.attr('string')\n});  // app/models/person.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  name: DS.attr('string'),\n  pets: DS.hasMany('pet')\n});  The API's JSON response from such a setup would look something like this:  {\n   id : 2,\n   name :  Frank ,\n   pets : [\n    {  id : 1,  name :  Spot  },\n    {  id : 2,  name :  Fido  }\n  ]\n}  Ember Data supports this sort of response (since 1.0.0-beta.10), but you will have to extend the\nserializer for this model to make Ember Data aware of it.  In your Ember project, create a DRF serializer for your Person model.  ember generate drf-serializer person  This creates a skeleton serializer that extends the DRF serializer in app/serializers/person.js.\nModify this file to support the embedded records:  // app/serializers/person.js\n\nimport DRFSerializer from './drf';\nimport DS from 'ember-data';\n\nexport default DRFSerializer.extend(DS.EmbeddedRecordsMixin, {\n  attrs: {\n    pets: { embedded: 'always' }\n  }\n});  Writable nested records  Writable nested records are not supported by the adapter at this time.", 
+            "title": "Embedded Records"
+        }, 
+        {
+            "location": "/pagination/", 
+            "text": "Pagination\n\n\nPagination is supported using the metadata support that is built into Ember Data.\nMetadata from Django REST Framework paginated list views is updated on every request\nto the server.\n\n\nRetrieving the Metadata\n\n\nTo get a page of records, simply run a find request with the \npage\n query param:\n\n\nvar result = this.store.find(\npost\n, {\n  page: 2\n});\n\n\n\n\nAfter the request returns, you can access the metadata either with \nstore.metadataFor\n:\n\n\nvar meta = this.store.metadataFor(\npost\n);\n\n\n\n\nOr you can access the metadata just for this query:\n\n\nvar meta = result.get(\ncontent.meta\n);\n\n\n\n\nNB\n Running a find request against a paginated list view without query params will\nretrieve the first page with metadata set in only \nstore.metadataFor\n. This is how\nmetadata works in Ember Data.\n\n\nMetadata Properties\n\n\nThe metadata consists of three properties that give the application enough information\nto paginate through a Django REST Framework paginated list view.\n\n\n\n\nnext\n - The next page number or \nnull\n when there is no next page (i.e. the last\n           page).\n\n\nprevious\n - The previous page number or \nnull\n when there is no previous page (i.e.\n               the first page).\n\n\ncount\n - The total number of records available. This can be used along with the page\n            size to calculate the total number of pages.\n\n\n\n\nThe \nnext\n and \nprevious\n page number can be used directly as the value of the \npage\n\nquery param. \nnull\n is not a valid value for the \npage\n query param so applications need\nto check this condition before using it.\n\n\nif (meta.next) {\n  store.find('post', {page: meta.next})\n}\n\n\n\n\nDjango REST Framework settings\n\n\nDjango REST Framework has a number of settings that can be used to customise the\npagination behaviour of generic views.\n\n\nOne useful setting is \nPAGINATE_BY_PARAM\n / \npaginate_by_param\n. If this is enabled,\nit's possible to override the server-side page size by including the query param\nname that you set in the find request. For example, if you set\n\nPAGINATE_BY_PARAM = 'page_size'\n, you would run the find request with the \npage\n\n and \npage_size\n query params. For example:\n\n\nvar result = this.store.find(\npost\n, {\n  page: 1,\n  page_size: 10\n});\n\n\n\n\nIf you use the \nPAGINATE_BY_PARAM\n or \npaginate_by_param\n setting, it's advisable to also\nset \nMAX_PAGINATE_BY\n.\n\n\nThese global settings serve as a good starting point for your Django REST Framework pagination configuration:\n\n\nREST_FRAMEWORK = {\n    'PAGINATE_BY': 10,                 # Default to 10\n    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.\n    'MAX_PAGINATE_BY': 100             # Maximum limit allowed when using `?page_size=xxx`.\n}\n\n\n\n\nThe complete pagination configuration documentation is available in Django REST Framework docs.\n\n\nhttp://www.django-rest-framework.org/api-guide/pagination/#pagination-in-the-generic-views\n\n\nIntegration with 3rd Party Libraries\n\n\n\n\nEmber CLI Pagination\n\n\n\n\nhttps://github.com/mharris717/ember-cli-pagination\n\n\nIt's should be possible to use the pagination metadata with Ember CLI Pagination. If you\nget this working, please consider submitting a pull request documenting the configuration.", 
+            "title": "Pagination"
+        }, 
+        {
+            "location": "/pagination/#pagination", 
+            "text": "Pagination is supported using the metadata support that is built into Ember Data.\nMetadata from Django REST Framework paginated list views is updated on every request\nto the server.", 
+            "title": "Pagination"
+        }, 
+        {
+            "location": "/pagination/#retrieving-the-metadata", 
+            "text": "To get a page of records, simply run a find request with the  page  query param:  var result = this.store.find( post , {\n  page: 2\n});  After the request returns, you can access the metadata either with  store.metadataFor :  var meta = this.store.metadataFor( post );  Or you can access the metadata just for this query:  var meta = result.get( content.meta );  NB  Running a find request against a paginated list view without query params will\nretrieve the first page with metadata set in only  store.metadataFor . This is how\nmetadata works in Ember Data.", 
+            "title": "Retrieving the Metadata"
+        }, 
+        {
+            "location": "/pagination/#metadata-properties", 
+            "text": "The metadata consists of three properties that give the application enough information\nto paginate through a Django REST Framework paginated list view.   next  - The next page number or  null  when there is no next page (i.e. the last\n           page).  previous  - The previous page number or  null  when there is no previous page (i.e.\n               the first page).  count  - The total number of records available. This can be used along with the page\n            size to calculate the total number of pages.   The  next  and  previous  page number can be used directly as the value of the  page \nquery param.  null  is not a valid value for the  page  query param so applications need\nto check this condition before using it.  if (meta.next) {\n  store.find('post', {page: meta.next})\n}", 
+            "title": "Metadata Properties"
+        }, 
+        {
+            "location": "/pagination/#django-rest-framework-settings", 
+            "text": "Django REST Framework has a number of settings that can be used to customise the\npagination behaviour of generic views.  One useful setting is  PAGINATE_BY_PARAM  /  paginate_by_param . If this is enabled,\nit's possible to override the server-side page size by including the query param\nname that you set in the find request. For example, if you set PAGINATE_BY_PARAM = 'page_size' , you would run the find request with the  page \n and  page_size  query params. For example:  var result = this.store.find( post , {\n  page: 1,\n  page_size: 10\n});  If you use the  PAGINATE_BY_PARAM  or  paginate_by_param  setting, it's advisable to also\nset  MAX_PAGINATE_BY .  These global settings serve as a good starting point for your Django REST Framework pagination configuration:  REST_FRAMEWORK = {\n    'PAGINATE_BY': 10,                 # Default to 10\n    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.\n    'MAX_PAGINATE_BY': 100             # Maximum limit allowed when using `?page_size=xxx`.\n}  The complete pagination configuration documentation is available in Django REST Framework docs.  http://www.django-rest-framework.org/api-guide/pagination/#pagination-in-the-generic-views", 
+            "title": "Django REST Framework settings"
+        }, 
+        {
+            "location": "/pagination/#integration-with-3rd-party-libraries", 
+            "text": "Ember CLI Pagination   https://github.com/mharris717/ember-cli-pagination  It's should be possible to use the pagination metadata with Ember CLI Pagination. If you\nget this working, please consider submitting a pull request documenting the configuration.", 
+            "title": "Integration with 3rd Party Libraries"
+        }, 
+        {
+            "location": "/coalesce-find-requests/", 
+            "text": "Coalescing Find Requests\n\n\nWhen a record returns the IDs of records in a hasMany relationship, Ember Data\nallows us to opt-in to combine these requests into a single request.\n\n\nSuppose you have Ember models:\n\n\n// app/models/person.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  name: DS.attr('string'),\n  pets: DS.hasMany('pet', { async: True })\n});\n\n\n// app/models/pet.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  age: DS.attr('number')\n});\n\n\n\n\nAn out-of-the-box DRF model serializer for Person would return something like\nthis:\n\n\nGET /api/people/1/\n\n{\n  \nid\n: 1,\n  \nname\n: \nFred\n,\n  \npets\n: [1, 2, 3]\n}\n\n\n\n\nWhen Ember Data decides to resolve the pets, by default it would fire 3\nseparate requests.  In this case:\n\n\nGET /api/pets/1/\n\n{\n  \nid\n: 1,\n  \nage\n: 5\n}\n\nGET /api/pets/2/\n\n{\n  \nid\n: 2,\n  \nage\n: 5\n}\n\nGET /api/pets/3/\n\n{\n  \nid\n: 3,\n  \nage\n: 6\n}\n\n\n\n\nHowever, if we opt-in to coalesceFindRequests, we can consolidate this into\n1 call.\n\n\nEnable coalesceFindRequests\n\n\nExtend\n the adapter, and enable coalesceFindRequests:\n\n\n// app/adapters/application.js\n\nimport DRFAdapter from './drf';\n\nexport default DRFAdapter.extend({\n  coalesceFindRequests: true\n});\n\n\n\n\nNow, when Ember Data resolves the pets, it will fire a request that looks like\nthis:\n\n\nGET /api/pets/?ids[]=1\nids[]=2\nids[]=3\n\n\n\n\nCoalesceFilterBackend\n\n\nAll this is great, except Django REST Framework is not quite able to handle such a\nrequest out of the box.  Thankfully, DRF\n\nallows you to plug in custom filters\n,\nand writing a filter for this kind of request is super simple.\n\n\nIn your project somewhere, write the following filter:\n\n\n# myapp/filters.py\n\nfrom rest_framework import filters\n\n\nclass CoalesceFilterBackend(filters.BaseFilterBackend):\n    \n\n    Support Ember Data coalesceFindRequests.\n\n    \n\n    def filter_queryset(self, request, queryset, view):\n        id_list = request.QUERY_PARAMS.getlist('ids[]')\n        if id_list:\n            queryset = queryset.filter(id__in=id_list)\n        return queryset\n\n\n\n\nNow you just need to add this filter to \nfilter_backends\n in your views, e.g.:\n\n\nfrom myapp.filters import CoalesceFilterBackend\n\n\nclass UserListView(generics.ListAPIView):\n    queryset = User.objects.all()\n    serializer = UserSerializer\n    filter_backends = (CoalesceFilterBackend,)\n\n\n\n\nOr, configure it globally in your DRF settings:\n\n\nREST_FRAMEWORK = {\n    'DEFAULT_FILTER_BACKENDS': ('myapp.filters.CoalesceFilterBackend',)\n}\n\n\n\n\nNow, when Ember Data sends the coalesced request, DRF will return meaningful\ndata:\n\n\nGET /api/pets/?ids[]=1\nids[]=2\nids[]=3\n\n[\n  {\n    \nid\n: 1,\n    \nage\n: 5\n  },\n  {\n    \nid\n: 2,\n    \nage\n: 5\n  },\n  {\n    \nid\n: 3,\n    \nage\n: 6\n  }\n]", 
+            "title": "Coalesce find requests"
+        }, 
+        {
+            "location": "/coalesce-find-requests/#coalescing-find-requests", 
+            "text": "When a record returns the IDs of records in a hasMany relationship, Ember Data\nallows us to opt-in to combine these requests into a single request.  Suppose you have Ember models:  // app/models/person.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  name: DS.attr('string'),\n  pets: DS.hasMany('pet', { async: True })\n});\n\n\n// app/models/pet.js\n\nimport DS from 'ember-data';\n\nexport default DS.Model.extend({\n  age: DS.attr('number')\n});  An out-of-the-box DRF model serializer for Person would return something like\nthis:  GET /api/people/1/\n\n{\n   id : 1,\n   name :  Fred ,\n   pets : [1, 2, 3]\n}  When Ember Data decides to resolve the pets, by default it would fire 3\nseparate requests.  In this case:  GET /api/pets/1/\n\n{\n   id : 1,\n   age : 5\n}\n\nGET /api/pets/2/\n\n{\n   id : 2,\n   age : 5\n}\n\nGET /api/pets/3/\n\n{\n   id : 3,\n   age : 6\n}  However, if we opt-in to coalesceFindRequests, we can consolidate this into\n1 call.", 
+            "title": "Coalescing Find Requests"
+        }, 
+        {
+            "location": "/coalesce-find-requests/#enable-coalescefindrequests", 
+            "text": "Extend  the adapter, and enable coalesceFindRequests:  // app/adapters/application.js\n\nimport DRFAdapter from './drf';\n\nexport default DRFAdapter.extend({\n  coalesceFindRequests: true\n});  Now, when Ember Data resolves the pets, it will fire a request that looks like\nthis:  GET /api/pets/?ids[]=1 ids[]=2 ids[]=3", 
+            "title": "Enable coalesceFindRequests"
+        }, 
+        {
+            "location": "/coalesce-find-requests/#coalescefilterbackend", 
+            "text": "All this is great, except Django REST Framework is not quite able to handle such a\nrequest out of the box.  Thankfully, DRF allows you to plug in custom filters ,\nand writing a filter for this kind of request is super simple.  In your project somewhere, write the following filter:  # myapp/filters.py\n\nfrom rest_framework import filters\n\n\nclass CoalesceFilterBackend(filters.BaseFilterBackend):\n     \n    Support Ember Data coalesceFindRequests.\n\n     \n    def filter_queryset(self, request, queryset, view):\n        id_list = request.QUERY_PARAMS.getlist('ids[]')\n        if id_list:\n            queryset = queryset.filter(id__in=id_list)\n        return queryset  Now you just need to add this filter to  filter_backends  in your views, e.g.:  from myapp.filters import CoalesceFilterBackend\n\n\nclass UserListView(generics.ListAPIView):\n    queryset = User.objects.all()\n    serializer = UserSerializer\n    filter_backends = (CoalesceFilterBackend,)  Or, configure it globally in your DRF settings:  REST_FRAMEWORK = {\n    'DEFAULT_FILTER_BACKENDS': ('myapp.filters.CoalesceFilterBackend',)\n}  Now, when Ember Data sends the coalesced request, DRF will return meaningful\ndata:  GET /api/pets/?ids[]=1 ids[]=2 ids[]=3\n\n[\n  {\n     id : 1,\n     age : 5\n  },\n  {\n     id : 2,\n     age : 5\n  },\n  {\n     id : 3,\n     age : 6\n  }\n]", 
+            "title": "CoalesceFilterBackend"
+        }, 
+        {
+            "location": "/contributing/", 
+            "text": "Contributing to Ember Django Adapter\n\n\nWe welcome all bug reports and pull requests.\n\n\nIssues: \ngithub.com/dustinfarris/ember-django-adapter/issues\n\n\nLocal Development\n\n\nTo run ember-django-adapter locally, you will have to use \nnpm link\n.\n\n\ngit clone git@github.com:dustinfarris/ember-django-adapter\ncd ember-django-adapter\nnpm i \n bower i\nnpm link\n\n\n\n\nThen in a test ember-cli project, you will have to install a couple bower dependencies separately.\nThese are not actually required in the test ember-cli project, but errors will be thrown if they\nare not present.\n\n\ncd test-ember-cli-project\nbower i pretender\nbower i http://sinonjs.org/releases/sinon-1.12.1.js\nnpm link ember-django-adapter\n\n\n\n\nNow your test project is using a symlinked copy of your local ember-django-adapter, and any changes\nyou make to the adapter will be reflected in your project in real-time.\n\n\nRunning tests\n\n\nYou can run tests with the latest supported Ember Data beta with:\n\n\nember test\n\n\n\n\nYou can also run tests against Ember Data canary with:\n\n\nember try ember-data-canary", 
+            "title": "Contributing"
+        }, 
+        {
+            "location": "/contributing/#contributing-to-ember-django-adapter", 
+            "text": "We welcome all bug reports and pull requests.  Issues:  github.com/dustinfarris/ember-django-adapter/issues", 
+            "title": "Contributing to Ember Django Adapter"
+        }, 
+        {
+            "location": "/contributing/#local-development", 
+            "text": "To run ember-django-adapter locally, you will have to use  npm link .  git clone git@github.com:dustinfarris/ember-django-adapter\ncd ember-django-adapter\nnpm i   bower i\nnpm link  Then in a test ember-cli project, you will have to install a couple bower dependencies separately.\nThese are not actually required in the test ember-cli project, but errors will be thrown if they\nare not present.  cd test-ember-cli-project\nbower i pretender\nbower i http://sinonjs.org/releases/sinon-1.12.1.js\nnpm link ember-django-adapter  Now your test project is using a symlinked copy of your local ember-django-adapter, and any changes\nyou make to the adapter will be reflected in your project in real-time.", 
+            "title": "Local Development"
+        }, 
+        {
+            "location": "/contributing/#running-tests", 
+            "text": "You can run tests with the latest supported Ember Data beta with:  ember test  You can also run tests against Ember Data canary with:  ember try ember-data-canary", 
+            "title": "Running tests"
+        }, 
+        {
+            "location": "/changelog/", 
+            "text": "ember-django-adapter Changelog\n\n\nMaster\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  (\n#91\n)\n\n\n\n\n0.5.5\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  (\n#89\n)\n\n\n[BUGFIX] All find queries are now handled properly\n  (\n#88\n)\n\n\n\n\n0.5.4\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  (\n#81\n)\n\n\n[ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  (\n#74\n)\n  (\n#77\n)\n  (\n#84\n)\n\n\n[INTERNAL] Use ember-try to enable a test matrix\n  (\n#85\n)\n\n\n\n\n0.5.3\n\n\n\n\n[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  (\n#67\n)\n\n\n[DOCS] Add Google Analytics to documentation site\n  (\n#69\n)\n\n\n[ENHANCEMENT] Support added for coalesceFindRequests\n  (\n#68\n)\n\n\n[INTERNAL] Revised goals for the adapter\n  (\n#70\n)\n\n\n\n\n0.5.2\n\n\n\n\n[BUGFIX] Return jqXHR for non-400 errors\n  (\n#62\n)\n\n\n[BREAKING BUGFIX] Set default host to localhost:8000\n  (\n#64\n)\n\n\n[DOCS] Update installation instructions\n  (\n#65\n)\n\n\n\n\n0.5.1\n\n\n\n\n[ENHANCEMENT] Add support for pagination metadata\n  (\n#45\n)\n\n\n[ENHANCEMENT] Add documentation for contributing\n  (\n#49\n)\n\n\n[ENHANCEMENT] Add blueprints and support for embedded records\n  (\n#51\n)\n\n\n[ENHANCEMENT] Add option to remove trailing slashes\n  (\n#50\n)\n\n\n[ENHANCEMENT] Test coverage for all supported versions of ember-data\n  (\n#56\n)\n\n\n\n\n0.5.0\n\n\n\n\n[BREAKING REFACTOR] Rewrite \ntoranb/ember-data-django-rest-adapter\n as an ember-cli addon", 
+            "title": "Changelog"
+        }, 
+        {
+            "location": "/changelog/#ember-django-adapter-changelog", 
+            "text": "", 
+            "title": "ember-django-adapter Changelog"
+        }, 
+        {
+            "location": "/changelog/#master", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  ( #91 )", 
+            "title": "Master"
+        }, 
+        {
+            "location": "/changelog/#055", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  ( #89 )  [BUGFIX] All find queries are now handled properly\n  ( #88 )", 
+            "title": "0.5.5"
+        }, 
+        {
+            "location": "/changelog/#054", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  ( #81 )  [ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  ( #74 )\n  ( #77 )\n  ( #84 )  [INTERNAL] Use ember-try to enable a test matrix\n  ( #85 )", 
+            "title": "0.5.4"
+        }, 
+        {
+            "location": "/changelog/#053", 
+            "text": "[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  ( #67 )  [DOCS] Add Google Analytics to documentation site\n  ( #69 )  [ENHANCEMENT] Support added for coalesceFindRequests\n  ( #68 )  [INTERNAL] Revised goals for the adapter\n  ( #70 )", 
+            "title": "0.5.3"
+        }, 
+        {
+            "location": "/changelog/#052", 
+            "text": "[BUGFIX] Return jqXHR for non-400 errors\n  ( #62 )  [BREAKING BUGFIX] Set default host to localhost:8000\n  ( #64 )  [DOCS] Update installation instructions\n  ( #65 )", 
+            "title": "0.5.2"
+        }, 
+        {
+            "location": "/changelog/#051", 
+            "text": "[ENHANCEMENT] Add support for pagination metadata\n  ( #45 )  [ENHANCEMENT] Add documentation for contributing\n  ( #49 )  [ENHANCEMENT] Add blueprints and support for embedded records\n  ( #51 )  [ENHANCEMENT] Add option to remove trailing slashes\n  ( #50 )  [ENHANCEMENT] Test coverage for all supported versions of ember-data\n  ( #56 )", 
+            "title": "0.5.1"
+        }, 
+        {
+            "location": "/changelog/#050", 
+            "text": "[BREAKING REFACTOR] Rewrite  toranb/ember-data-django-rest-adapter  as an ember-cli addon", 
+            "title": "0.5.0"
+        }
+    ]
+}

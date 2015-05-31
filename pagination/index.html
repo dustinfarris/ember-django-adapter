@@ -17,6 +17,12 @@
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
 
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "pagination"
+  </script>
+  
   <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/modernizr-2.8.3.min.js"></script>
   <script type="text/javascript" src="../js/highlight.pack.js"></script>
@@ -43,101 +49,95 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> Ember Django Adapter</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-      <ul class="current">
-    
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Introduction</a>
         
-            <li class="toctree-l1 ">
-                <a class="" href="..">Introduction</a>
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../configuring/">Configuring</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../extending/">Extending</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../trailing-slashes/">Trailing slashes</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../embedded-records/">Embedded records</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Pagination</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#pagination">Pagination</a></li>
                 
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../configuring/">Configuring</a>
+                    <li><a class="toctree-l4" href="#retrieving-the-metadata">Retrieving the Metadata</a></li>
                 
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../extending/">Extending</a>
+                    <li><a class="toctree-l4" href="#metadata-properties">Metadata Properties</a></li>
                 
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../trailing-slashes/">Trailing slashes</a>
+                    <li><a class="toctree-l4" href="#django-rest-framework-settings">Django REST Framework settings</a></li>
                 
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../embedded-records/">Embedded records</a>
+                    <li><a class="toctree-l4" href="#integration-with-3rd-party-libraries">Integration with 3rd Party Libraries</a></li>
                 
-            </li>
+            
+            </ul>
         
-
-    
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../coalesce-find-requests/">Coalesce find requests</a>
         
-            <li class="toctree-l1 current">
-                <a class="current" href="./">Pagination</a>
-                
-                    <ul>
-                    
-                        <li class="toctree-l3"><a href="#pagination">Pagination</a></li>
-                        
-                            <li><a class="toctree-l4" href="#retrieving-the-metadata">Retrieving the Metadata</a></li>
-                        
-                            <li><a class="toctree-l4" href="#metadata-properties">Metadata Properties</a></li>
-                        
-                            <li><a class="toctree-l4" href="#django-rest-framework-settings">Django REST Framework settings</a></li>
-                        
-                            <li><a class="toctree-l4" href="#integration-with-3rd-party-libraries">Integration with 3rd Party Libraries</a></li>
-                        
-                    
-                    </ul>
-                
-            </li>
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../contributing/">Contributing</a>
         
-
-    
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../changelog/">Changelog</a>
         
-            <li class="toctree-l1 ">
-                <a class="" href="../coalesce-find-requests/">Coalesce find requests</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../contributing/">Contributing</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../changelog/">Changelog</a>
-                
-            </li>
-        
-
-    
-</ul>
-
+    </li>
+<li>
+          
+        </ul>
       </div>
       &nbsp;
     </nav>
@@ -157,20 +157,23 @@
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
     
+      
+    
     <li>Pagination</li>
-      <li class="wy-breadcrumbs-aside">
+    <li class="wy-breadcrumbs-aside">
+      
         
-          
-            <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github"> Edit on GitHub</a>
-          
+          <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github"> Edit on GitHub</a>
         
-      </li>
+      
+    </li>
   </ul>
   <hr/>
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="pagination">Pagination</h1>
+              
+                <h1 id="pagination">Pagination</h1>
 <p>Pagination is supported using the metadata support that is built into Ember Data.
 Metadata from Django REST Framework paginated list views is updated on every request
 to the server.</p>
@@ -244,6 +247,7 @@ set <code>MAX_PAGINATE_BY</code>.</p>
 <p><a href="https://github.com/mharris717/ember-cli-pagination">https://github.com/mharris717/ember-cli-pagination</a></p>
 <p>It's should be possible to use the pagination metadata with Ember CLI Pagination. If you
 get this working, please consider submitting a pull request documenting the configuration.</p>
+              
             </div>
           </div>
           <footer>
@@ -278,17 +282,17 @@ get this working, please consider submitting a pull request documenting the conf
 
 <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
-        
-            <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
-        
-      <span><a href="../embedded-records/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="../coalesce-find-requests/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../embedded-records/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../coalesce-find-requests/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
     </span>
 </div>
 
-<!--
-MkDocs version  : 0.12.2
-Docs Build Date : 2015-05-24 13:24:16.499702
--->
 </body>
 </html>

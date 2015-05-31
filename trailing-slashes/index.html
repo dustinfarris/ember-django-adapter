@@ -17,6 +17,12 @@
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
 
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "trailing-slashes"
+  </script>
+  
   <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/modernizr-2.8.3.min.js"></script>
   <script type="text/javascript" src="../js/highlight.pack.js"></script>
@@ -43,93 +49,87 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
         <a href=".." class="icon icon-home"> Ember Django Adapter</a>
-        
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-      <ul class="current">
-    
+        <ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="..">Introduction</a>
         
-            <li class="toctree-l1 ">
-                <a class="" href="..">Introduction</a>
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../configuring/">Configuring</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../extending/">Extending</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Trailing slashes</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#trailing-slashes">Trailing Slashes</a></li>
                 
-            </li>
+            
+            </ul>
         
-
-    
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../embedded-records/">Embedded records</a>
         
-            <li class="toctree-l1 ">
-                <a class="" href="../configuring/">Configuring</a>
-                
-            </li>
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../pagination/">Pagination</a>
         
-
-    
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../coalesce-find-requests/">Coalesce find requests</a>
         
-            <li class="toctree-l1 ">
-                <a class="" href="../extending/">Extending</a>
-                
-            </li>
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../contributing/">Contributing</a>
         
-
-    
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../changelog/">Changelog</a>
         
-            <li class="toctree-l1 current">
-                <a class="current" href="./">Trailing slashes</a>
-                
-                    <ul>
-                    
-                        <li class="toctree-l3"><a href="#trailing-slashes">Trailing Slashes</a></li>
-                        
-                    
-                    </ul>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../embedded-records/">Embedded records</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../pagination/">Pagination</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../coalesce-find-requests/">Coalesce find requests</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../contributing/">Contributing</a>
-                
-            </li>
-        
-
-    
-        
-            <li class="toctree-l1 ">
-                <a class="" href="../changelog/">Changelog</a>
-                
-            </li>
-        
-
-    
-</ul>
-
+    </li>
+<li>
+          
+        </ul>
       </div>
       &nbsp;
     </nav>
@@ -149,20 +149,23 @@
   <ul class="wy-breadcrumbs">
     <li><a href="..">Docs</a> &raquo;</li>
     
+      
+    
     <li>Trailing slashes</li>
-      <li class="wy-breadcrumbs-aside">
+    <li class="wy-breadcrumbs-aside">
+      
         
-          
-            <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github"> Edit on GitHub</a>
-          
+          <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github"> Edit on GitHub</a>
         
-      </li>
+      
+    </li>
   </ul>
   <hr/>
 </div>
           <div role="main">
             <div class="section">
-              <h1 id="trailing-slashes">Trailing Slashes</h1>
+              
+                <h1 id="trailing-slashes">Trailing Slashes</h1>
 <p>By default, Django REST Framework adds trailing slashes to its generated URLs.
 EDA is set up to handle this, however, if you have decided to opt out of
 trailing slashes, you will need to extend the adapter with this configuration.</p>
@@ -183,6 +186,7 @@ export default DRFAdapter.extend({
   addTrailingSlashes: false
 });
 </code></pre>
+              
             </div>
           </div>
           <footer>
@@ -217,17 +221,17 @@ export default DRFAdapter.extend({
 
 <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
-        
-            <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
-        
-      <span><a href="../extending/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      <span style="margin-left: 15px"><a href="../embedded-records/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../extending/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../embedded-records/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
     </span>
 </div>
 
-<!--
-MkDocs version  : 0.12.2
-Docs Build Date : 2015-05-24 13:24:16.487129
--->
 </body>
 </html>
