@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Ember Django Adapter Documentation\n\n\nEmber Django Adapter (EDA) enables users to build applications using Django REST Framework and\nEmber.js.  The two packages work with REST APIs, but differ on certain JSON formatting and\nsemantics.  Fortunately, Ember Data (the library powering Ember.js models) provides an opportunity\nto write custom adapters to bridge these differences.  EDA is one such adapter specifically\ndesigned to work with Django REST Framework.\n\n\nRequirements\n\n\nTo build a project using Ember Django Adapter, you will need to be using:\n\n\n\n\nDjango REST Framwork \n= 3.0\n\n\nEmber Data \n= 1.0.0-beta.17\n\n\nEmber CLI \n= 0.2.5\n\n\n\n\nQuickstart\n\n\nIn your Ember CLI project, install Ember Django Adapter from the command line:\n\n\nember install ember-django-adapter\n\n\n\n\nSee \nconfiguring\n for more information on customizing the adapter.", 
+            "text": "Ember Django Adapter Documentation\n\n\nEmber Django Adapter (EDA) enables users to build applications using Django REST Framework and\nEmber.js.  The two packages work with REST APIs, but differ on certain JSON formatting and\nsemantics.  Fortunately, Ember Data (the library powering Ember.js models) provides an opportunity\nto write custom adapters to bridge these differences.  EDA is one such adapter specifically\ndesigned to work with Django REST Framework.\n\n\nRequirements\n\n\nTo build a project using Ember Django Adapter, you will need to be using:\n\n\n\n\nDjango REST Framwork \n= 3.0\n\n\nEmber Data \n= 1.0.0-beta.18\n\n\nEmber CLI \n= 0.2.6\n\n\n\n\nQuickstart\n\n\nIn your Ember CLI project, install Ember Django Adapter from the command line:\n\n\nember install ember-django-adapter\n\n\n\n\nSee \nconfiguring\n for more information on customizing the adapter.", 
             "title": "Introduction"
         }, 
         {
@@ -12,7 +12,7 @@
         }, 
         {
             "location": "/#requirements", 
-            "text": "To build a project using Ember Django Adapter, you will need to be using:   Django REST Framwork  = 3.0  Ember Data  = 1.0.0-beta.17  Ember CLI  = 0.2.5", 
+            "text": "To build a project using Ember Django Adapter, you will need to be using:   Django REST Framwork  = 3.0  Ember Data  = 1.0.0-beta.18  Ember CLI  = 0.2.6", 
             "title": "Requirements"
         }, 
         {
@@ -147,7 +147,7 @@
         }, 
         {
             "location": "/changelog/", 
-            "text": "ember-django-adapter Changelog\n\n\nMaster\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  (\n#91\n)\n\n\n\n\n0.5.5\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  (\n#89\n)\n\n\n[BUGFIX] All find queries are now handled properly\n  (\n#88\n)\n\n\n\n\n0.5.4\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  (\n#81\n)\n\n\n[ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  (\n#74\n)\n  (\n#77\n)\n  (\n#84\n)\n\n\n[INTERNAL] Use ember-try to enable a test matrix\n  (\n#85\n)\n\n\n\n\n0.5.3\n\n\n\n\n[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  (\n#67\n)\n\n\n[DOCS] Add Google Analytics to documentation site\n  (\n#69\n)\n\n\n[ENHANCEMENT] Support added for coalesceFindRequests\n  (\n#68\n)\n\n\n[INTERNAL] Revised goals for the adapter\n  (\n#70\n)\n\n\n\n\n0.5.2\n\n\n\n\n[BUGFIX] Return jqXHR for non-400 errors\n  (\n#62\n)\n\n\n[BREAKING BUGFIX] Set default host to localhost:8000\n  (\n#64\n)\n\n\n[DOCS] Update installation instructions\n  (\n#65\n)\n\n\n\n\n0.5.1\n\n\n\n\n[ENHANCEMENT] Add support for pagination metadata\n  (\n#45\n)\n\n\n[ENHANCEMENT] Add documentation for contributing\n  (\n#49\n)\n\n\n[ENHANCEMENT] Add blueprints and support for embedded records\n  (\n#51\n)\n\n\n[ENHANCEMENT] Add option to remove trailing slashes\n  (\n#50\n)\n\n\n[ENHANCEMENT] Test coverage for all supported versions of ember-data\n  (\n#56\n)\n\n\n\n\n0.5.0\n\n\n\n\n[BREAKING REFACTOR] Rewrite \ntoranb/ember-data-django-rest-adapter\n as an ember-cli addon", 
+            "text": "ember-django-adapter Changelog\n\n\nMaster\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.6)\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  (\n#91\n)\n\n\n\n\n0.5.5\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  (\n#89\n)\n\n\n[BUGFIX] All find queries are now handled properly\n  (\n#88\n)\n\n\n\n\n0.5.4\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  (\n#81\n)\n\n\n[ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  (\n#74\n)\n  (\n#77\n)\n  (\n#84\n)\n\n\n[INTERNAL] Use ember-try to enable a test matrix\n  (\n#85\n)\n\n\n\n\n0.5.3\n\n\n\n\n[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  (\n#67\n)\n\n\n[DOCS] Add Google Analytics to documentation site\n  (\n#69\n)\n\n\n[ENHANCEMENT] Support added for coalesceFindRequests\n  (\n#68\n)\n\n\n[INTERNAL] Revised goals for the adapter\n  (\n#70\n)\n\n\n\n\n0.5.2\n\n\n\n\n[BUGFIX] Return jqXHR for non-400 errors\n  (\n#62\n)\n\n\n[BREAKING BUGFIX] Set default host to localhost:8000\n  (\n#64\n)\n\n\n[DOCS] Update installation instructions\n  (\n#65\n)\n\n\n\n\n0.5.1\n\n\n\n\n[ENHANCEMENT] Add support for pagination metadata\n  (\n#45\n)\n\n\n[ENHANCEMENT] Add documentation for contributing\n  (\n#49\n)\n\n\n[ENHANCEMENT] Add blueprints and support for embedded records\n  (\n#51\n)\n\n\n[ENHANCEMENT] Add option to remove trailing slashes\n  (\n#50\n)\n\n\n[ENHANCEMENT] Test coverage for all supported versions of ember-data\n  (\n#56\n)\n\n\n\n\n0.5.0\n\n\n\n\n[BREAKING REFACTOR] Rewrite \ntoranb/ember-data-django-rest-adapter\n as an ember-cli addon", 
             "title": "Changelog"
         }, 
         {
@@ -157,7 +157,7 @@
         }, 
         {
             "location": "/changelog/#master", 
-            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  ( #91 )", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.6)  [INTERNAL] Updated ember-cli version to latest (0.2.5)\n  ( #91 )", 
             "title": "Master"
         }, 
         {
