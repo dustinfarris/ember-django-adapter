@@ -12,8 +12,8 @@ designed to work with Django REST Framework.
 To build a project using Ember Django Adapter, you will need to be using:
 
 * Django REST Framwork >= 3.0
-* Ember Data >= 1.0.0-beta.17
-* Ember CLI >= 0.2.5
+* Ember Data >= 1.0.0-beta.18
+* Ember CLI >= 0.2.6
 
 
 ## Quickstart
