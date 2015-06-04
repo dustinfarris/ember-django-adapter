@@ -4,6 +4,11 @@ ember-django-adapter Changelog
 
 Master
 ------
+
+
+0.5.6
+-----
+
 * [INTERNAL] Updated ember-cli version to latest (0.2.7)
   ([#99](https://github.com/dustinfarris/ember-django-adapter/pull/99))
 * [INTERNAL] Updated ember-cli version to latest (0.2.6)
