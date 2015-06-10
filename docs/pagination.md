@@ -105,7 +105,7 @@ REST_FRAMEWORK = {
 ```
 
 ```python
-//utils.pagination.py
+# utils/pagination.py
 from rest_framework.compat import OrderedDict
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
