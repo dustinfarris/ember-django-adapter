@@ -97,5 +97,54 @@ The complete pagination configuration documentation is available in Django REST 
 
 [https://github.com/mharris717/ember-cli-pagination](https://github.com/mharris717/ember-cli-pagination)
 
-It's should be possible to use the pagination metadata with Ember CLI Pagination. If you
-get this working, please consider submitting a pull request documenting the configuration.
+Add a total_pages key in API response by making a CustomPageNumberPagination class
+```python
+REST_FRAMEWORK = {
+  'DEFAULT_PAGINATION_CLASS': 'utils.pagination.CustomPageNumberPagination'
+}
+```
+
+```python
+# utils/pagination.py
+from rest_framework.compat import OrderedDict
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+
+class CustomPageNumberPagination(PageNumberPagination):
+    def get_paginated_response(self, data):
+        return Response(OrderedDict([
+            ('total_pages', self.page.paginator.num_pages),
+            ('count', self.page.paginator.count),
+            ('next', self.get_next_link()),
+            ('previous', self.get_previous_link()),
+            ('results', data)
+        ]))
+```
+
+Then override ```extractMeta``` function of the DRFSerializer in your model serializer
+
+```js
+//app/serializer/post.js
+import DRFSerializer from './drf';
+import DS from 'ember-data';
+
+export default DRFSerializer.extend(DS.EmbeddedRecordsMixin, {
+    extractMeta: function(store, type, payload) {
+        if (payload && payload.results) {
+          // Sets the metadata for the type.
+          store.setMetadataFor(type, {
+            count: payload.count,
+            next: this.extractPageNumber(payload.next),
+            previous: this.extractPageNumber(payload.previous),
+            total_pages: payload.total_pages
+          });
+
+          // Keep ember data from trying to parse the metadata as a records
+          delete payload.count;
+          delete payload.next;
+          delete payload.previous;
+          delete payload.total_pages;
+        }
+    },
+});
+```
