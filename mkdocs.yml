@@ -1,14 +1,14 @@
 site_name: Ember Django Adapter
 repo_url: https://github.com/dustinfarris/ember-django-adapter
 pages:
-  - ['index.md', 'Introduction']
-  - ['configuring.md']
-  - ['extending.md']
-  - ['trailing-slashes.md']
-  - ['embedded-records.md']
-  - ['pagination.md']
-  - ['coalesce-find-requests.md']
-  - ['contributing.md']
-  - ['changelog.md']
+- Introduction: 'index.md'
+- Configuring: 'configuring.md'
+- Extending: 'extending.md'
+- Trailing Slashes: 'trailing-slashes.md'
+- Embedded Records: 'embedded-records.md'
+- Pagination: 'pagination.md'
+- Coalesce Find Requests: 'coalesce-find-requests.md'
+- Contributing: 'contributing.md'
+- Changelog: 'changelog.md'
 theme: readthedocs
 google_analytics: ['UA-13275015-13', 'auto']
