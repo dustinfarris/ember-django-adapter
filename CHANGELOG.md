@@ -4,6 +4,7 @@ ember-django-adapter Changelog
 
 Master
 ------
+* [ENHANCEMENT] Add support for HyperlinkedRelatedFields.
 
 
 0.5.6

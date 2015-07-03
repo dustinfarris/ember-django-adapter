@@ -13,6 +13,6 @@
     "loader.js": "ember-cli/loader.js#3.2.0",
     "qunit": "~1.17.1",
     "sinon": "http://sinonjs.org/releases/sinon-1.12.2.js",
-    "pretender": "~0.4.2"
+    "pretender": "~0.6.0"
   }
 }

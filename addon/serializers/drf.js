@@ -11,6 +11,51 @@ import Ember from 'ember';
  * @extends DS.RESTSerializer
  */
 export default DS.RESTSerializer.extend({
+  /**
+   * Normalizes a part of the JSON payload returned by the server. This
+   * version simply calls addRelationshipsToLinks() before invoking
+   * the RESTSerializer's version.
+   *
+   * @method normalize
+   * @param {subclass of DS.Model} typeClass
+   * @param {Object} hash
+   * @param {String} prop
+   * @return {Object}
+   */
+  normalize: function(typeClass, hash, prop) {
+    this.addRelationshipsToLinks(typeClass, hash);
+    return this._super(typeClass, hash, prop);
+  },
+
+  /**
+   *  Adds relationships to the links hash as expected by the RESTSerializer.
+   *
+   * @method addRelationshipsToLinks
+   * @private
+   * @param {subclass of DS.Model} typeClass
+   * @param {Object} hash
+   */
+  addRelationshipsToLinks: function(typeClass, hash) {
+    if (!hash.hasOwnProperty('links')) {
+      hash['links'] = {};
+    }
+
+    typeClass.eachRelationship(function(key, relationship) {
+      let payloadRelKey = this.keyForRelationship(key);
+      if (!hash.hasOwnProperty(payloadRelKey)) {
+        return;
+      }
+      if (relationship.kind === 'hasMany' || relationship.kind === 'belongsTo') {
+        // Matches strings starting with: https://, http://, //, /
+        var payloadRel = hash[payloadRelKey];
+        if (!Ember.isNone(payloadRel) && !Ember.isNone(payloadRel.match) &&
+          typeof(payloadRel.match) === 'function' && payloadRel.match(/^((https?:)?\/\/|\/)\w/)) {
+          hash['links'][key] = hash[payloadRelKey];
+          delete hash[payloadRelKey];
+        }
+      }
+    }, this);
+  },
 
   /**
    *  Returns the number extracted from the page number query param of
@@ -69,6 +114,7 @@ export default DS.RESTSerializer.extend({
    * @return {Object} json The deserialized payload
    */
   extractSingle: function(store, type, payload, id) {
+    // Convert payload to json format expected by the RESTSerializer.
     var convertedPayload = {};
     convertedPayload[type.modelName] = payload;
     return this._super(store, type, convertedPayload, id);
@@ -82,13 +128,12 @@ export default DS.RESTSerializer.extend({
    * @param {DS.Store} store
    * @param {subclass of DS.Model} type
    * @param {Object} payload
-   * @param {String or Number} id
    * @return {Array} array An array of deserialized objects
    */
   extractArray: function(store, type, payload) {
     // Convert payload to json format expected by the RESTSerializer.
     // This function is being overridden instead of normalizePayload()
-    // because `results` will only be in lists.
+    // because the `results` hash is only in lists of records.
     var convertedPayload = {};
     if (payload.results) {
       convertedPayload[type.modelName] = payload.results;
@@ -139,7 +184,6 @@ export default DS.RESTSerializer.extend({
    *
    * @method keyForRelationship
    * @param {String} key
-   * @param {String} type The type of relationship
    * @return {String} normalized key
    */
   keyForRelationship: function(key) {
