@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Coalesce find requests - Ember Django Adapter</title>
+  <title>Coalesce Find Requests - Ember Django Adapter</title>
   
 
   <link rel="shortcut icon" href="../img/favicon.ico">
@@ -20,7 +20,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Coalesce find requests";
+    var mkdocs_page_name = "Coalesce Find Requests";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -82,14 +82,14 @@
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../trailing-slashes/">Trailing slashes</a>
+        <a class="" href="../trailing-slashes/">Trailing Slashes</a>
         
     </li>
 <li>
           
             <li>
     <li class="toctree-l1 ">
-        <a class="" href="../embedded-records/">Embedded records</a>
+        <a class="" href="../embedded-records/">Embedded Records</a>
         
     </li>
 <li>
@@ -103,7 +103,7 @@
           
             <li>
     <li class="toctree-l1 current">
-        <a class="current" href="./">Coalesce find requests</a>
+        <a class="current" href="./">Coalesce Find Requests</a>
         
             <ul>
             
@@ -115,6 +115,13 @@
                 
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../hyperlinked-related-fields/">Hyperlinked Related Fields</a>
         
     </li>
 <li>
@@ -155,7 +162,7 @@
     
       
     
-    <li>Coalesce find requests</li>
+    <li>Coalesce Find Requests</li>
     <li class="wy-breadcrumbs-aside">
       
         
@@ -172,6 +179,9 @@
                 <h1 id="coalescing-find-requests">Coalescing Find Requests</h1>
 <p>When a record returns the IDs of records in a hasMany relationship, Ember Data
 allows us to opt-in to combine these requests into a single request.</p>
+<p><em>Note:</em> Using <a href="../hyperlinked-related-fields/">hyperlinked related fields</a> to retrieve related
+records in a single request is preferred over using coalesceFindRequests since there is a limit on
+the number of records per request on read-only fields due to URL length restrictions. </p>
 <p>Suppose you have Ember models:</p>
 <pre><code class="js">// app/models/person.js
 
@@ -310,7 +320,7 @@ data:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../contributing/" class="btn btn-neutral float-right" title="Contributing"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../hyperlinked-related-fields/" class="btn btn-neutral float-right" title="Hyperlinked Related Fields"/>Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../pagination/" class="btn btn-neutral" title="Pagination"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -344,7 +354,7 @@ data:</p>
         <span><a href="../pagination/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../hyperlinked-related-fields/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
