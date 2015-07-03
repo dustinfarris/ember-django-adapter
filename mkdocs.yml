@@ -8,6 +8,7 @@ pages:
 - Embedded Records: 'embedded-records.md'
 - Pagination: 'pagination.md'
 - Coalesce Find Requests: 'coalesce-find-requests.md'
+- Hyperlinked Related Fields: 'hyperlinked-related-fields.md'
 - Contributing: 'contributing.md'
 - Changelog: 'changelog.md'
 theme: readthedocs
