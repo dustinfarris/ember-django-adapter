@@ -289,52 +289,6 @@ for post 11.</p>
 ]
 </code></pre>
 
-<p>If you want to paginate the results in the nested comments URL, you can use this example
-to get started.</p>
-<pre><code class="python"># views.py
-class NestedCommentsPagination(PageNumberPagination):
-    page_size = 10
-
-
-class PostViewSet(viewsets.ModelViewSet):
-    serializer_class = PostSerializer
-    queryset = Post.objects.all()
-    comments_paginator = NestedCommentsPagination()
-
-    @detail_route()
-    def comments(self, request, pk=None):
-        comments = self.get_object().comments.all()
-
-        page = self.comments_paginator.paginate_queryset(comments, request, view=self)
-        if page is not None:
-            serializer = CommentSerializer(page, context={'request': request}, many=True)
-            return self.comments_paginator.get_paginated_response(serializer.data)
-
-        serializer = CommentSerializer(comments, context={'request': request}, many=True)
-        return Response(serializer.data)
-</code></pre>
-
-<p>The json output would look something like this.</p>
-<pre><code class="json">{
-    &quot;count&quot;: 14,
-    &quot;next&quot;: &quot;http://localhost:8000/api/posts/1/comments/?page=2&quot;,
-    &quot;previous&quot;: null,
-    &quot;results&quot;: [
-        {
-            &quot;id&quot;: 1,
-            &quot;body&quot;: &quot;comment 1&quot;,
-            &quot;post&quot;: &quot;http://localhost:8000/api/posts/1/&quot;
-        },
-...
-        {
-            &quot;id&quot;: 17,
-            &quot;body&quot;: &quot;comment 17&quot;,
-            &quot;post&quot;: &quot;http://localhost:8000/api/posts/1/&quot;
-        }
-    ]
-}
-</code></pre>
-
 <h2 id="write-operations">Write Operations</h2>
 <p>In this example, the comments <code>@detail_route</code> is read-only. If you need to perform
 write operations on the specific related records (e.g. create, update or delete
