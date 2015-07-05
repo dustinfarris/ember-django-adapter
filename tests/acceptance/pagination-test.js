@@ -113,7 +113,7 @@ module('Acceptance: Pagination', {
 test('Retrieve list of paginated records', function(assert) {
   assert.expect(8);
 
-  return store.find('post').then(function(response) {
+  return store.findAll('post').then(function(response) {
     assert.ok(response);
 
     assert.equal(response.get('length'), 4);
@@ -138,7 +138,7 @@ test('Retrieve list of paginated records', function(assert) {
 test("Type metadata doesn't have previous", function(assert) {
   assert.expect(5);
 
-  return store.find('post').then(function(response) {
+  return store.findAll('post').then(function(response) {
     assert.ok(response);
 
     // Test the type metadata.
@@ -147,7 +147,7 @@ test("Type metadata doesn't have previous", function(assert) {
     assert.equal(metadata.next, 2);
     assert.equal(metadata.previous, null);
 
-    // No metadata on results when using find without query params.
+    // No metadata on results when using findAll.
     assert.ok(!response.get('meta'));
   });
 });
@@ -156,7 +156,7 @@ test("Type metadata doesn't have previous", function(assert) {
 test("Type metadata doesn't have next", function(assert) {
   assert.expect(8);
 
-  return store.find('post', {page: 2}).then(function(response) {
+  return store.query('post', {page: 2}).then(function(response) {
     assert.ok(response);
     assert.equal(response.get('length'), 2);
 
@@ -178,7 +178,7 @@ test("Type metadata doesn't have next", function(assert) {
 test("Test page_size query param", function(assert) {
   assert.expect(8);
 
-  return store.find('post', {page: 2, page_size: 2}).then(function(response) {
+  return store.query('post', {page: 2, page_size: 2}).then(function(response) {
     assert.ok(response);
     assert.equal(response.get('length'), 2);
 

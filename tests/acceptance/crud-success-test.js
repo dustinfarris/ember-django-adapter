@@ -82,7 +82,7 @@ module('Acceptance: CRUD Success', {
 test('Retrieve list of non-paginated records', function(assert) {
   assert.expect(4);
 
-  return store.find('post').then(function(posts) {
+  return store.findAll('post').then(function(posts) {
 
     assert.ok(posts);
     assert.equal(posts.get('length'), 3);
@@ -99,7 +99,7 @@ test('Retrieve single record', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
       assert.equal(post.get('postTitle'), 'post title 1');
@@ -113,7 +113,7 @@ test('Retrieve via query', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('post', {post_title: 'post title 2'}).then(function(post) {
+    return store.query('post', {post_title: 'post title 2'}).then(function(post) {
 
       assert.ok(post);
 
@@ -149,7 +149,7 @@ test('Update record', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
       assert.equal(post.get('isDirty'), false);
@@ -177,7 +177,7 @@ test('Delete record', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
 

@@ -85,7 +85,7 @@ test('belongsTo', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('comment', 2).then(function(comment) {
+    return store.findRecord('comment', 2).then(function(comment) {
 
       assert.ok(comment);
 
@@ -102,7 +102,7 @@ test('hasMany', function(assert) {
 
   return Ember.run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
 
