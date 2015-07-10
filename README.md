@@ -5,9 +5,15 @@ Ember Django Adapter
 
 [![Ember Observer Score](http://emberobserver.com/badges/ember-django-adapter.svg)](http://emberobserver.com/addons/ember-django-adapter)
 
-This Ember addon enables the use of [Django REST Framework][] as an API
-backend. The addon is compatible with [ember-cli][] version 0.2.7 and
-higher, and Ember Data v1.0.0-beta.18.
+[Ember Data][] is a core Ember.js library that provides a store and ORM for working
+with your Ember models.  Ember Data works with JSON API out of the box, however
+"Ember Data is designed to be agnostic to the underlying persistence mechanism".
+To that end, Ember Data encourages the use of adapters to manage communication with
+various backend APIs.
+
+This adapter enables the use of [Django REST Framework][] as an API backend for
+Ember Data.  The addon is compatible with [ember-cli][] version 0.2.7 and higher, and
+Ember Data v1.0.0-beta.19.
 
 
 Community
@@ -31,6 +37,7 @@ Goals
 
 
 
+[Ember Data]: https://github.com/emberjs/data
 [Django REST Framework]: http://www.django-rest-framework.org/
 [ember-cli]: http://www.ember-cli.com/
 [ember-django-adapter/issues]: https://github.com/dustinfarris/ember-django-adapter/issues
