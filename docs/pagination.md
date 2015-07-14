@@ -10,7 +10,7 @@ to the server.
 To get a page of records, simply run a find request with the `page` query param:
 
 ```js
-var result = this.store.find("post", {
+var result = this.store.query("post", {
   page: 2
 });
 ```
@@ -51,7 +51,7 @@ to check this condition before using it.
 
 ```js
 if (meta.next) {
-  store.find('post', {page: meta.next})
+  store.query('post', {page: meta.next})
 }
 ```
 
@@ -67,7 +67,7 @@ name that you set in the find request. For example, if you set
  and `page_size` query params. For example:
 
 ```js
-var result = this.store.find("post", {
+var result = this.store.query("post", {
   page: 1,
   page_size: 10
 });
