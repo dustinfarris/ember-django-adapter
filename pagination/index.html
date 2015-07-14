@@ -186,7 +186,7 @@ Metadata from Django REST Framework paginated list views is updated on every req
 to the server.</p>
 <h2 id="retrieving-the-metadata">Retrieving the Metadata</h2>
 <p>To get a page of records, simply run a find request with the <code>page</code> query param:</p>
-<pre><code class="js">var result = this.store.find(&quot;post&quot;, {
+<pre><code class="js">var result = this.store.query(&quot;post&quot;, {
   page: 2
 });
 </code></pre>
@@ -217,7 +217,7 @@ to paginate through a Django REST Framework paginated list view.</p>
 query param. <code>null</code> is not a valid value for the <code>page</code> query param so applications need
 to check this condition before using it.</p>
 <pre><code class="js">if (meta.next) {
-  store.find('post', {page: meta.next})
+  store.query('post', {page: meta.next})
 }
 </code></pre>
 
@@ -229,7 +229,7 @@ it's possible to override the server-side page size by including the query param
 name that you set in the find request. For example, if you set
 <code>PAGINATE_BY_PARAM = 'page_size'</code>, you would run the find request with the <code>page</code>
  and <code>page_size</code> query params. For example:</p>
-<pre><code class="js">var result = this.store.find(&quot;post&quot;, {
+<pre><code class="js">var result = this.store.query(&quot;post&quot;, {
   page: 1,
   page_size: 10
 });
