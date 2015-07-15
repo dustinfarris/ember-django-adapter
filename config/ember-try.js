@@ -1,7 +1,7 @@
 module.exports = {
   scenarios: [
     {
-      name: 'ember-data-beta',
+      name: 'ember-data-stable',
       dependencies: {
         'ember-data': '1.13.5'
       }
