@@ -20,18 +20,18 @@ module('Acceptance: CRUD Failure', {
     server = new Pretender(function() {
 
       // Permission denied error
-      this.get('/test-api/posts/1/', function(request) {
+      this.get('/test-api/posts/1/', function() {
         return [401, {'Content-Type': 'application/json'}, JSON.stringify({detail: 'Authentication credentials were not provided.'})];
       });
 
       // Server error
-      this.get('/test-api/posts/2/', function(request) {
+      this.get('/test-api/posts/2/', function() {
         // This is the default error page for Django when DEBUG is set to False.
         return [500, {'Content-Type': 'application/json'}, JSON.stringify({detail: 'Something bad'})];
       });
 
       // Authentication Invalid error
-      this.post('/test-api/posts/3', function(request) {
+      this.post('/test-api/posts/3', function() {
         return [400, {'Content-Type': 'application/json'}, JSON.stringify({name: 'error 1', non_field_errors: 'error 2'})];
       });
 
@@ -52,7 +52,7 @@ module('Acceptance: CRUD Failure', {
       });
 
       // Update field errors
-      this.get('/test-api/posts/3/', function(request) {
+      this.get('/test-api/posts/3/', function() {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify({
           id: 3,
           post_title: 'post title 3',
@@ -60,7 +60,7 @@ module('Acceptance: CRUD Failure', {
           comments: []
         })];
       });
-      this.put('/test-api/posts/3/', function(request) {
+      this.put('/test-api/posts/3/', function() {
         return [400, {'Content-Type': 'application/json'}, JSON.stringify({
           post_title: ['Ensure this value has at most 50 characters (it has 53).'],
           body: ['This field is required.']

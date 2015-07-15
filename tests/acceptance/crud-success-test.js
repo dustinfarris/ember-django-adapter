@@ -49,7 +49,7 @@ module('Acceptance: CRUD Success', {
       });
 
       // Retrieve single record
-      this.get('/test-api/posts/1/', function(request) {
+      this.get('/test-api/posts/1/', function() {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts[0])];
       });
 
@@ -67,7 +67,7 @@ module('Acceptance: CRUD Success', {
       });
 
       // Delete record
-      this.delete('/test-api/posts/1/', function(request) {
+      this.delete('/test-api/posts/1/', function() {
         return [204];
       });
     });
