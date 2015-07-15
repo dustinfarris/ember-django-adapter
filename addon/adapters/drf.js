@@ -54,8 +54,8 @@ export default DS.RESTAdapter.extend({
    * @param {DS.Snapshot} snapshot
    * @return {String} url
    */
-  buildURL: function(type, id, snapshot, requestType) {
-    var url = this._super(type, id, snapshot, requestType);
+  buildURL: function(type, id, snapshot, requestType, query) {
+    var url = this._super(type, id, snapshot, requestType, query);
     if (this.get('addTrailingSlashes')) {
       if (url.charAt(url.length - 1) !== '/') {
         url += '/';
