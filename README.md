@@ -24,6 +24,38 @@ Community
 * Website: [dustinfarris.com/ember-django-adapter][]
 
 
+Development Hints
+-----------------
+
+### Working with master
+
+Install EDA pegged to master:
+
+```
+npm i --save-dev ember-django-adapter@dustinfarris/ember-django-adapter
+```
+
+### Working with your fork
+
+Clone and install EDA:
+
+```
+git clone git@github.com:yourname/ember-django-adapter
+cd ember-django-adapter
+npm i && bower i
+npm link
+```
+
+Install test dependencies in your project, and link your local copy of EDA:
+
+```
+cd myproject
+bower i pretender
+bower i http://sinonjs.org/releases/sinon-1.12.1.js
+npm link ember-django-adapter
+```
+
+
 Goals
 -----
 
