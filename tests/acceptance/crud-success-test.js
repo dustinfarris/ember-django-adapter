@@ -56,7 +56,6 @@ module('Acceptance: CRUD Success', {
       // Create record
       this.post('/test-api/posts/', function(request) {
         var data = Ember.$.parseJSON(request.requestBody);
-        data['id'] = 4;
         return [201, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
 
@@ -125,11 +124,12 @@ test('Retrieve via query', function(assert) {
 });
 
 test('Create record', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
 
   return Ember.run(function() {
 
     var post = store.createRecord('post', {
+      id: 4,
       postTitle: 'my new post title',
       body: 'my new post body'
     });
@@ -140,6 +140,10 @@ test('Create record', function(assert) {
       assert.equal(post.get('id'), 4);
       assert.equal(post.get('postTitle'), 'my new post title');
       assert.equal(post.get('body'), 'my new post body');
+
+      var requestBody = (JSON.parse(server.handledRequests.pop().requestBody));
+      assert.equal(requestBody.id, 4);
+
     });
   });
 });
