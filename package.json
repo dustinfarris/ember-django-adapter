@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember try ember-data-stable"
+    "test": "ember try:testall"
   },
   "repository": "https://github.com/dustinfarris/ember-django-adapter",
   "engines": {
