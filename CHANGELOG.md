@@ -4,6 +4,8 @@ ember-django-adapter Changelog
 
 Master
 ------
+* [BREAKING ENHANCEMENT] Update to new Ember 1.13 serializer API
+  ([#114](https://github.com/dustinfarris/ember-django-adapter/pull/114))
 * [ENHANCEMENT] Add support for HyperlinkedRelatedFields.
 * [INTERNAL] Updated ember-cli version to latest (1.13.1)
 * [ENHANCEMENT] Adapter now supports ember-data 1.13.5

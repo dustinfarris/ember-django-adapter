@@ -35,7 +35,7 @@ module('Acceptance: CRUD Success', {
   beforeEach: function() {
     application = startApp();
 
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:store');
 
     server = new Pretender(function() {
 
@@ -156,18 +156,18 @@ test('Update record', function(assert) {
     return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
-      assert.equal(post.get('isDirty'), false);
+      assert.equal(post.get('hasDirtyAttributes'), false);
 
       return Ember.run(function() {
 
         post.set('postTitle', 'new post title');
         post.set('body', 'new post body');
-        assert.equal(post.get('isDirty'), true);
+        assert.equal(post.get('hasDirtyAttributes'), true);
 
         return post.save().then(function(post) {
 
           assert.ok(post);
-          assert.equal(post.get('isDirty'), false);
+          assert.equal(post.get('hasDirtyAttributes'), false);
           assert.equal(post.get('postTitle'), 'new post title');
           assert.equal(post.get('body'), 'new post body');
         });

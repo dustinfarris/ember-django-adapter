@@ -32,4 +32,5 @@ In case of several errors, the InvalidError.errors attribute will include
 { detail: 'error 2', meta { key: 'non_field_errors' } }  //or whatever key name you configured
 ```
 
-     **note** we store the key for non-field errors in a meta object as this is non standard in the error object defined by the jsonapi spec
+**Note:** We store the key for non-field errors in a meta object as this is non standard in the error
+object defined by the JSON API spec.

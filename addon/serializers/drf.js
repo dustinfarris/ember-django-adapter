@@ -10,51 +10,47 @@ import Ember from 'ember';
  * @class DRFSerializer
  * @extends DS.RESTSerializer
  */
-export default DS.RESTSerializer.extend({
+export default DS.JSONSerializer.extend({
+  // Remove this in our 2.0 release.
+  isNewSerializerAPI: true,
+
   /**
-   * Normalizes a part of the JSON payload returned by the server. This
-   * version simply calls addRelationshipsToLinks() before invoking
-   * the RESTSerializer's version.
+   * Returns the resource's relationships formatted as a JSON-API "relationships object".
    *
-   * @method normalize
-   * @param {subclass of DS.Model} typeClass
-   * @param {Object} hash
-   * @param {String} prop
+   * http://jsonapi.org/format/#document-resource-object-relationships
+   *
+   * This version adds a 'links'hash with relationship urls before invoking the
+   * JSONSerializer's version.
+   *
+   * @method extractRelationships
+   * @param {Object} modelClass
+   * @param {Object} resourceHash
    * @return {Object}
    */
-  normalize: function(typeClass, hash, prop) {
-    this.addRelationshipsToLinks(typeClass, hash);
-    return this._super(typeClass, hash, prop);
-  },
-
-  /**
-   *  Adds relationships to the links hash as expected by the RESTSerializer.
-   *
-   * @method addRelationshipsToLinks
-   * @private
-   * @param {subclass of DS.Model} typeClass
-   * @param {Object} hash
-   */
-  addRelationshipsToLinks: function(typeClass, hash) {
-    if (!hash.hasOwnProperty('links')) {
-      hash['links'] = {};
+  extractRelationships: function (modelClass, resourceHash) {
+    if (!resourceHash.hasOwnProperty('links')) {
+      resourceHash['links'] = {};
     }
 
-    typeClass.eachRelationship(function(key, relationship) {
+    modelClass.eachRelationship(function(key, relationshipMeta) {
       let payloadRelKey = this.keyForRelationship(key);
-      if (!hash.hasOwnProperty(payloadRelKey)) {
+
+      if (!resourceHash.hasOwnProperty(payloadRelKey)) {
         return;
       }
-      if (relationship.kind === 'hasMany' || relationship.kind === 'belongsTo') {
+
+      if (relationshipMeta.kind === 'hasMany' || relationshipMeta.kind === 'belongsTo') {
         // Matches strings starting with: https://, http://, //, /
-        var payloadRel = hash[payloadRelKey];
+        var payloadRel = resourceHash[payloadRelKey];
         if (!Ember.isNone(payloadRel) && !Ember.isNone(payloadRel.match) &&
           typeof(payloadRel.match) === 'function' && payloadRel.match(/^((https?:)?\/\/|\/)\w/)) {
-          hash['links'][key] = hash[payloadRelKey];
-          delete hash[payloadRelKey];
+          resourceHash['links'][key] = resourceHash[payloadRelKey];
+          delete resourceHash[payloadRelKey];
         }
       }
     }, this);
+
+    return this._super(modelClass, resourceHash);
   },
 
   /**
@@ -77,70 +73,40 @@ export default DS.RESTSerializer.extend({
   },
 
   /**
-   * `extractMeta` is used to deserialize any meta information in the
-   * adapter payload. By default Ember Data expects meta information to
-   * be located on the `meta` property of the payload object.
+   * Normalizes server responses for array or list data using the JSONSerializer's version
+   * of this function.
    *
-   * @method extractMeta
+   * If the payload has a results property, all properties that aren't in the results
+   * are added to the 'meta' hash so that Ember Data can use these properties for metadata.
+   * The next and previous pagination URLs are parsed to make it easier to paginate data
+   * in applications.
+   *
+   * @method normalizeArrayResponse
    * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
+   * @param {DS.Model} primaryModelClass
    * @param {Object} payload
+   * @param {String|Number} id
+   * @param {String} requestType
+   * @return {Object} JSON-API Document
    */
-  extractMeta: function(store, type, payload) {
-    if (payload && payload.results) {
-      // Sets the metadata for the type.
-      store.setMetadataFor(type, {
-        count: payload.count,
-        next: this.extractPageNumber(payload.next),
-        previous: this.extractPageNumber(payload.previous)
-      });
+  normalizeArrayResponse: function(store, primaryModelClass, payload, id, requestType) {
+    if (!Ember.isNone(payload) && payload.hasOwnProperty('results')) {
+      // Move DRF metadata to the meta hash.
+      let modifiedPayload = JSON.parse(JSON.stringify(payload.results));
+      delete payload.results;
+      modifiedPayload['meta'] = JSON.parse(JSON.stringify(payload));
 
-      // Keep ember data from trying to parse the metadata as a records
-      delete payload.count;
-      delete payload.next;
-      delete payload.previous;
+      // The next and previous pagination URLs are parsed to make it easier to paginate data in applications.
+      if (!Ember.isNone(modifiedPayload.meta['next'])) {
+        modifiedPayload.meta['next'] = this.extractPageNumber(modifiedPayload.meta['next']);
+      }
+      if (!Ember.isNone(modifiedPayload.meta['previous'])) {
+        modifiedPayload.meta['previous'] = this.extractPageNumber(modifiedPayload.meta['previous']);
+      }
+      return this._super(store, primaryModelClass, modifiedPayload, id, requestType);
     }
-  },
 
-  /**
-   * `extractSingle` is used to deserialize a single record returned
-   * from the adapter.
-   *
-   * @method extractSingle
-   * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
-   * @param {Object} payload
-   * @param {String or Number} id
-   * @return {Object} json The deserialized payload
-   */
-  extractSingle: function(store, type, payload, id) {
-    // Convert payload to json format expected by the RESTSerializer.
-    var convertedPayload = {};
-    convertedPayload[type.modelName] = payload;
-    return this._super(store, type, convertedPayload, id);
-  },
-
-  /**
-   * `extractArray` is used to deserialize an array of records
-   * returned from the adapter.
-   *
-   * @method extractArray
-   * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
-   * @param {Object} payload
-   * @return {Array} array An array of deserialized objects
-   */
-  extractArray: function(store, type, payload) {
-    // Convert payload to json format expected by the RESTSerializer.
-    // This function is being overridden instead of normalizePayload()
-    // because the `results` hash is only in lists of records.
-    var convertedPayload = {};
-    if (payload.results) {
-      convertedPayload[type.modelName] = payload.results;
-    } else {
-      convertedPayload[type.modelName] = payload;
-    }
-    return this._super(store, type, convertedPayload);
+    return this._super(store, primaryModelClass, payload, id, requestType);
   },
 
   /**

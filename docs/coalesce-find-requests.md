@@ -3,7 +3,7 @@
 When a record returns the IDs of records in a hasMany relationship, Ember Data
 allows us to opt-in to combine these requests into a single request.
 
-*Note:* Using [hyperlinked related fields](hyperlinked-related-fields.md) to retrieve related
+**Note:** Using [hyperlinked related fields](hyperlinked-related-fields.md) to retrieve related
 records in a single request is preferred over using coalesceFindRequests since there is a limit on
 the number of records per request on read-only fields due to URL length restrictions. 
 
