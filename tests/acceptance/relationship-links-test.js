@@ -48,12 +48,11 @@ var comments = [
   }
 ];
 
-
 module('Acceptance: Relationship Links', {
   beforeEach: function() {
     application = startApp();
 
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:store');
 
     server = new Pretender(function() {
       this.get('/test-api/posts/:id/', function(request) {
@@ -95,7 +94,6 @@ test('belongsTo', function(assert) {
     });
   });
 });
-
 
 test('hasMany', function(assert) {
   assert.expect(9);

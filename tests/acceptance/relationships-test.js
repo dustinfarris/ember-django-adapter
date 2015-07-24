@@ -52,7 +52,7 @@ module('Acceptance: Relationships', {
   beforeEach: function() {
     application = startApp();
 
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:store');
 
     server = new Pretender(function() {
 
@@ -87,7 +87,6 @@ test('belongsTo', function(assert) {
     });
   });
 });
-
 
 test('hasMany', function(assert) {
   assert.expect(6);

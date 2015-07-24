@@ -43,7 +43,7 @@ related comments instead of one URL per related record:
 }
 ```
 
-*Note:* It is also possible to use the [Coalesce Find Requests](coalesce-find-requests.md)
+**Note:** It is also possible to use the [Coalesce Find Requests](coalesce-find-requests.md)
 feature to retrieve related records in a single request, however, this is the preferred
 solution.
 

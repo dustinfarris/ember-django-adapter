@@ -5,44 +5,45 @@ import { moduleFor, test } from 'ember-qunit';
 // see app/serializers/application.js
 moduleFor('serializer:application', 'DRFSerializer', {});
 
-test('extractSingle', function(assert) {
-  var serializer = this.subject();
-  serializer._super = sinon.stub().returns('extracted single');
-  var type = {modelName: 'person'};
+test('normalizeArrayResponse - results', function(assert) {
+  let serializer = this.subject();
+  serializer._super = sinon.spy();
+  let primaryModelClass = {modelName: 'person'};
+  let payload = {
+    count: 'count',
+    next: '/api/posts/?page=3',
+    previous: '/api/posts/?page=1',
+    other: 'stuff',
+    results: ['result']
+  };
 
-  var result = serializer.extractSingle('store', type, 'payload', 'id');
+  serializer.normalizeArrayResponse('store', primaryModelClass, payload, 1, 'requestType');
+  assert.equal(serializer._super.callCount, 1);
+  assert.equal(serializer._super.lastCall.args[0],'store');
+  assert.propEqual(serializer._super.lastCall.args[1], primaryModelClass);
+  assert.equal(serializer._super.lastCall.args[3], 1);
+  assert.equal(serializer._super.lastCall.args[4], 'requestType');
 
-  assert.ok(serializer._super.calledWith(
-    'store', type, {person: 'payload'}, 'id'
-  ), '_super not called properly');
-  assert.equal(result, 'extracted single');
+  let modifiedPayload = serializer._super.lastCall.args[2];
+  assert.equal('result', modifiedPayload[0]);
+
+  assert.ok(modifiedPayload.meta);
+  assert.equal(modifiedPayload.meta['next'], 3);
+  assert.equal(modifiedPayload.meta['previous'], 1);
+  // Unknown metadata has been passed along to the meta object.
+  assert.equal(modifiedPayload.meta['other'], 'stuff');
 });
 
-test('extractArray - results', function(assert) {
-  var serializer = this.subject();
+test('normalizeArrayResponse - no results', function(assert) {
+  let serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
-  var type = {modelName: 'person'};
-  var payload = {other: 'stuff', results: ['result']};
+  let primaryModelClass = {modelName: 'person'};
+  let payload = {other: 'stuff'};
 
-  var result = serializer.extractArray('store', type, payload);
+  let result = serializer.normalizeArrayResponse('store', primaryModelClass, payload, 1, 'requestType');
 
-  assert.ok(serializer._super.calledWith(
-    'store', type, {person: ['result']}
-  ), '_super not called properly');
-  assert.equal(result, 'extracted array');
-});
-
-test('extractArray - no results', function(assert) {
-  var serializer = this.subject();
-  serializer._super = sinon.stub().returns('extracted array');
-  var type = {modelName: 'person'};
-  var payload = {other: 'stuff'};
-
-  var result = serializer.extractArray('store', type, payload);
-
-  assert.ok(serializer._super.calledWith(
-    'store', type, {person: {other: 'stuff'}}
-  ), '_super not called properly');
+  assert.ok(serializer._super.calledWith('store', primaryModelClass, payload, 1, 'requestType'),
+    '_super not called properly');
   assert.equal(result, 'extracted array');
 });
 
@@ -75,25 +76,6 @@ test('keyForRelationship', function(assert) {
   assert.equal(result, 'project_managers');
 });
 
-test('extractMeta', function(assert) {
-  var serializer = this.subject();
-  var store = {setMetadataFor: sinon.spy()};
-  var payload = {
-    results: 'mock',
-    count: 'count',
-    next: '/api/posts/?page=3',
-    previous: '/api/posts/?page=1'
-  };
-
-  serializer.extractMeta(store, 'type', payload);
-
-  assert.ok(store.setMetadataFor.calledWith('type', {count: 'count', next: 3, previous: 1}),
-    'metaForType not called properly');
-  assert.ok(!payload.count, 'payload.count not removed');
-  assert.ok(!payload.next, 'payload.next not removed');
-  assert.ok(!payload.previous, 'payload.previous not removed');
-});
-
 test('extractPageNumber', function(assert) {
   var serializer = this.subject();
 
@@ -116,28 +98,12 @@ test('extractPageNumber', function(assert) {
     'extractPageNumber failed on URL with similar query params');
 });
 
-test('normalize', function(assert) {
-  var serializer = this.subject();
-  serializer.addRelationshipsToLinks = sinon.spy();
-  var typeClass = {
-    eachAttribute: sinon.stub(),
-    eachRelationship: sinon.stub(),
-    eachTransformedAttribute: sinon.stub()
-  };
-  var payload = {dummy: 'data'};
-
-  serializer.normalize(typeClass, payload, 'animal');
-
-  assert.ok(serializer.addRelationshipsToLinks.calledWith(typeClass, payload),
-    'addRelationshipsToLinks not called properly');
-});
-
-test('addRelationshipsToLinks', function(assert) {
-  assert.expect(45);
+test('extractRelationships', function(assert) {
+  assert.expect(47);
 
   // Generates a payload hash for the specified urls array. This is used to generate
   // new payloads to test with different the relationships types.
-  function Payload(urls) {
+  function ResourceHash(urls) {
     this.id = 1;
     var letter = 'a';
     var self = this;
@@ -149,10 +115,10 @@ test('addRelationshipsToLinks', function(assert) {
 
   // Generates a typeClass object for the specified relationship and payload. This is used to generate
   // new stubbed out typeClasses to test with different the relationships types and payload.
-  function TypeClass(relationship, payload) {
+  function TypeClass(relationship, resourceHash) {
     this.eachRelationship = function(callback, binding) {
-      for (var key in payload) {
-        if (payload.hasOwnProperty(key) && key !== 'links' && key !== 'id') {
+      for (var key in resourceHash) {
+        if (resourceHash.hasOwnProperty(key) && key !== 'links' && key !== 'id') {
           callback.call(binding, key, {kind: relationship});
         }
       }
@@ -184,38 +150,42 @@ test('addRelationshipsToLinks', function(assert) {
   var wrongSizeLinksMessage = 'The links hash for the %@ relationship is not the correct size.';
 
   var serializer = this.subject();
+  // Add a spy to _super because we only want to test our code.
+  serializer._super = sinon.spy();
 
   // Test with hasMany and belongsTo relationships.
   var validRelationships = ['hasMany', 'belongsTo'];
   validRelationships.forEach(function(relationship) {
-    var payload = new Payload(testURLs);
-    serializer.addRelationshipsToLinks(new TypeClass(relationship, payload), payload);
+    var resourceHash = new ResourceHash(testURLs);
+    serializer.extractRelationships(new TypeClass(relationship, resourceHash), resourceHash);
 
-    assert.equal(Object.keys(payload).length, 9, Ember.String.fmt(wrongSizePayloadMessage, [relationship]));
+    assert.equal(Object.keys(resourceHash).length, 9, Ember.String.fmt(wrongSizePayloadMessage, [relationship]));
 
     // 'j' & 'k' need to be handled separately because they are false values.
     var expectedPayloadKeys = ['id', 'links', 'e', 'f', 'g', 'h', 'i'];
     expectedPayloadKeys.forEach(function(key) {
-      assert.ok(payload[key], Ember.String.fmt(missingKeyMessage, [relationship, key]));
+      assert.ok(resourceHash[key], Ember.String.fmt(missingKeyMessage, [relationship, key]));
     });
-    assert.equal(payload['j'], '', Ember.String.fmt(missingKeyMessage, [relationship, 'j']));
-    assert.equal(payload['k'], null, Ember.String.fmt(missingKeyMessage, [relationship], 'k'));
+    assert.equal(resourceHash['j'], '', Ember.String.fmt(missingKeyMessage, [relationship, 'j']));
+    assert.equal(resourceHash['k'], null, Ember.String.fmt(missingKeyMessage, [relationship], 'k'));
 
-    assert.equal(Object.keys(payload.links).length, 4, Ember.String.fmt(wrongSizeLinksMessage, [relationship]));
+    assert.equal(Object.keys(resourceHash.links).length, 4, Ember.String.fmt(wrongSizeLinksMessage, [relationship]));
 
     var i = 0;
     var expectedLinksKeys = ['a', 'b', 'c', 'd'];
     expectedLinksKeys.forEach(function(key) {
-      assert.equal(payload.links[key], testURLs[i],
+      assert.equal(resourceHash.links[key], testURLs[i],
         Ember.String.fmt('Links value of property %@ in the %@ relationship is not correct.', [key, relationship]));
       i++;
     });
   });
 
+  assert.equal(serializer._super.callCount, 2, '_super() was not called once for each relationship.');
+
   // Test with an unknown relationship.
   var relationship = 'xxUnknownXX';
-  var payload = new Payload(testURLs);
-  serializer.addRelationshipsToLinks(new TypeClass(relationship, payload), payload);
+  var payload = new ResourceHash(testURLs);
+  serializer.extractRelationships(new TypeClass(relationship, payload), payload);
 
   assert.equal(Object.keys(payload).length, 13, Ember.String.fmt(wrongSizePayloadMessage, [relationship]));
 
@@ -228,4 +198,6 @@ test('addRelationshipsToLinks', function(assert) {
   assert.equal(payload['k'], null, Ember.String.fmt(missingKeyMessage, [relationship], 'k'));
 
   assert.equal(Object.keys(payload.links).length, 0, Ember.String.fmt(wrongSizeLinksMessage, [relationship]));
+
+  assert.equal(serializer._super.callCount, 3, Ember.String.fmt('_super() was not called for the %@ relationship.', [relationship]));
 });

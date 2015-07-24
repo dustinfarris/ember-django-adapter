@@ -15,7 +15,7 @@ module('Acceptance: CRUD Failure', {
   beforeEach: function() {
     application = startApp();
 
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:store');
 
     server = new Pretender(function() {
 
@@ -174,10 +174,10 @@ test('Update field errors', function(assert) {
 
     return store.findRecord('post', 3).then(function(post) {
       assert.ok(post);
-      assert.equal(post.get('isDirty'), false);
+      assert.equal(post.get('hasDirtyAttributes'), false);
       post.set('postTitle', 'Lorem ipsum dolor sit amet, consectetur adipiscing el');
       post.set('body', '');
-      assert.equal(post.get('isDirty'), true);
+      assert.equal(post.get('hasDirtyAttributes'), true);
 
       post.save().then({}, function(response) {
         const postTitleErrors = post.get('errors.postTitle'),
