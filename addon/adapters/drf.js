@@ -37,25 +37,27 @@ export default DS.RESTAdapter.extend({
   },
 
   /**
-   * Build a URL for a given type and optional ID.
-   *
-   * By default, it pluralizes the type's name (for example, 'post'
-   * becomes 'posts' and 'person' becomes 'people').
-   *
-   * If an ID is specified, it adds the ID to the path generated for
-   * the type, separated by a `/`.
-   *
-   * If the adapter has the property `addTrailingSlashes` set to
-   * true, a trailing slash will be appended to the result.
-   *
-   * @method buildURL
-   * @param {String} type
-   * @param {String} id
-   * @param {DS.Snapshot} snapshot
-   * @return {String} url
-   */
-  buildURL: function(type, id, snapshot, requestType, query) {
-    var url = this._super(type, id, snapshot, requestType, query);
+    Builds a URL for a given model name and optional ID.
+
+    By default, it pluralizes the type's name (for example, 'post'
+    becomes 'posts' and 'person' becomes 'people').
+
+    If an ID is specified, it adds the ID to the path generated
+    for the type, separated by a `/`.
+
+    If the adapter has the property `addTrailingSlashes` set to
+    true, a trailing slash will be appended to the result.
+
+    @method buildURL
+    @param {String} modelName
+    @param {(String|Array|Object)} id single id or array of ids or query
+    @param {(DS.Snapshot|Array)} snapshot single snapshot or array of snapshots
+    @param {String} requestType
+    @param {Object} query object of query parameters to send for query requests.
+    @return {String} url
+  */
+  buildURL: function(modelName, id, snapshot, requestType, query) {
+    var url = this._super(modelName, id, snapshot, requestType, query);
     if (this.get('addTrailingSlashes')) {
       if (url.charAt(url.length - 1) !== '/') {
         url += '/';
