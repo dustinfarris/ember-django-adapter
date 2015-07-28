@@ -4,12 +4,30 @@ ember-django-adapter Changelog
 
 Master
 ------
-* [BREAKING ENHANCEMENT] Update to new Ember 1.13 serializer API
+
+* [BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API
   ([#114](https://github.com/dustinfarris/ember-django-adapter/pull/114))
-* [ENHANCEMENT] Add support for HyperlinkedRelatedFields.
+* [ENHANCEMENT] Support ember-data 1.13 series
+  ([#108](https://github.com/dustinfarris/ember-django-adapter/pull/108))
+* [ENHANCEMENT] Support HyperlinkedRelatedFields
+  ([#95](https://github.com/dustinfarris/ember-django-adapter/pull/95))
+* [ENHANCEMENT] Support object-level errors
+  ([#123](https://github.com/dustinfarris/ember-django-adapter/pull/123))
+* [ENHANCEMENT] Support query parameter in buildURL
+  ([#124](https://github.com/dustinfarris/ember-django-adapter/pull/124))
+* [BUGFIX] Remove coalesceFindRequests warning
+  ([#106](https://github.com/dustinfarris/ember-django-adapter/pull/106))
 * [INTERNAL] Updated ember-cli version to latest (1.13.1)
-* [ENHANCEMENT] Adapter now supports ember-data 1.13.5
-  ([#96](https://github.com/dustinfarris/ember-django-adapter/pull/108))
+  ([#112](https://github.com/dustinfarris/ember-django-adapter/pull/112))
+* [INTERNAL] Test for setting an explicit id on createRecord
+  ([#117](https://github.com/dustinfarris/ember-django-adapter/pull/117))
+* [INTERNAL] Acceptance test for embedded records
+  ([#119](https://github.com/dustinfarris/ember-django-adapter/pull/119))
+* [INTERNAL] Test for embedded belongsTo create with id
+  ([#120](https://github.com/dustinfarris/ember-django-adapter/pull/120))
+* [DOCS] Using ember-cli-pagination with the adapter
+  ([#101](https://github.com/dustinfarris/ember-django-adapter/pull/101))
+
 
 0.5.6
 -----
