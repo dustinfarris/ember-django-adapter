@@ -122,12 +122,13 @@ export default DS.RESTAdapter.extend({
         payload[key].forEach((error) => {
           if (key === this.get('nonFieldErrorsKey')) {
             out.push({
-              meta: {key: key},
-              detail: error
+              source: { pointer: 'data' },
+              detail: error,
+              title: 'Validation Error'
             });
           } else {
             out.push({
-              source: { pointer: `data/attributes/${key}`},
+              source: { pointer: `data/attributes/${key}` },
               detail: error,
               title: 'Invalid Attribute'
             });
