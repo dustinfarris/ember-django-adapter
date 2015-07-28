@@ -5,6 +5,10 @@ ember-django-adapter Changelog
 Master
 ------
 
+
+1.0.0
+-----
+
 * [BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API
   ([#114](https://github.com/dustinfarris/ember-django-adapter/pull/114))
 * [ENHANCEMENT] Support ember-data 1.13 series
