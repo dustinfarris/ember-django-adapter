@@ -108,8 +108,6 @@ test('Server error', function(assert) {
 });
 
 test('Invalid with non field errors', function(assert) {
-  //assert.expect(8);
-
   return Ember.run(function() {
 
     var post = store.createRecord('post', {
@@ -129,10 +127,12 @@ test('Invalid with non field errors', function(assert) {
       assert.equal(bodyErrors[0].message, 'error 1');
 
       assert.equal(nonFieldErrors1.detail, 'error 2');
-      assert.equal(nonFieldErrors1.meta.key, 'non_field_errors');
+      assert.equal(nonFieldErrors1.source.pointer, '/data');
+      assert.equal(nonFieldErrors1.title, 'Validation Error');
 
       assert.equal(nonFieldErrors2.detail, 'error 3');
-      assert.equal(nonFieldErrors2.meta.key, 'non_field_errors');
+      assert.equal(nonFieldErrors2.source.pointer, '/data');
+      assert.equal(nonFieldErrors2.title, 'Validation Error');
 
     });
   });

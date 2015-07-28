@@ -12,8 +12,7 @@ To that end, Ember Data encourages the use of adapters to manage communication w
 various backend APIs.
 
 This adapter enables the use of [Django REST Framework][] as an API backend for
-Ember Data.  The addon is compatible with [ember-cli][] version 0.2.7 and higher, Ember 1.12.1 and
-higher, and Ember Data v1.13.6.
+Ember Data.  The addon is compatible with [ember-cli][] version 0.2.7 and higher, Ember 1.12.1 and higher, and Ember Data v1.13.7.
 
 
 Community

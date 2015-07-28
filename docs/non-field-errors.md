@@ -22,15 +22,12 @@ In the case of an InvalidError being raised by the adapter when the response con
 adapter will include in the errors array a jsonapi error object of the form:
 
 ```js
-{ detail: 'error 1', meta { key: 'non_field_errors' } }  //or whatever key name you configured
+{ detail: 'error 1', source: { pointer: 'data' }, title: 'Validation Error' }  //or whatever key name you configured
 ```
 
 In case of several errors, the InvalidError.errors attribute will include
 
 ```js
-{ detail: 'error 1', meta { key: 'non_field_errors' } }  //or whatever key name you configured
-{ detail: 'error 2', meta { key: 'non_field_errors' } }  //or whatever key name you configured
+{ detail: 'error 1', source: { pointer: 'data' }, title: 'Validation Error' }  //or whatever key name you configured
+{ detail: 'error 2', source: { pointer: 'data' }, title: 'Validation Error' }  //or whatever key name you configured
 ```
-
-**Note:** We store the key for non-field errors in a meta object as this is non standard in the error
-object defined by the JSON API spec.
