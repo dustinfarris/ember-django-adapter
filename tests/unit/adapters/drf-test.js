@@ -33,6 +33,7 @@ test('buildURL', function(assert) {
   var adapter = this.subject();
   assert.equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5/');
   assert.equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5/');
+  assert.equal(adapter.buildURL('Animal', null, null, 'query', { limit: 10 }), 'test-host/test-api/animals/');
 });
 
 test('buildURL - no trailing slashes', function(assert) {
@@ -40,6 +41,7 @@ test('buildURL - no trailing slashes', function(assert) {
   adapter.set('addTrailingSlashes', false);
   assert.equal(adapter.buildURL('Animal', 5, null), 'test-host/test-api/animals/5');
   assert.equal(adapter.buildURL('FurryAnimals', 5, null), 'test-host/test-api/furry-animals/5');
+  assert.equal(adapter.buildURL('Animal', null, null, 'query', { limit: 10 }), 'test-host/test-api/animals');
 });
 
 test('handleResponse - returns invalid error if 400 response', function(assert) {
