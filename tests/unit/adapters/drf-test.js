@@ -53,15 +53,15 @@ test('handleResponse - returns invalid error if 400 response', function(assert) 
   var adapter = this.subject();
   var error = adapter.handleResponse(status, headers, payload);
   assert.equal(error.errors[0].detail, 'This field cannot be blank.');
-  assert.equal(error.errors[0].source.pointer, 'data/attributes/name');
+  assert.equal(error.errors[0].source.pointer, '/data/attributes/name');
   assert.equal(error.errors[0].title, 'Invalid Attribute');
 
   assert.equal(error.errors[1].detail, 'This field cannot be blank.');
-  assert.equal(error.errors[1].source.pointer, 'data/attributes/post_title');
+  assert.equal(error.errors[1].source.pointer, '/data/attributes/post_title');
   assert.equal(error.errors[1].title, 'Invalid Attribute');
 
   assert.equal(error.errors[2].detail, 'This field cannot be empty.');
-  assert.equal(error.errors[2].source.pointer, 'data/attributes/post_title');
+  assert.equal(error.errors[2].source.pointer, '/data/attributes/post_title');
   assert.equal(error.errors[2].title, 'Invalid Attribute');
 });
 
