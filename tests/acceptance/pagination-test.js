@@ -130,6 +130,13 @@ test('Retrieve list of paginated records', function(assert) {
   });
 });
 
+test('queryRecord with paginated results returns a single record', function(assert) {
+  return store.queryRecord('post', { title: 'post title 1' }).then(function(post) {
+    assert.ok(post);
+    assert.equal(post.get('postTitle'), 'post title 1');
+    assert.equal(post.get('body'), 'post body 1');
+  });
+});
 
 test("Type metadata doesn't have previous", function(assert) {
   assert.expect(4);
