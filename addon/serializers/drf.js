@@ -90,7 +90,12 @@ export default DS.JSONSerializer.extend({
    * @return {Object} JSON-API Document
    */
   normalizeArrayResponse: function(store, primaryModelClass, payload, id, requestType) {
-    if (!Ember.isNone(payload) && payload.hasOwnProperty('results')) {
+    if (!Ember.isNone(payload) &&
+        payload.hasOwnProperty('count') &&
+        payload.hasOwnProperty('next') &&
+        payload.hasOwnProperty('previous') &&
+        payload.hasOwnProperty('results'))
+    {
       // Move DRF metadata to the meta hash.
       let modifiedPayload = JSON.parse(JSON.stringify(payload.results));
       delete payload.results;
@@ -107,6 +112,31 @@ export default DS.JSONSerializer.extend({
     }
 
     return this._super(store, primaryModelClass, payload, id, requestType);
+  },
+
+  /**
+    Most DRF implementations will return an array when handling any kind of
+    filter request.
+
+    This method must normalize the array into a JSON API object where the
+    `data` is the actual object we want to return (the first object in the
+    array in this case) and where `included` contains any additional objects
+    that were returned which will be loaded into the store for convenience.
+
+    @method normalizeQueryRecordResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
+  normalizeQueryRecordResponse: function(store, primaryModelClass, payload, id, requestType) {
+    let normalizedResponse = this.normalizeArrayResponse(...arguments);
+    // Move all results except the first one to `included`
+    normalizedResponse.included = normalizedResponse.data;
+    normalizedResponse.data = normalizedResponse.included.shift();
+    return normalizedResponse;
   },
 
   /**
