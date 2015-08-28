@@ -13,6 +13,13 @@ module.exports = {
         'ember-data': '1.13.11',
         'ember': '1.13.9'
       }
+    },
+    {
+      name: 'ember-data-200-ember-200',
+      dependencies: {
+        'ember-data': '2.0.0',
+        'ember': '2.0.1'
+      }
     }
   ]
 };
