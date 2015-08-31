@@ -13,7 +13,8 @@ various backend APIs.
 
 This adapter enables the use of [Django REST Framework][] as an API backend for
 Ember Data.  The addon is compatible with [ember-cli][] version 0.2.7 and higher,
-Ember 1.12.1 and higher, and Ember Data v1.13.7.
+Ember 1.12.1 and higher (including 2.0.0), and Ember Data v1.13.7 and higher
+(including 2.0.0).
 
 
 Community
@@ -51,7 +52,7 @@ Install test dependencies in your project, and link your local copy of EDA:
 ```
 cd myproject
 bower i pretender
-bower i http://sinonjs.org/releases/sinon-1.12.1.js
+bower i sinonjs
 npm link ember-django-adapter
 ```
 

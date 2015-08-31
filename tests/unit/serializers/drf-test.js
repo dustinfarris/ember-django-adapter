@@ -5,7 +5,7 @@ import { moduleFor, test } from 'ember-qunit';
 // see app/serializers/application.js
 moduleFor('serializer:application', 'DRFSerializer', {});
 
-test('normalizeArrayResponse - results', function(assert) {
+test('normalizeResponse - results', function(assert) {
   let serializer = this.subject();
   serializer._super = sinon.spy();
   let primaryModelClass = {modelName: 'person'};
@@ -17,7 +17,7 @@ test('normalizeArrayResponse - results', function(assert) {
     results: ['result']
   };
 
-  serializer.normalizeArrayResponse('store', primaryModelClass, payload, 1, 'requestType');
+  serializer.normalizeResponse('store', primaryModelClass, payload, 1, 'requestType');
   assert.equal(serializer._super.callCount, 1);
   assert.equal(serializer._super.lastCall.args[0],'store');
   assert.propEqual(serializer._super.lastCall.args[1], primaryModelClass);
@@ -25,7 +25,7 @@ test('normalizeArrayResponse - results', function(assert) {
   assert.equal(serializer._super.lastCall.args[4], 'requestType');
 
   let modifiedPayload = serializer._super.lastCall.args[2];
-  assert.equal('result', modifiedPayload[0]);
+  assert.equal('result', modifiedPayload[primaryModelClass.modelName][0]);
 
   assert.ok(modifiedPayload.meta);
   assert.equal(modifiedPayload.meta['next'], 3);
@@ -34,17 +34,19 @@ test('normalizeArrayResponse - results', function(assert) {
   assert.equal(modifiedPayload.meta['other'], 'stuff');
 });
 
-test('normalizeArrayResponse - no results', function(assert) {
+test('normalizeResponse - no results', function(assert) {
   let serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
   let primaryModelClass = {modelName: 'person'};
   let payload = {other: 'stuff'};
 
-  let result = serializer.normalizeArrayResponse('store', primaryModelClass, payload, 1, 'requestType');
-
-  assert.ok(serializer._super.calledWith('store', primaryModelClass, payload, 1, 'requestType'),
-    '_super not called properly');
+  let result = serializer.normalizeResponse('store', primaryModelClass, payload, 1, 'requestType');
   assert.equal(result, 'extracted array');
+
+  let convertedPayload = {};
+  convertedPayload[primaryModelClass.modelName] = payload;
+  assert.ok(serializer._super.calledWith('store', primaryModelClass, convertedPayload, 1, 'requestType'),
+    '_super not called properly');
 });
 
 test('serializeIntoHash', function(assert) {

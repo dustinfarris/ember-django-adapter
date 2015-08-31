@@ -93,12 +93,25 @@ test('Retrieve list of non-paginated records', function(assert) {
   });
 });
 
-test('Retrieve single record', function(assert) {
+test('Retrieve single record with findRecord', function(assert) {
   assert.expect(3);
 
   return Ember.run(function() {
 
     return store.findRecord('post', 1).then(function(post) {
+      assert.ok(post);
+      assert.equal(post.get('postTitle'), 'post title 1');
+      assert.equal(post.get('body'), 'post body 1');
+    });
+  });
+});
+
+test('Retrieve single record with queryRecord', function(assert) {
+  assert.expect(3);
+
+  return Ember.run(function() {
+
+    return store.queryRecord('post', { slug: 'post-title-1' }).then(function(post) {
 
       assert.ok(post);
       assert.equal(post.get('postTitle'), 'post title 1');

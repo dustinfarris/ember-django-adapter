@@ -10,7 +10,7 @@ import Ember from 'ember';
  * @class DRFSerializer
  * @extends DS.RESTSerializer
  */
-export default DS.JSONSerializer.extend({
+export default DS.RESTSerializer.extend({
   // Remove this in our 2.0 release.
   isNewSerializerAPI: true,
 
@@ -73,15 +73,15 @@ export default DS.JSONSerializer.extend({
   },
 
   /**
-   * Normalizes server responses for array or list data using the JSONSerializer's version
-   * of this function.
+   * Converts DRF API server responses into the format expected by the RESTSerializer.
    *
-   * If the payload has a results property, all properties that aren't in the results
-   * are added to the 'meta' hash so that Ember Data can use these properties for metadata.
-   * The next and previous pagination URLs are parsed to make it easier to paginate data
-   * in applications.
+   * If the payload has DRF metadata and results properties, all properties that aren't in
+   * the results are added to the 'meta' hash so that Ember Data can use these properties
+   * for metadata. The next and previous pagination URLs are parsed to make it easier to
+   * paginate data in applications. The RESTSerializer's version of this function is called
+   * with the converted payload.
    *
-   * @method normalizeArrayResponse
+   * @method normalizeResponse
    * @param {DS.Store} store
    * @param {DS.Model} primaryModelClass
    * @param {Object} payload
@@ -89,24 +89,32 @@ export default DS.JSONSerializer.extend({
    * @param {String} requestType
    * @return {Object} JSON-API Document
    */
-  normalizeArrayResponse: function(store, primaryModelClass, payload, id, requestType) {
-    if (!Ember.isNone(payload) && payload.hasOwnProperty('results')) {
+  normalizeResponse: function (store, primaryModelClass, payload, id, requestType) {
+    let convertedPayload = {};
+
+    if (!Ember.isNone(payload) &&
+      payload.hasOwnProperty('count') &&
+      payload.hasOwnProperty('next') &&
+      payload.hasOwnProperty('previous') &&
+      payload.hasOwnProperty('results')) {
+
       // Move DRF metadata to the meta hash.
-      let modifiedPayload = JSON.parse(JSON.stringify(payload.results));
+      convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload.results));
       delete payload.results;
-      modifiedPayload['meta'] = JSON.parse(JSON.stringify(payload));
+      convertedPayload['meta'] = JSON.parse(JSON.stringify(payload));
 
       // The next and previous pagination URLs are parsed to make it easier to paginate data in applications.
-      if (!Ember.isNone(modifiedPayload.meta['next'])) {
-        modifiedPayload.meta['next'] = this.extractPageNumber(modifiedPayload.meta['next']);
+      if (!Ember.isNone(convertedPayload.meta['next'])) {
+        convertedPayload.meta['next'] = this.extractPageNumber(convertedPayload.meta['next']);
       }
-      if (!Ember.isNone(modifiedPayload.meta['previous'])) {
-        modifiedPayload.meta['previous'] = this.extractPageNumber(modifiedPayload.meta['previous']);
+      if (!Ember.isNone(convertedPayload.meta['previous'])) {
+        convertedPayload.meta['previous'] = this.extractPageNumber(convertedPayload.meta['previous']);
       }
-      return this._super(store, primaryModelClass, modifiedPayload, id, requestType);
+    } else {
+      convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload));
     }
 
-    return this._super(store, primaryModelClass, payload, id, requestType);
+    return this._super(store, primaryModelClass, convertedPayload, id, requestType);
   },
 
   /**
