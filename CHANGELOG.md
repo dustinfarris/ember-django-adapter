@@ -3,7 +3,10 @@ ember-django-adapter Changelog
 
 
 Master
-------
+-----
+
+* [ENHANCEMENT] Extend DS.RESTSerializer
+  ([#133](https://github.com/dustinfarris/ember-django-adapter/pull/133))
 
 
 1.0.0
