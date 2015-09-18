@@ -93,7 +93,6 @@ export default DS.RESTSerializer.extend({
     let convertedPayload = {};
 
     if (!Ember.isNone(payload) &&
-      payload.hasOwnProperty('count') &&
       payload.hasOwnProperty('next') &&
       payload.hasOwnProperty('previous') &&
       payload.hasOwnProperty('results')) {
