@@ -117,12 +117,15 @@ export default DS.RESTAdapter.extend({
     return status === 400;
   },
 
-  _drfToJsonAPIValidationErrors: function(payload) {
-    let out = [];
-    for (let key in payload) {
-      if (payload.hasOwnProperty(key)) {
-        payload[key].forEach((error) => {
-          if (key === this.get('nonFieldErrorsKey')) {
+  _drfToJsonAPIValidationErrors(payload) {
+    var _this = this;
+    var out = [];
+
+    // Recursive loop, to support nested errors ( for DRF nested model errors ).
+    var _loop = function (data, key) {
+      if (data.constructor === Array) {
+        data.forEach(function (error) {
+          if (key === _this.get('nonFieldErrorsKey')) {
             out.push({
               source: { pointer: '/data' },
               detail: error,
@@ -136,8 +139,17 @@ export default DS.RESTAdapter.extend({
             });
           }
         });
+      } else {
+        for (var k in data) {
+          if (data.hasOwnProperty(k)) {
+            let path = (typeof key !== 'undefined' ? `${key}/` : '') + k;
+            _loop(data[k], path);
+          }
+        }
       }
-    }
+    };
+
+    _loop(payload, undefined, 0);
     return out;
   },
 
