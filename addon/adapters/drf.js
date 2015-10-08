@@ -149,7 +149,7 @@ export default DS.RESTAdapter.extend({
       }
     };
 
-    _loop(payload, undefined, 0);
+    _loop(payload, undefined);
     return out;
   },
 
