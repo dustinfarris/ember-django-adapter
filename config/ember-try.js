@@ -1,24 +1,24 @@
 module.exports = {
   scenarios: [
     {
-      name: 'ember-data-113-ember-112',
+      name: 'ember-1.12-ember-data-1.13',
       dependencies: {
-        'ember-data': '1.13.11',
+        'ember-data': '1.13.13',
         'ember': '1.12.1'
       }
     },
     {
-      name: 'ember-data-113-ember-113',
+      name: 'ember-1.13',
       dependencies: {
-        'ember-data': '1.13.11',
-        'ember': '1.13.9'
+        'ember-data': '1.13.13',
+        'ember': '1.13.10'
       }
     },
     {
-      name: 'ember-data-200-ember-200',
+      name: 'ember-2.0',
       dependencies: {
-        'ember-data': '2.0.0',
-        'ember': '2.0.1'
+        'ember-data': '2.0.1',
+        'ember': '2.0.2'
       }
     }
   ]
