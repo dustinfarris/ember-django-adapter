@@ -89,8 +89,11 @@ module('Acceptance: Pagination', {
 
         var previousPage = page - 1;
         var previousUrl = null;
-        if (previousPage >= 1) {
+        if (previousPage > 1) {
           previousUrl = '/test-api/posts/?page=' + previousPage;
+        } else if (previousPage === 1) {
+          // The DRF previous URL doesn't always include the page=1 query param in the results for page 2.
+          previousUrl = '/test-api/posts/';
         }
 
         var offset = (page - 1) * pageSize;
