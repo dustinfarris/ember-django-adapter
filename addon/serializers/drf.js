@@ -108,7 +108,13 @@ export default DS.RESTSerializer.extend({
         convertedPayload.meta['next'] = this.extractPageNumber(convertedPayload.meta['next']);
       }
       if (!Ember.isNone(convertedPayload.meta['previous'])) {
-        convertedPayload.meta['previous'] = this.extractPageNumber(convertedPayload.meta['previous']);
+        let pageNumber = this.extractPageNumber(convertedPayload.meta['previous']);
+        // The DRF previous URL doesn't always include the page=1 query param in the results for page 2. We need to
+        // explicitly set previous to 1 when the previous URL is defined but the page is not set.
+        if (Ember.isNone(pageNumber)) {
+           pageNumber = 1;
+        }
+        convertedPayload.meta['previous'] = pageNumber;
       }
     } else {
       convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload));
