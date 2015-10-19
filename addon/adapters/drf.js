@@ -117,39 +117,51 @@ export default DS.RESTAdapter.extend({
     return status === 400;
   },
 
-  _drfToJsonAPIValidationErrors(payload) {
-    var _this = this;
-    var out = [];
+  /**
+    Convert validation errors to a JSON API object.
 
-    // Recursive loop, to support nested errors ( for DRF nested model errors ).
-    var _loop = function (data, key) {
-      if (data.constructor === Array) {
-        data.forEach(function (error) {
-          if (key === _this.get('nonFieldErrorsKey')) {
-            out.push({
-              source: { pointer: '/data' },
-              detail: error,
-              title: 'Validation Error'
-            });
-          } else {
-            out.push({
-              source: { pointer: `/data/attributes/${key}` },
-              detail: error,
-              title: 'Invalid Attribute'
-            });
-          }
-        });
-      } else {
-        for (var k in data) {
-          if (data.hasOwnProperty(k)) {
-            let path = (typeof key !== 'undefined' ? `${key}/` : '') + k;
-            _loop(data[k], path);
-          }
+    Non-field errors are converted to an object that points at /data.  Field-
+    specific errors are converted to an object that points at the respective
+    attribute.  Nested field-specific errors are converted to an object that
+    include a slash-delimited pointer to the nested attribute.
+
+    NOTE: Because JSON API does not technically support nested resource objects
+          at this time, any nested errors are literally "in name" only.  The
+          error object will be attached to the parent resource and the nested
+          object's isValid property will continue to be true.
+
+    @method _drfToJsonAPIValidationErrors
+    @param {Object} payload
+    @param {String} keyPrefix Used to recursively process nested errors
+    @return {Array} A list of JSON API compliant error objects
+  */
+  _drfToJsonAPIValidationErrors(payload, keyPrefix='') {
+    let out = [];
+    for (let key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        if (Ember.isArray(payload[key])) {
+          payload[key].forEach((error) => {
+            if (key === this.get('nonFieldErrorsKey')) {
+              out.push({
+                source: { pointer: '/data' },
+                detail: error,
+                title: 'Validation Error'
+              });
+            } else {
+              out.push({
+                source: { pointer: `/data/attributes/${keyPrefix}${key}` },
+                detail: error,
+                title: 'Invalid Attribute'
+              });
+            }
+          });
+        } else {
+          out = out.concat(
+            this._drfToJsonAPIValidationErrors(payload[key], `${keyPrefix}${key}/`)
+          );
         }
       }
-    };
-
-    _loop(payload, undefined);
+    }
     return out;
   },
 
