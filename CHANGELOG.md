@@ -5,6 +5,13 @@ ember-django-adapter Changelog
 Master
 -----
 
+* [BUGFIX] Support nested errors returned by DRF
+  ([#141](https://github.com/dustinfarris/ember-django-adapter/pull/141))
+* [BUGFIX] Do not require page query param on pagination previous link
+  ([#140](https://github.com/dustinfarris/ember-django-adapter/pull/140))
+* [INTERNAL] Upgrade ember and ember-cli to latest
+  ([#138](https://github.com/dustinfarris/ember-django-adapter/pull/138))
+
 
 1.1.0
 -----
