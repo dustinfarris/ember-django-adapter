@@ -197,8 +197,12 @@ test('Created nested field errors', function(assert) {
       JSON API technically does not allow nesting, so the nested errors are
       processed as if they were attributes on the comment itself.  As a result,
       comment.get('post.isValid') returns true :-(
+
+      This assertion will fail:
+      assert.notOk(comment.get('post.isValid'));
+
+      Related discussion: https://github.com/json-api/json-api/issues/899
       */
-      // assert.notOk(comment.get('post.isValid'));
 
       let postBodyErrors = comment.get('errors.post/body');
       let postPostTitleErrors = comment.get('errors.post/post_title');
