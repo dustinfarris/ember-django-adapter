@@ -3,6 +3,10 @@ ember-django-adapter Changelog
 
 
 Master
+------
+
+
+1.1.1
 -----
 
 * [BUGFIX] Support nested errors returned by DRF
