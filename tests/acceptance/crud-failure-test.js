@@ -51,6 +51,16 @@ module('Acceptance: CRUD Failure', {
         })];
       });
 
+      // Create nested field errors
+      this.post('/test-api/embedded-post-comments/', function() {
+        return [400, {'Content-Type': 'application/json'}, JSON.stringify({
+          post: {
+            post_title: ['This field is required.'],
+            body: ['This field is required.', 'This field cannot be blank.']
+          }
+        })];
+      });
+
       // Update field errors
       this.get('/test-api/posts/3/', function() {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify({
@@ -163,6 +173,45 @@ test('Create field errors', function(assert) {
       assert.equal(bodyErrors.length, 2);
       assert.equal(bodyErrors[0].message, 'This field is required.');
       assert.equal(bodyErrors[1].message, 'This field cannot be blank.');
+    });
+  });
+});
+
+test('Created nested field errors', function(assert) {
+  assert.expect(8);
+
+  return Ember.run(function() {
+    var post = store.createRecord('post');
+    var embeddedPostComment = store.createRecord('embedded-post-comment', {
+      body: 'This is my new comment',
+      post: post
+    });
+
+    return embeddedPostComment.save().then(null, function(response) {
+      const comment = embeddedPostComment;
+      assert.ok(response);
+      assert.ok(response.errors);
+      assert.notOk(comment.get('isValid'));
+
+      /*
+      JSON API technically does not allow nesting, so the nested errors are
+      processed as if they were attributes on the comment itself.  As a result,
+      comment.get('post.isValid') returns true :-(
+
+      This assertion will fail:
+      assert.notOk(comment.get('post.isValid'));
+
+      Related discussion: https://github.com/json-api/json-api/issues/899
+      */
+
+      let postBodyErrors = comment.get('errors.post/body');
+      let postPostTitleErrors = comment.get('errors.post/post_title');
+
+      assert.equal(postBodyErrors.length, 2);
+      assert.equal(postBodyErrors[0].message, 'This field is required.');
+      assert.equal(postBodyErrors[1].message, 'This field cannot be blank.');
+      assert.equal(postPostTitleErrors.length, 1);
+      assert.equal(postPostTitleErrors[0].message, 'This field is required.');
     });
   });
 });
