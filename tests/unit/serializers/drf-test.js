@@ -34,6 +34,34 @@ test('normalizeResponse - results', function(assert) {
   assert.equal(modifiedPayload.meta['other'], 'stuff');
 });
 
+test('normalizeResponse - results (cursor pagination)', function(assert) {
+  let serializer = this.subject();
+  serializer._super = sinon.spy();
+  let primaryModelClass = {modelName: 'person'};
+  let payload = {
+    next: '/api/posts/?page=3',
+    previous: '/api/posts/?page=1',
+    other: 'stuff',
+    results: ['result']
+  };
+
+  serializer.normalizeResponse('store', primaryModelClass, payload, 1, 'requestType');
+  assert.equal(serializer._super.callCount, 1);
+  assert.equal(serializer._super.lastCall.args[0],'store');
+  assert.propEqual(serializer._super.lastCall.args[1], primaryModelClass);
+  assert.equal(serializer._super.lastCall.args[3], 1);
+  assert.equal(serializer._super.lastCall.args[4], 'requestType');
+
+  let modifiedPayload = serializer._super.lastCall.args[2];
+  assert.equal('result', modifiedPayload[primaryModelClass.modelName][0]);
+
+  assert.ok(modifiedPayload.meta);
+  assert.equal(modifiedPayload.meta['next'], 3);
+  assert.equal(modifiedPayload.meta['previous'], 1);
+  // Unknown metadata has been passed along to the meta object.
+  assert.equal(modifiedPayload.meta['other'], 'stuff');
+});
+
 test('normalizeResponse - no results', function(assert) {
   let serializer = this.subject();
   serializer._super = sinon.stub().returns('extracted array');
