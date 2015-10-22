@@ -104,6 +104,26 @@ export default DRFSerializer.extend({
 });
 ```
 
+## Cursor Pagination
+
+To use [`CursorPagination`](http://www.django-rest-framework.org/api-guide/pagination/#cursorpagination), override `extractPageNumber` in the serializer to extract the `cursor`.
+
+```js
+// app/serializer/drf.js
+
+import DRFSerializer from 'ember-django-adapter/serializers/drf';
+
+export default DRFSerializer.extend({
+  extractPageNumber: function(url) {
+    var match = /.*?[\?&]cursor=([A-Za-z0-9]+).*?/.exec(url);
+    if (match) {
+      return match[1];
+    }
+    return null;
+  }
+});
+```
+
 If you don't use the `PageNumberPagination` for pagination with DRF 3.1 you can also add
 the metadata for the pagination scheme you use here. We may add support for the other
 pagination classes in the future. If this is something you are interested in contributing,
