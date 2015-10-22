@@ -108,6 +108,8 @@
                 
                     <li><a class="toctree-l4" href="#customizing-the-metadata">Customizing the Metadata</a></li>
                 
+                    <li><a class="toctree-l4" href="#cursor-pagination">Cursor Pagination</a></li>
+                
             
             </ul>
         
@@ -260,6 +262,23 @@ export default DRFSerializer.extend({
       meta['totalPages'] = totalPages;
     }
     return meta;
+  }
+});
+</code></pre>
+
+<h2 id="cursor-pagination">Cursor Pagination</h2>
+<p>To use <a href="http://www.django-rest-framework.org/api-guide/pagination/#cursorpagination"><code>CursorPagination</code></a>, override <code>extractPageNumber</code> in the serializer to extract the <code>cursor</code>.</p>
+<pre><code class="js">// app/serializer/drf.js
+
+import DRFSerializer from 'ember-django-adapter/serializers/drf';
+
+export default DRFSerializer.extend({
+  extractPageNumber: function(url) {
+    var match = /.*?[\?&amp;]cursor=([A-Za-z0-9]+).*?/.exec(url);
+    if (match) {
+      return match[1];
+    }
+    return null;
   }
 });
 </code></pre>
