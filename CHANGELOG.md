@@ -5,6 +5,10 @@ ember-django-adapter Changelog
 Master
 ------
 
+
+1.1.2
+-----
+
 * [ENHANCMENT] Register addon with Ember libraries
   ([#142](https://github.com/dustinfarris/ember-django-adapter/pull/142))
 * [BUGFIX] Do not check for count attribute in paginated response

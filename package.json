@@ -1,6 +1,6 @@
 {
   "name": "ember-django-adapter",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Use Django REST Framework with your Ember project",
   "directories": {
     "doc": "doc",
