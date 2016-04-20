@@ -138,9 +138,10 @@ export default DS.RESTAdapter.extend({
   _drfToJsonAPIValidationErrors(payload, keyPrefix='') {
     let out = [];
     for (let key in payload) {
+      /*jshint loopfunc: true */
       if (payload.hasOwnProperty(key)) {
         if (Ember.isArray(payload[key])) {
-          payload[key].forEach((error) => {
+          payload[key].forEach(error => {
             if (key === this.get('nonFieldErrorsKey')) {
               out.push({
                 source: { pointer: '/data' },

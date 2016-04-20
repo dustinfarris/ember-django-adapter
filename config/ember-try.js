@@ -3,15 +3,15 @@ module.exports = {
     {
       name: 'ember-1.12-ember-data-1.13',
       dependencies: {
-        'ember-data': '1.13.13',
+        'ember-data': '1.13.16',
         'ember': '1.12.1'
       }
     },
     {
       name: 'ember-1.13',
       dependencies: {
-        'ember-data': '1.13.13',
-        'ember': '1.13.10'
+        'ember-data': '1.13.16',
+        'ember': '1.13.13'
       }
     },
     {
