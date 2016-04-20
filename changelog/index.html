@@ -3,7 +3,10 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
   
   <title>Changelog - Ember Django Adapter</title>
   
@@ -21,6 +24,8 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Changelog";
+    var mkdocs_page_input_path = "changelog.md";
+    var mkdocs_page_url = "/changelog/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js"></script>
@@ -132,6 +137,8 @@
                 
                     <li><a class="toctree-l4" href="#master">Master</a></li>
                 
+                    <li><a class="toctree-l4" href="#112">1.1.2</a></li>
+                
                     <li><a class="toctree-l4" href="#111">1.1.1</a></li>
                 
                     <li><a class="toctree-l4" href="#110">1.1.0</a></li>
@@ -196,6 +203,15 @@
               
                 <h1 id="ember-django-adapter-changelog">ember-django-adapter Changelog</h1>
 <h2 id="master">Master</h2>
+<h2 id="112">1.1.2</h2>
+<ul>
+<li>[ENHANCMENT] Register addon with Ember libraries
+  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/142">#142</a>)</li>
+<li>[BUGFIX] Do not check for count attribute in paginated response
+  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/143">#143</a>)</li>
+<li>[DOCS] Note to disable pagination for coalesced records
+  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/145">#145</a>)</li>
+</ul>
 <h2 id="111">1.1.1</h2>
 <ul>
 <li>[BUGFIX] Support nested errors returned by DRF
@@ -338,7 +354,7 @@
 <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
-          <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+          <a href="https://github.com/dustinfarris/ember-django-adapter" class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
         <span><a href="../contributing/" style="color: #fcfcfc;">&laquo; Previous</a></span>
