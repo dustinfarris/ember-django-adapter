@@ -113,3 +113,14 @@ test('_stripIDFromURL without trailing slash - returns base URL for type', funct
 
   assert.equal(adapter._stripIDFromURL('store', snapshot), 'test-host/test-api/furry-animals');
 });
+
+test('_formatPayload returns array when string received', function(assert) {
+  var payload = {
+    key: 'value'
+  };
+  var adapter = this.subject();
+
+  assert.deepEqual(adapter._formatPayload(payload), {
+    key: ['value']
+  });
+});
