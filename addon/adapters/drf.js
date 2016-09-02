@@ -137,6 +137,9 @@ export default DS.RESTAdapter.extend({
   */
   _drfToJsonAPIValidationErrors(payload, keyPrefix='') {
     let out = [];
+
+    payload = this._formatPayload(payload);
+
     for (let key in payload) {
       /*jshint loopfunc: true */
       if (payload.hasOwnProperty(key)) {
@@ -166,6 +169,27 @@ export default DS.RESTAdapter.extend({
     return out;
   },
 
+  /**
+   * This is used by RESTAdapter._drfToJsonAPIValidationErrors.
+   *
+   * Map string values to arrays because improperly formatted payloads cause
+   * a maximum call stack size exceeded error
+   *
+   * @method _formatPayload
+   * @param {Object} payload
+   * @return {Object} payload
+   */
+  _formatPayload: function(payload) {
+    for (let key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        if (typeof payload[key] === 'string') {
+          payload[key] = [payload[key]];
+        }
+      }
+    }
+
+    return payload;
+  },
 
   /**
    * This is used by RESTAdapter.groupRecordsForFindMany.
