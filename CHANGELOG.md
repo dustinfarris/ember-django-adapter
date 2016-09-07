@@ -5,6 +5,13 @@ ember-django-adapter Changelog
 Master
 ------
 
+* [INTERNAL] Upgrade ember-cli to 1.13.15
+  ([#157](https://github.com/dustinfarris/ember-django-adapter/pull/157))
+* [ENHANCEMENT] Allow addon to be used in a another addon
+  ([#164](https://github.com/dustinfarris/ember-django-adapter/pull/164))
+* [BUGFIX] Map payload strings to arrays
+  ([#165](https://github.com/dustinfarris/ember-django-adapter/pull/165))
+
 
 1.1.2
 -----
