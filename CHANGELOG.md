@@ -5,6 +5,10 @@ ember-django-adapter Changelog
 Master
 ------
 
+
+1.1.3
+-----
+
 * [INTERNAL] Upgrade ember-cli to 1.13.15
   ([#157](https://github.com/dustinfarris/ember-django-adapter/pull/157))
 * [ENHANCEMENT] Allow addon to be used in a another addon
