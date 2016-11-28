@@ -5,7 +5,7 @@ import { moduleFor, test } from 'ember-qunit';
 // see app/serializers/application.js
 moduleFor('serializer:application', 'DRFSerializer', {});
 
-test('normalizeResponse - results', function(assert) {
+test('normalizeResponse - results (PageNumberPagination)', function(assert) {
   let serializer = this.subject();
   serializer._super = sinon.spy();
   let primaryModelClass = {modelName: 'person'};
@@ -34,7 +34,7 @@ test('normalizeResponse - results', function(assert) {
   assert.equal(modifiedPayload.meta['other'], 'stuff');
 });
 
-test('normalizeResponse - results (cursor pagination)', function(assert) {
+test('normalizeResponse - results (CursorPagination)', function(assert) {
   let serializer = this.subject();
   serializer._super = sinon.spy();
   let primaryModelClass = {modelName: 'person'};
@@ -58,6 +58,30 @@ test('normalizeResponse - results (cursor pagination)', function(assert) {
   assert.ok(modifiedPayload.meta);
   assert.equal(modifiedPayload.meta['next'], 3);
   assert.equal(modifiedPayload.meta['previous'], 1);
+  // Unknown metadata has been passed along to the meta object.
+  assert.equal(modifiedPayload.meta['other'], 'stuff');
+});
+
+test('normalizeResponse - results (non-pagination metadata)', function(assert) {
+  let serializer = this.subject();
+  serializer._super = sinon.spy();
+  let primaryModelClass = {modelName: 'person'};
+  let payload = {
+    other: 'stuff',
+    results: ['result']
+  };
+
+  serializer.normalizeResponse('store', primaryModelClass, payload, 1, 'requestType');
+  assert.equal(serializer._super.callCount, 1);
+  assert.equal(serializer._super.lastCall.args[0],'store');
+  assert.propEqual(serializer._super.lastCall.args[1], primaryModelClass);
+  assert.equal(serializer._super.lastCall.args[3], 1);
+  assert.equal(serializer._super.lastCall.args[4], 'requestType');
+
+  let modifiedPayload = serializer._super.lastCall.args[2];
+  assert.equal('result', modifiedPayload[primaryModelClass.modelName][0]);
+
+  assert.ok(modifiedPayload.meta);
   // Unknown metadata has been passed along to the meta object.
   assert.equal(modifiedPayload.meta['other'], 'stuff');
 });

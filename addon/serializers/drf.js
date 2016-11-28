@@ -92,10 +92,7 @@ export default DS.RESTSerializer.extend({
   normalizeResponse: function (store, primaryModelClass, payload, id, requestType) {
     let convertedPayload = {};
 
-    if (!Ember.isNone(payload) &&
-      payload.hasOwnProperty('next') &&
-      payload.hasOwnProperty('previous') &&
-      payload.hasOwnProperty('results')) {
+    if (!Ember.isNone(payload) && payload.hasOwnProperty('results')) {
 
       // Move DRF metadata to the meta hash.
       convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload.results));
@@ -103,10 +100,10 @@ export default DS.RESTSerializer.extend({
       convertedPayload['meta'] = JSON.parse(JSON.stringify(payload));
 
       // The next and previous pagination URLs are parsed to make it easier to paginate data in applications.
-      if (!Ember.isNone(convertedPayload.meta['next'])) {
+      if (!Ember.isNone(convertedPayload.meta.next)) {
         convertedPayload.meta['next'] = this.extractPageNumber(convertedPayload.meta['next']);
       }
-      if (!Ember.isNone(convertedPayload.meta['previous'])) {
+      if (!Ember.isNone(convertedPayload.meta.previous)) {
         let pageNumber = this.extractPageNumber(convertedPayload.meta['previous']);
         // The DRF previous URL doesn't always include the page=1 query param in the results for page 2. We need to
         // explicitly set previous to 1 when the previous URL is defined but the page is not set.
