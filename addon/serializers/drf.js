@@ -1,6 +1,8 @@
 import DS from 'ember-data';
 import Ember from 'ember';
 
+const merge = Ember.assign || Object.assign || Ember.merge;
+
 /**
  * Handle JSON/REST (de)serialization.
  *
@@ -141,7 +143,7 @@ export default DS.RESTSerializer.extend({
    * @param {Object} options
    */
   serializeIntoHash: function(hash, type, snapshot, options) {
-    Ember.merge(hash, this.serialize(snapshot, options));
+    merge(hash, this.serialize(snapshot, options));
   },
 
   /**
