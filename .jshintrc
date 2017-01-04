@@ -21,12 +21,11 @@
   "nomen": false,
   "onevar": false,
   "plusplus": false,
-  "regexp": false,
   "undef": true,
   "sub": true,
   "strict": false,
   "white": false,
   "eqnull": true,
-  "esnext": true,
+  "esversion": 6,
   "unused": true
 }
