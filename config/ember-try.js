@@ -1,24 +1,59 @@
+/*jshint node:true*/
 module.exports = {
   scenarios: [
     {
-      name: 'ember-1.12-ember-data-1.13',
-      dependencies: {
-        'ember-data': '1.13.16',
-        'ember': '1.12.1'
-      }
-    },
-    {
       name: 'ember-1.13',
-      dependencies: {
-        'ember-data': '1.13.16',
-        'ember': '1.13.13'
+      bower: {
+        dependencies: {
+          'ember': '~1.13.0'
+        },
+        resolutions: {
+          'ember': '~1.13.0'
+        }
       }
     },
     {
-      name: 'ember-2.0',
-      dependencies: {
-        'ember-data': '2.0.1',
-        'ember': '2.0.2'
+      name: 'ember-lts-2.4',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#lts-2-4'
+        },
+        resolutions: {
+          'ember': 'lts-2-4'
+        }
+      }
+    },
+    {
+      name: 'ember-release',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#release'
+        },
+        resolutions: {
+          'ember': 'release'
+        }
+      }
+    },
+    {
+      name: 'ember-beta',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#beta'
+        },
+        resolutions: {
+          'ember': 'beta'
+        }
+      }
+    },
+    {
+      name: 'ember-canary',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#canary'
+        },
+        resolutions: {
+          'ember': 'canary'
+        }
       }
     }
   ]
