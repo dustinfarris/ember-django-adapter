@@ -2,13 +2,10 @@
 module.exports = {
   scenarios: [
     {
-      name: 'ember-1.13',
-      bower: {
-        dependencies: {
-          'ember': '~1.13.0'
-        },
-        resolutions: {
-          'ember': '~1.13.0'
+      name: 'ember-data-2.4',
+      npm: {
+        devDependencies: {
+          'ember-data': '2.4.3'
         }
       }
     },
@@ -47,6 +44,11 @@ module.exports = {
     },
     {
       name: 'ember-canary',
+      npm: {
+        devDependencies: {
+          'ember-data': 'components/ember-data#canary'
+        }
+      },
       bower: {
         dependencies: {
           'ember': 'components/ember#canary'
