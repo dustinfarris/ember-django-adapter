@@ -250,7 +250,7 @@ export default DRFSerializer.extend({
       let totalPages = 1;
       if (!Ember.isNone(meta.next)) {
         // Any page that is not the last page.
-        totalPages = Math.ceil(meta.count / payload.results.length);
+        totalPages = Math.ceil(meta.count / payload[type.modelName].length);
       } else if (Ember.isNone(meta.next) &amp;&amp; !Ember.isNone(meta.previous)) {
         // The last page when there is more than one page.
         totalPages = meta.previous + 1;
