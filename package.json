@@ -38,7 +38,7 @@
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^3.0.0",
-    "ember-sinon": "0.5.1",
+    "ember-sinon": "0.7.0",
     "loader.js": "^4.0.10"
   },
   "keywords": [
