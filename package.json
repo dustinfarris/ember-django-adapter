@@ -48,7 +48,7 @@
     "ember-data"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.7"
+    "ember-cli-babel": "^6.1.0"
   },
   "ember-addon": {
     "after": "ember-data",
