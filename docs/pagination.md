@@ -115,9 +115,9 @@ import DRFSerializer from 'ember-django-adapter/serializers/drf';
 
 export default DRFSerializer.extend({
   extractPageNumber: function(url) {
-    var match = /.*?[\?&]cursor=([A-Za-z0-9]+).*?/.exec(url);
+    var match = /.*?[\?&]cursor=([A-Za-z0-9%]+).*?/.exec(url);
     if (match) {
-      return match[1];
+      return decodeURIComponent(match[1]);
     }
     return null;
   }
