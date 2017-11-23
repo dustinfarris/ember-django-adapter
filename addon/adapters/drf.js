@@ -1,5 +1,6 @@
 import DS from 'ember-data';
 import Ember from 'ember';
+import { pluralize } from 'ember-inflector'
 
 const ERROR_MESSAGES = {
   401: 'Unauthorized',
@@ -33,7 +34,7 @@ export default DS.RESTAdapter.extend({
    */
   pathForType: function(type) {
     var dasherized = Ember.String.dasherize(type);
-    return Ember.String.pluralize(dasherized);
+    return pluralize(dasherized);
   },
 
   /**
