@@ -1,7 +1,6 @@
-import DS from 'ember-data';
-import Ember from 'ember';
-
-const merge = Ember.assign || Object.assign || Ember.merge;
+import { decamelize } from '@ember/string';
+import { isNone } from '@ember/utils';
+import RESTSerializer from 'ember-data/serializers/rest';
 
 /**
  * Handle JSON/REST (de)serialization.
@@ -12,7 +11,7 @@ const merge = Ember.assign || Object.assign || Ember.merge;
  * @class DRFSerializer
  * @extends DS.RESTSerializer
  */
-export default DS.RESTSerializer.extend({
+export default RESTSerializer.extend({
   // Remove this in our 2.0 release.
   isNewSerializerAPI: true,
 
@@ -44,7 +43,7 @@ export default DS.RESTSerializer.extend({
       if (relationshipMeta.kind === 'hasMany' || relationshipMeta.kind === 'belongsTo') {
         // Matches strings starting with: https://, http://, //, /
         var payloadRel = resourceHash[payloadRelKey];
-        if (!Ember.isNone(payloadRel) && !Ember.isNone(payloadRel.match) &&
+        if (!isNone(payloadRel) && !isNone(payloadRel.match) &&
           typeof(payloadRel.match) === 'function' && payloadRel.match(/^((https?:)?\/\/|\/)\w/)) {
           resourceHash['links'][key] = resourceHash[payloadRelKey];
           delete resourceHash[payloadRelKey];
@@ -67,7 +66,7 @@ export default DS.RESTSerializer.extend({
    * @return {Number} page number
    */
   extractPageNumber: function(url) {
-    var match = /.*?[\?&]page=(\d+).*?/.exec(url);
+    var match = /.*?[?&]page=(\d+).*?/.exec(url);
     if (match) {
       return Number(match[1]).valueOf();
     }
@@ -94,7 +93,7 @@ export default DS.RESTSerializer.extend({
   normalizeResponse: function (store, primaryModelClass, payload, id, requestType) {
     let convertedPayload = {};
 
-    if (!Ember.isNone(payload) &&
+    if (!isNone(payload) &&
       payload.hasOwnProperty('next') &&
       payload.hasOwnProperty('previous') &&
       payload.hasOwnProperty('results')) {
@@ -105,20 +104,27 @@ export default DS.RESTSerializer.extend({
       convertedPayload['meta'] = JSON.parse(JSON.stringify(payload));
 
       // The next and previous pagination URLs are parsed to make it easier to paginate data in applications.
-      if (!Ember.isNone(convertedPayload.meta['next'])) {
+      if (!isNone(convertedPayload.meta['next'])) {
         convertedPayload.meta['next'] = this.extractPageNumber(convertedPayload.meta['next']);
       }
-      if (!Ember.isNone(convertedPayload.meta['previous'])) {
+      if (!isNone(convertedPayload.meta['previous'])) {
         let pageNumber = this.extractPageNumber(convertedPayload.meta['previous']);
         // The DRF previous URL doesn't always include the page=1 query param in the results for page 2. We need to
         // explicitly set previous to 1 when the previous URL is defined but the page is not set.
-        if (Ember.isNone(pageNumber)) {
+        if (isNone(pageNumber)) {
            pageNumber = 1;
         }
         convertedPayload.meta['previous'] = pageNumber;
       }
     } else {
       convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload));
+    }
+
+    // return single result for requestType 'queryRecord'
+    let records = convertedPayload[primaryModelClass.modelName];
+    if (requestType === 'queryRecord' && Array.isArray(records)) {
+      let first = records.length > 0 ? records[0] : null;
+      convertedPayload[primaryModelClass.modelName] = first;
     }
 
     return this._super(store, primaryModelClass, convertedPayload, id, requestType);
@@ -143,7 +149,7 @@ export default DS.RESTSerializer.extend({
    * @param {Object} options
    */
   serializeIntoHash: function(hash, type, snapshot, options) {
-    merge(hash, this.serialize(snapshot, options));
+    Object.assign(hash, this.serialize(snapshot, options));
   },
 
   /**
@@ -155,7 +161,7 @@ export default DS.RESTSerializer.extend({
    * @return {String} normalized key
    */
   keyForAttribute: function(key) {
-    return Ember.String.decamelize(key);
+    return decamelize(key);
   },
 
   /**
@@ -168,6 +174,6 @@ export default DS.RESTSerializer.extend({
    * @return {String} normalized key
    */
   keyForRelationship: function(key) {
-    return Ember.String.decamelize(key);
+    return decamelize(key);
   }
 });

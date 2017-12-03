@@ -1,4 +1,5 @@
 import { moduleFor, test } from 'ember-qunit';
+import sinon from 'sinon';
 
 
 // The default (application) serializer is the DRF adapter.

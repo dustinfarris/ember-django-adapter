@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import {
   module,
   test
@@ -67,7 +67,7 @@ module('Acceptance: Relationships', {
   },
 
   afterEach: function() {
-    Ember.run(application, 'destroy');
+    run(application, 'destroy');
     server.shutdown();
   }
 });
@@ -75,7 +75,7 @@ module('Acceptance: Relationships', {
 test('belongsTo', function(assert) {
   assert.expect(2);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('comment', 2).then(function(comment) {
 
@@ -91,7 +91,7 @@ test('belongsTo', function(assert) {
 test('hasMany', function(assert) {
   assert.expect(6);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('post', 1).then(function(post) {
 
