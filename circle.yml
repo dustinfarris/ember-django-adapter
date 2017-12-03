@@ -1,16 +1,14 @@
 machine:
   node:
-    version: 0.12
+    version: 8
 
 dependencies:
   pre:
     - npm config set spin false
-    - npm install -g npm@^2
+    - npm install -g yarn
 
   override:
-    - npm install -g bower
-    - npm install
-    - bower install
+    - yarn install
 
 deployment:
   production:
@@ -21,4 +19,4 @@ deployment:
 
 test:
   override:
-    - npm test
+    - yarn test
