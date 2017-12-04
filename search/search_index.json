@@ -177,7 +177,7 @@
         }, 
         {
             "location": "/changelog/", 
-            "text": "ember-django-adapter Changelog\n\n\nMaster\n\n\n1.1.3\n\n\n\n\n[INTERNAL] Upgrade ember-cli to 1.13.15\n  (\n#157\n)\n\n\n[ENHANCEMENT] Allow addon to be used in a another addon\n  (\n#164\n)\n\n\n[BUGFIX] Map payload strings to arrays\n  (\n#165\n)\n\n\n\n\n1.1.2\n\n\n\n\n[ENHANCMENT] Register addon with Ember libraries\n  (\n#142\n)\n\n\n[BUGFIX] Do not check for count attribute in paginated response\n  (\n#143\n)\n\n\n[DOCS] Note to disable pagination for coalesced records\n  (\n#145\n)\n\n\n\n\n1.1.1\n\n\n\n\n[BUGFIX] Support nested errors returned by DRF\n  (\n#141\n)\n\n\n[BUGFIX] Do not require page query param on pagination previous link\n  (\n#140\n)\n\n\n[INTERNAL] Upgrade ember and ember-cli to latest\n  (\n#138\n)\n\n\n\n\n1.1.0\n\n\n\n\n[ENHANCEMENT] Extend DS.RESTSerializer\n  (\n#133\n)\n\n\n\n\n1.0.0\n\n\n\n\n[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API\n  (\n#114\n)\n\n\n[ENHANCEMENT] Support ember-data 1.13 series\n  (\n#108\n)\n\n\n[ENHANCEMENT] Support HyperlinkedRelatedFields\n  (\n#95\n)\n\n\n[ENHANCEMENT] Support object-level errors\n  (\n#123\n)\n\n\n[ENHANCEMENT] Support query parameter in buildURL\n  (\n#124\n)\n\n\n[BUGFIX] Remove coalesceFindRequests warning\n  (\n#106\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (1.13.1)\n  (\n#112\n)\n\n\n[INTERNAL] Test for setting an explicit id on createRecord\n  (\n#117\n)\n\n\n[INTERNAL] Acceptance test for embedded records\n  (\n#119\n)\n\n\n[INTERNAL] Test for embedded belongsTo create with id\n  (\n#120\n)\n\n\n[DOCS] Using ember-cli-pagination with the adapter\n  (\n#101\n)\n\n\n\n\n0.5.6\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.7)\n  (\n#99\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.6)\n  (\n#97\n)\n\n\n[ENHANCEMENT] Support ember-data 1.0.0-beta.18\n  (\n#96\n)\n\n\n[INTERNAL] Add tests for relationships support\n  (\n#94\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.5)\n  (\n#91\n)\n\n\n\n\n0.5.5\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  (\n#89\n)\n\n\n[BUGFIX] All find queries are now handled properly\n  (\n#88\n)\n\n\n\n\n0.5.4\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  (\n#81\n)\n\n\n[ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  (\n#74\n)\n  (\n#77\n)\n  (\n#84\n)\n\n\n[INTERNAL] Use ember-try to enable a test matrix\n  (\n#85\n)\n\n\n\n\n0.5.3\n\n\n\n\n[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  (\n#67\n)\n\n\n[DOCS] Add Google Analytics to documentation site\n  (\n#69\n)\n\n\n[ENHANCEMENT] Support added for coalesceFindRequests\n  (\n#68\n)\n\n\n[INTERNAL] Revised goals for the adapter\n  (\n#70\n)\n\n\n\n\n0.5.2\n\n\n\n\n[BUGFIX] Return jqXHR for non-400 errors\n  (\n#62\n)\n\n\n[BREAKING BUGFIX] Set default host to localhost:8000\n  (\n#64\n)\n\n\n[DOCS] Update installation instructions\n  (\n#65\n)\n\n\n\n\n0.5.1\n\n\n\n\n[ENHANCEMENT] Add support for pagination metadata\n  (\n#45\n)\n\n\n[ENHANCEMENT] Add documentation for contributing\n  (\n#49\n)\n\n\n[ENHANCEMENT] Add blueprints and support for embedded records\n  (\n#51\n)\n\n\n[ENHANCEMENT] Add option to remove trailing slashes\n  (\n#50\n)\n\n\n[ENHANCEMENT] Test coverage for all supported versions of ember-data\n  (\n#56\n)\n\n\n\n\n0.5.0\n\n\n\n\n[BREAKING REFACTOR] Rewrite \ntoranb/ember-data-django-rest-adapter\n as an ember-cli addon", 
+            "text": "ember-django-adapter Changelog\n\n\n2.0.0\n\n\nEnhancements\n\n\n\n\n#207\n: Update ember and ember-data to 2.17. Fix deprecations.\n\n\n#172\n: clean Ember.merge deprecation and fix jshintrc\n\n\n\n\nInternal\n\n\n\n\n#186\n: Update ember-sinon to the latest version\n\n\n#180\n: Update ember-resolver to the latest version\n\n\n#174\n: Update ember-cli-jshint to the latest version\n\n\n#167\n: Update dependencies to enable Greenkeeper\n\n\n\n\nDocs\n\n\n\n\n#175\n: Update pagination.md\n\n\n\n\n1.1.3\n\n\n\n\n[INTERNAL] Upgrade ember-cli to 1.13.15 (\n#157\n)\n\n\n[ENHANCEMENT] Allow addon to be used in a another addon (\n#164\n)\n\n\n[BUGFIX] Map payload strings to arrays (\n#165\n)\n\n\n\n\n1.1.2\n\n\n\n\n[ENHANCMENT] Register addon with Ember libraries (\n#142\n)\n\n\n[BUGFIX] Do not check for count attribute in paginated response (\n#143\n)\n\n\n[DOCS] Note to disable pagination for coalesced records (\n#145\n)\n\n\n\n\n1.1.1\n\n\n\n\n[BUGFIX] Support nested errors returned by DRF (\n#141\n)\n\n\n[BUGFIX] Do not require page query param on pagination previous link (\n#140\n)\n\n\n[INTERNAL] Upgrade ember and ember-cli to latest (\n#138\n)\n\n\n\n\n1.1.0\n\n\n\n\n[ENHANCEMENT] Extend DS.RESTSerializer (\n#133\n)\n\n\n\n\n1.0.0\n\n\n\n\n[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API (\n#114\n)\n\n\n[ENHANCEMENT] Support ember-data 1.13 series (\n#108\n)\n\n\n[ENHANCEMENT] Support HyperlinkedRelatedFields (\n#95\n)\n\n\n[ENHANCEMENT] Support object-level errors (\n#123\n)\n\n\n[ENHANCEMENT] Support query parameter in buildURL (\n#124\n)\n\n\n[BUGFIX] Remove coalesceFindRequests warning (\n#106\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (1.13.1) (\n#112\n)\n\n\n[INTERNAL] Test for setting an explicit id on createRecord (\n#117\n)\n\n\n[INTERNAL] Acceptance test for embedded records (\n#119\n)\n\n\n[INTERNAL] Test for embedded belongsTo create with id (\n#120\n)\n\n\n[DOCS] Using ember-cli-pagination with the adapter (\n#101\n)\n\n\n\n\n0.5.6\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.7) (\n#99\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.6) (\n#97\n)\n\n\n[ENHANCEMENT] Support ember-data 1.0.0-beta.18 (\n#96\n)\n\n\n[INTERNAL] Add tests for relationships support (\n#94\n)\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.5) (\n#91\n)\n\n\n\n\n0.5.5\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.4) (\n#89\n)\n\n\n[BUGFIX] All find queries are now handled properly (\n#88\n)\n\n\n\n\n0.5.4\n\n\n\n\n[INTERNAL] Updated ember-cli version to latest (0.2.3) (\n#81\n)\n\n\n[ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records) (\n#74\n) (\n#77\n) (\n#84\n)\n\n\n[INTERNAL] Use ember-try to enable a test matrix (\n#85\n)\n\n\n\n\n0.5.3\n\n\n\n\n[BREAKING ENHANCEMENT] Remove trailing slashes environment config (\n#67\n)\n\n\n[DOCS] Add Google Analytics to documentation site (\n#69\n)\n\n\n[ENHANCEMENT] Support added for coalesceFindRequests (\n#68\n)\n\n\n[INTERNAL] Revised goals for the adapter (\n#70\n)\n\n\n\n\n0.5.2\n\n\n\n\n[BUGFIX] Return jqXHR for non-400 errors (\n#62\n)\n\n\n[BREAKING BUGFIX] Set default host to localhost:8000 (\n#64\n)\n\n\n[DOCS] Update installation instructions (\n#65\n)\n\n\n\n\n0.5.1\n\n\n\n\n[ENHANCEMENT] Add support for pagination metadata (\n#45\n)\n\n\n[ENHANCEMENT] Add documentation for contributing (\n#49\n)\n\n\n[ENHANCEMENT] Add blueprints and support for embedded records (\n#51\n)\n\n\n[ENHANCEMENT] Add option to remove trailing slashes (\n#50\n)\n\n\n[ENHANCEMENT] Test coverage for all supported versions of ember-data (\n#56\n)\n\n\n\n\n0.5.0\n\n\n\n\n[BREAKING REFACTOR] Rewrite \ntoranb/ember-data-django-rest-adapter\n as an ember-cli addon", 
             "title": "Changelog"
         }, 
         {
@@ -186,63 +186,78 @@
             "title": "ember-django-adapter Changelog"
         }, 
         {
-            "location": "/changelog/#master", 
+            "location": "/changelog/#200", 
             "text": "", 
-            "title": "Master"
+            "title": "2.0.0"
+        }, 
+        {
+            "location": "/changelog/#enhancements", 
+            "text": "#207 : Update ember and ember-data to 2.17. Fix deprecations.  #172 : clean Ember.merge deprecation and fix jshintrc", 
+            "title": "Enhancements"
+        }, 
+        {
+            "location": "/changelog/#internal", 
+            "text": "#186 : Update ember-sinon to the latest version  #180 : Update ember-resolver to the latest version  #174 : Update ember-cli-jshint to the latest version  #167 : Update dependencies to enable Greenkeeper", 
+            "title": "Internal"
+        }, 
+        {
+            "location": "/changelog/#docs", 
+            "text": "#175 : Update pagination.md", 
+            "title": "Docs"
         }, 
         {
             "location": "/changelog/#113", 
-            "text": "[INTERNAL] Upgrade ember-cli to 1.13.15\n  ( #157 )  [ENHANCEMENT] Allow addon to be used in a another addon\n  ( #164 )  [BUGFIX] Map payload strings to arrays\n  ( #165 )", 
+            "text": "[INTERNAL] Upgrade ember-cli to 1.13.15 ( #157 )  [ENHANCEMENT] Allow addon to be used in a another addon ( #164 )  [BUGFIX] Map payload strings to arrays ( #165 )", 
             "title": "1.1.3"
         }, 
         {
             "location": "/changelog/#112", 
-            "text": "[ENHANCMENT] Register addon with Ember libraries\n  ( #142 )  [BUGFIX] Do not check for count attribute in paginated response\n  ( #143 )  [DOCS] Note to disable pagination for coalesced records\n  ( #145 )", 
+            "text": "[ENHANCMENT] Register addon with Ember libraries ( #142 )  [BUGFIX] Do not check for count attribute in paginated response ( #143 )  [DOCS] Note to disable pagination for coalesced records ( #145 )", 
             "title": "1.1.2"
         }, 
         {
             "location": "/changelog/#111", 
-            "text": "[BUGFIX] Support nested errors returned by DRF\n  ( #141 )  [BUGFIX] Do not require page query param on pagination previous link\n  ( #140 )  [INTERNAL] Upgrade ember and ember-cli to latest\n  ( #138 )", 
+            "text": "[BUGFIX] Support nested errors returned by DRF ( #141 )  [BUGFIX] Do not require page query param on pagination previous link ( #140 )  [INTERNAL] Upgrade ember and ember-cli to latest ( #138 )", 
             "title": "1.1.1"
         }, 
         {
             "location": "/changelog/#110", 
-            "text": "[ENHANCEMENT] Extend DS.RESTSerializer\n  ( #133 )", 
+            "text": "[ENHANCEMENT] Extend DS.RESTSerializer ( #133 )", 
             "title": "1.1.0"
         }, 
         {
             "location": "/changelog/#100", 
-            "text": "[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API\n  ( #114 )  [ENHANCEMENT] Support ember-data 1.13 series\n  ( #108 )  [ENHANCEMENT] Support HyperlinkedRelatedFields\n  ( #95 )  [ENHANCEMENT] Support object-level errors\n  ( #123 )  [ENHANCEMENT] Support query parameter in buildURL\n  ( #124 )  [BUGFIX] Remove coalesceFindRequests warning\n  ( #106 )  [INTERNAL] Updated ember-cli version to latest (1.13.1)\n  ( #112 )  [INTERNAL] Test for setting an explicit id on createRecord\n  ( #117 )  [INTERNAL] Acceptance test for embedded records\n  ( #119 )  [INTERNAL] Test for embedded belongsTo create with id\n  ( #120 )  [DOCS] Using ember-cli-pagination with the adapter\n  ( #101 )", 
+            "text": "[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API ( #114 )  [ENHANCEMENT] Support ember-data 1.13 series ( #108 )  [ENHANCEMENT] Support HyperlinkedRelatedFields ( #95 )  [ENHANCEMENT] Support object-level errors ( #123 )  [ENHANCEMENT] Support query parameter in buildURL ( #124 )  [BUGFIX] Remove coalesceFindRequests warning ( #106 )  [INTERNAL] Updated ember-cli version to latest (1.13.1) ( #112 )  [INTERNAL] Test for setting an explicit id on createRecord ( #117 )  [INTERNAL] Acceptance test for embedded records ( #119 )  [INTERNAL] Test for embedded belongsTo create with id ( #120 )  [DOCS] Using ember-cli-pagination with the adapter ( #101 )", 
             "title": "1.0.0"
         }, 
         {
             "location": "/changelog/#056", 
-            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.7)\n  ( #99 )  [INTERNAL] Updated ember-cli version to latest (0.2.6)\n  ( #97 )  [ENHANCEMENT] Support ember-data 1.0.0-beta.18\n  ( #96 )  [INTERNAL] Add tests for relationships support\n  ( #94 )  [INTERNAL] Updated ember-cli version to latest (0.2.5)\n  ( #91 )", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.7) ( #99 )  [INTERNAL] Updated ember-cli version to latest (0.2.6) ( #97 )  [ENHANCEMENT] Support ember-data 1.0.0-beta.18 ( #96 )  [INTERNAL] Add tests for relationships support ( #94 )  [INTERNAL] Updated ember-cli version to latest (0.2.5) ( #91 )", 
             "title": "0.5.6"
         }, 
         {
             "location": "/changelog/#055", 
-            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.4)\n  ( #89 )  [BUGFIX] All find queries are now handled properly\n  ( #88 )", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.4) ( #89 )  [BUGFIX] All find queries are now handled properly ( #88 )", 
             "title": "0.5.5"
         }, 
         {
             "location": "/changelog/#054", 
-            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.3)\n  ( #81 )  [ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records)\n  ( #74 )\n  ( #77 )\n  ( #84 )  [INTERNAL] Use ember-try to enable a test matrix\n  ( #85 )", 
+            "text": "[INTERNAL] Updated ember-cli version to latest (0.2.3) ( #81 )  [ENHANCEMENT] Modified signatures of methods in serializer and adapter\n  to comply with changes introduced in ember-data v1.0.0-beta.15 and in\n  v1.0.0-beta.16 (snapshots instead of records) ( #74 ) ( #77 ) ( #84 )  [INTERNAL] Use ember-try to enable a test matrix ( #85 )", 
             "title": "0.5.4"
         }, 
         {
             "location": "/changelog/#053", 
-            "text": "[BREAKING ENHANCEMENT] Remove trailing slashes environment config\n  ( #67 )  [DOCS] Add Google Analytics to documentation site\n  ( #69 )  [ENHANCEMENT] Support added for coalesceFindRequests\n  ( #68 )  [INTERNAL] Revised goals for the adapter\n  ( #70 )", 
+            "text": "[BREAKING ENHANCEMENT] Remove trailing slashes environment config ( #67 )  [DOCS] Add Google Analytics to documentation site ( #69 )  [ENHANCEMENT] Support added for coalesceFindRequests ( #68 )  [INTERNAL] Revised goals for the adapter ( #70 )", 
             "title": "0.5.3"
         }, 
         {
             "location": "/changelog/#052", 
-            "text": "[BUGFIX] Return jqXHR for non-400 errors\n  ( #62 )  [BREAKING BUGFIX] Set default host to localhost:8000\n  ( #64 )  [DOCS] Update installation instructions\n  ( #65 )", 
+            "text": "[BUGFIX] Return jqXHR for non-400 errors ( #62 )  [BREAKING BUGFIX] Set default host to localhost:8000 ( #64 )  [DOCS] Update installation instructions ( #65 )", 
             "title": "0.5.2"
         }, 
         {
             "location": "/changelog/#051", 
-            "text": "[ENHANCEMENT] Add support for pagination metadata\n  ( #45 )  [ENHANCEMENT] Add documentation for contributing\n  ( #49 )  [ENHANCEMENT] Add blueprints and support for embedded records\n  ( #51 )  [ENHANCEMENT] Add option to remove trailing slashes\n  ( #50 )  [ENHANCEMENT] Test coverage for all supported versions of ember-data\n  ( #56 )", 
+            "text": "[ENHANCEMENT] Add support for pagination metadata ( #45 )  [ENHANCEMENT] Add documentation for contributing ( #49 )  [ENHANCEMENT] Add blueprints and support for embedded records ( #51 )  [ENHANCEMENT] Add option to remove trailing slashes ( #50 )  [ENHANCEMENT] Test coverage for all supported versions of ember-data ( #56 )", 
             "title": "0.5.1"
         }, 
         {

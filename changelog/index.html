@@ -111,7 +111,7 @@
     
         <ul>
         
-            <li><a class="toctree-l3" href="#master">Master</a></li>
+            <li><a class="toctree-l3" href="#200">2.0.0</a></li>
         
             <li><a class="toctree-l3" href="#113">1.1.3</a></li>
         
@@ -179,129 +179,100 @@
             <div class="section">
               
                 <h1 id="ember-django-adapter-changelog">ember-django-adapter Changelog</h1>
-<h2 id="master">Master</h2>
+<h2 id="200">2.0.0</h2>
+<h3 id="enhancements">Enhancements</h3>
+<ul>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/207">#207</a>: Update ember and ember-data to 2.17. Fix deprecations.</li>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/172">#172</a>: clean Ember.merge deprecation and fix jshintrc</li>
+</ul>
+<h3 id="internal">Internal</h3>
+<ul>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/186">#186</a>: Update ember-sinon to the latest version</li>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/180">#180</a>: Update ember-resolver to the latest version</li>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/174">#174</a>: Update ember-cli-jshint to the latest version</li>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/167">#167</a>: Update dependencies to enable Greenkeeper</li>
+</ul>
+<h3 id="docs">Docs</h3>
+<ul>
+<li><a href="https://github.com/dustinfarris/ember-django-adapter/pull/175">#175</a>: Update pagination.md</li>
+</ul>
 <h2 id="113">1.1.3</h2>
 <ul>
-<li>[INTERNAL] Upgrade ember-cli to 1.13.15
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/157">#157</a>)</li>
-<li>[ENHANCEMENT] Allow addon to be used in a another addon
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/164">#164</a>)</li>
-<li>[BUGFIX] Map payload strings to arrays
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/165">#165</a>)</li>
+<li>[INTERNAL] Upgrade ember-cli to 1.13.15 (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/157">#157</a>)</li>
+<li>[ENHANCEMENT] Allow addon to be used in a another addon (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/164">#164</a>)</li>
+<li>[BUGFIX] Map payload strings to arrays (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/165">#165</a>)</li>
 </ul>
 <h2 id="112">1.1.2</h2>
 <ul>
-<li>[ENHANCMENT] Register addon with Ember libraries
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/142">#142</a>)</li>
-<li>[BUGFIX] Do not check for count attribute in paginated response
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/143">#143</a>)</li>
-<li>[DOCS] Note to disable pagination for coalesced records
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/145">#145</a>)</li>
+<li>[ENHANCMENT] Register addon with Ember libraries (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/142">#142</a>)</li>
+<li>[BUGFIX] Do not check for count attribute in paginated response (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/143">#143</a>)</li>
+<li>[DOCS] Note to disable pagination for coalesced records (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/145">#145</a>)</li>
 </ul>
 <h2 id="111">1.1.1</h2>
 <ul>
-<li>[BUGFIX] Support nested errors returned by DRF
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/141">#141</a>)</li>
-<li>[BUGFIX] Do not require page query param on pagination previous link
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/140">#140</a>)</li>
-<li>[INTERNAL] Upgrade ember and ember-cli to latest
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/138">#138</a>)</li>
+<li>[BUGFIX] Support nested errors returned by DRF (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/141">#141</a>)</li>
+<li>[BUGFIX] Do not require page query param on pagination previous link (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/140">#140</a>)</li>
+<li>[INTERNAL] Upgrade ember and ember-cli to latest (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/138">#138</a>)</li>
 </ul>
 <h2 id="110">1.1.0</h2>
 <ul>
-<li>[ENHANCEMENT] Extend DS.RESTSerializer
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/133">#133</a>)</li>
+<li>[ENHANCEMENT] Extend DS.RESTSerializer (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/133">#133</a>)</li>
 </ul>
 <h2 id="100">1.0.0</h2>
 <ul>
-<li>[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/114">#114</a>)</li>
-<li>[ENHANCEMENT] Support ember-data 1.13 series
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/108">#108</a>)</li>
-<li>[ENHANCEMENT] Support HyperlinkedRelatedFields
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/95">#95</a>)</li>
-<li>[ENHANCEMENT] Support object-level errors
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/123">#123</a>)</li>
-<li>[ENHANCEMENT] Support query parameter in buildURL
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/124">#124</a>)</li>
-<li>[BUGFIX] Remove coalesceFindRequests warning
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/106">#106</a>)</li>
-<li>[INTERNAL] Updated ember-cli version to latest (1.13.1)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/112">#112</a>)</li>
-<li>[INTERNAL] Test for setting an explicit id on createRecord
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/117">#117</a>)</li>
-<li>[INTERNAL] Acceptance test for embedded records
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/119">#119</a>)</li>
-<li>[INTERNAL] Test for embedded belongsTo create with id
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/120">#120</a>)</li>
-<li>[DOCS] Using ember-cli-pagination with the adapter
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/101">#101</a>)</li>
+<li>[BREAKING ENHANCEMENT] Update to new Ember Data 1.13 serializer API (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/114">#114</a>)</li>
+<li>[ENHANCEMENT] Support ember-data 1.13 series (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/108">#108</a>)</li>
+<li>[ENHANCEMENT] Support HyperlinkedRelatedFields (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/95">#95</a>)</li>
+<li>[ENHANCEMENT] Support object-level errors (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/123">#123</a>)</li>
+<li>[ENHANCEMENT] Support query parameter in buildURL (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/124">#124</a>)</li>
+<li>[BUGFIX] Remove coalesceFindRequests warning (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/106">#106</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (1.13.1) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/112">#112</a>)</li>
+<li>[INTERNAL] Test for setting an explicit id on createRecord (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/117">#117</a>)</li>
+<li>[INTERNAL] Acceptance test for embedded records (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/119">#119</a>)</li>
+<li>[INTERNAL] Test for embedded belongsTo create with id (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/120">#120</a>)</li>
+<li>[DOCS] Using ember-cli-pagination with the adapter (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/101">#101</a>)</li>
 </ul>
 <h2 id="056">0.5.6</h2>
 <ul>
-<li>[INTERNAL] Updated ember-cli version to latest (0.2.7)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/99">#99</a>)</li>
-<li>[INTERNAL] Updated ember-cli version to latest (0.2.6)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/97">#97</a>)</li>
-<li>[ENHANCEMENT] Support ember-data 1.0.0-beta.18
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/96">#96</a>)</li>
-<li>[INTERNAL] Add tests for relationships support
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/94">#94</a>)</li>
-<li>[INTERNAL] Updated ember-cli version to latest (0.2.5)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/91">#91</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (0.2.7) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/99">#99</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (0.2.6) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/97">#97</a>)</li>
+<li>[ENHANCEMENT] Support ember-data 1.0.0-beta.18 (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/96">#96</a>)</li>
+<li>[INTERNAL] Add tests for relationships support (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/94">#94</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (0.2.5) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/91">#91</a>)</li>
 </ul>
 <h2 id="055">0.5.5</h2>
 <ul>
-<li>[INTERNAL] Updated ember-cli version to latest (0.2.4)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/89">#89</a>)</li>
-<li>[BUGFIX] All find queries are now handled properly
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/88">#88</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (0.2.4) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/89">#89</a>)</li>
+<li>[BUGFIX] All find queries are now handled properly (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/88">#88</a>)</li>
 </ul>
 <h2 id="054">0.5.4</h2>
 <ul>
-<li>[INTERNAL] Updated ember-cli version to latest (0.2.3)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/81">#81</a>)</li>
+<li>[INTERNAL] Updated ember-cli version to latest (0.2.3) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/81">#81</a>)</li>
 <li>[ENHANCEMENT] Modified signatures of methods in serializer and adapter
   to comply with changes introduced in ember-data v1.0.0-beta.15 and in
-  v1.0.0-beta.16 (snapshots instead of records)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/74">#74</a>)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/77">#77</a>)
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/84">#84</a>)</li>
-<li>[INTERNAL] Use ember-try to enable a test matrix
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/85">#85</a>)</li>
+  v1.0.0-beta.16 (snapshots instead of records) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/74">#74</a>) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/77">#77</a>) (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/84">#84</a>)</li>
+<li>[INTERNAL] Use ember-try to enable a test matrix (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/85">#85</a>)</li>
 </ul>
 <h2 id="053">0.5.3</h2>
 <ul>
-<li>[BREAKING ENHANCEMENT] Remove trailing slashes environment config
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/67">#67</a>)</li>
-<li>[DOCS] Add Google Analytics to documentation site
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/69">#69</a>)</li>
-<li>[ENHANCEMENT] Support added for coalesceFindRequests
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/68">#68</a>)</li>
-<li>[INTERNAL] Revised goals for the adapter
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/70">#70</a>)</li>
+<li>[BREAKING ENHANCEMENT] Remove trailing slashes environment config (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/67">#67</a>)</li>
+<li>[DOCS] Add Google Analytics to documentation site (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/69">#69</a>)</li>
+<li>[ENHANCEMENT] Support added for coalesceFindRequests (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/68">#68</a>)</li>
+<li>[INTERNAL] Revised goals for the adapter (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/70">#70</a>)</li>
 </ul>
 <h2 id="052">0.5.2</h2>
 <ul>
-<li>[BUGFIX] Return jqXHR for non-400 errors
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/62">#62</a>)</li>
-<li>[BREAKING BUGFIX] Set default host to localhost:8000
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/64">#64</a>)</li>
-<li>[DOCS] Update installation instructions
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/65">#65</a>)</li>
+<li>[BUGFIX] Return jqXHR for non-400 errors (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/62">#62</a>)</li>
+<li>[BREAKING BUGFIX] Set default host to localhost:8000 (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/64">#64</a>)</li>
+<li>[DOCS] Update installation instructions (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/65">#65</a>)</li>
 </ul>
 <h2 id="051">0.5.1</h2>
 <ul>
-<li>[ENHANCEMENT] Add support for pagination metadata
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/45">#45</a>)</li>
-<li>[ENHANCEMENT] Add documentation for contributing
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/49">#49</a>)</li>
-<li>[ENHANCEMENT] Add blueprints and support for embedded records
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/51">#51</a>)</li>
-<li>[ENHANCEMENT] Add option to remove trailing slashes
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/50">#50</a>)</li>
-<li>[ENHANCEMENT] Test coverage for all supported versions of ember-data
-  (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/56">#56</a>)</li>
+<li>[ENHANCEMENT] Add support for pagination metadata (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/45">#45</a>)</li>
+<li>[ENHANCEMENT] Add documentation for contributing (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/49">#49</a>)</li>
+<li>[ENHANCEMENT] Add blueprints and support for embedded records (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/51">#51</a>)</li>
+<li>[ENHANCEMENT] Add option to remove trailing slashes (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/50">#50</a>)</li>
+<li>[ENHANCEMENT] Test coverage for all supported versions of ember-data (<a href="https://github.com/dustinfarris/ember-django-adapter/pull/56">#56</a>)</li>
 </ul>
 <h2 id="050">0.5.0</h2>
 <ul>
