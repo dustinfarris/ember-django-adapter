@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import {
   module,
   test,
@@ -80,7 +80,7 @@ module('Acceptance: CRUD Failure', {
   },
 
   afterEach: function() {
-    Ember.run(application, 'destroy');
+    run(application, 'destroy');
     server.shutdown();
   }
 });
@@ -88,7 +88,7 @@ module('Acceptance: CRUD Failure', {
 test('Permission denied error', function(assert) {
   assert.expect(4);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('post', 1).then({}, function(response) {
       const error = response.errors[0];
@@ -104,7 +104,7 @@ test('Permission denied error', function(assert) {
 test('Server error', function(assert) {
   assert.expect(4);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('post', 2).then({}, function(response) {
       const error = response.errors[0];
@@ -118,7 +118,7 @@ test('Server error', function(assert) {
 });
 
 test('Invalid with non field errors', function(assert) {
-  return Ember.run(function() {
+  return run(function() {
 
     var post = store.createRecord('post', {
       postTitle: '',
@@ -151,7 +151,7 @@ test('Invalid with non field errors', function(assert) {
 test('Create field errors', function(assert) {
   assert.expect(8);
 
-  return Ember.run(function() {
+  return run(function() {
 
     var post = store.createRecord('post', {
       postTitle: '',
@@ -180,7 +180,7 @@ test('Create field errors', function(assert) {
 test('Created nested field errors', function(assert) {
   assert.expect(8);
 
-  return Ember.run(function() {
+  return run(function() {
     var post = store.createRecord('post');
     var embeddedPostComment = store.createRecord('embedded-post-comment', {
       body: 'This is my new comment',
@@ -219,7 +219,7 @@ test('Created nested field errors', function(assert) {
 test('Update field errors', function(assert) {
   assert.expect(9);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('post', 3).then(function(post) {
       assert.ok(post);

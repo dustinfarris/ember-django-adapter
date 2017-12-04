@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 import {
   module,
   test
@@ -74,7 +75,7 @@ module('Acceptance: Embedded Records', {
       });
 
       this.post('/test-api/embedded-post-comments/', function(request) {
-        let data = Ember.$.parseJSON(request.requestBody);
+        let data = $.parseJSON(request.requestBody);
         data['id'] = 8;
         data['post'] = posts[0];
         return [201, {'Content-Type': 'application/json'}, JSON.stringify(data)];
@@ -84,7 +85,7 @@ module('Acceptance: Embedded Records', {
   },
 
   afterEach: function() {
-    Ember.run(application, 'destroy');
+    run(application, 'destroy');
     server.shutdown();
   }
 });
@@ -92,7 +93,7 @@ module('Acceptance: Embedded Records', {
 test('belongsTo retrieve', function(assert) {
   assert.expect(6);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('embedded-post-comment', 5).then(function(comment) {
       assert.ok(comment);
@@ -111,7 +112,7 @@ test('belongsTo retrieve', function(assert) {
 test('hasMany retrieve', function(assert) {
   assert.expect(12);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('embedded-comments-post', 1).then(function(post) {
       assert.ok(post);
@@ -136,7 +137,7 @@ test('hasMany retrieve', function(assert) {
 test('belongsTo create', function(assert) {
   assert.expect(6);
 
-  return Ember.run(function() {
+  return run(function() {
 
     return store.findRecord('post', 7).then(function(post) {
 

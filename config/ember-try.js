@@ -1,60 +1,44 @@
-/*jshint node:true*/
+/* eslint-env node */
 module.exports = {
+  useYarn: true,
   scenarios: [
     {
-      name: 'ember-data-2.4',
+      name: 'ember-lts-2.12',
       npm: {
-        devDependencies: {
-          'ember-data': '2.4.3'
+        dependencies: {
+          'ember-data': '^2.12.0'
         }
       }
     },
     {
-      name: 'ember-lts-2.4',
-      bower: {
+      name: 'ember-lts-2.16',
+      npm: {
         dependencies: {
-          'ember': 'components/ember#lts-2-4'
-        },
-        resolutions: {
-          'ember': 'lts-2-4'
+          'ember-data': '^2.16.0'
         }
       }
     },
     {
       name: 'ember-release',
-      bower: {
+      npm: {
         dependencies: {
-          'ember': 'components/ember#release'
-        },
-        resolutions: {
-          'ember': 'release'
+          'ember-data': 'emberjs/data#release'
         }
       }
     },
     {
       name: 'ember-beta',
-      bower: {
+      npm: {
         dependencies: {
-          'ember': 'components/ember#beta'
-        },
-        resolutions: {
-          'ember': 'beta'
+          'ember-data': 'emberjs/data#beta'
         }
       }
     },
     {
       name: 'ember-canary',
       npm: {
-        devDependencies: {
-          'ember-data': 'components/ember-data#canary'
-        }
-      },
-      bower: {
         dependencies: {
-          'ember': 'components/ember#canary'
-        },
-        resolutions: {
-          'ember': 'canary'
+          'ember-data': 'emberjs/data#master'
         }
       }
     }
