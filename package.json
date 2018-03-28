@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
-    "ember-data": "^2.17.0",
+    "ember-data": "^3.0.0",
     "ember-inflector": "^2.1.0"
   },
   "devDependencies": {
