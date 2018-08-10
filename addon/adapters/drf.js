@@ -149,11 +149,19 @@ export default RESTAdapter.extend({
         if (isArray(payload[key])) {
           payload[key].forEach(error => {
             if (key === this.get('nonFieldErrorsKey')) {
-              out.push({
-                source: { pointer: '/data' },
-                detail: error,
-                title: 'Validation Error'
-              });
+              if (keyPrefix) {
+                out.push({
+                  source: { pointer: `/data/attributes/${keyPrefix}`.slice(0, -1) },
+                  detail: error,
+                  title: 'Validation Error'
+                });
+              } else {
+                out.push({
+                  source: { pointer: '/data' },
+                  detail: error,
+                  title: 'Validation Error'
+                });
+              }
             } else {
               out.push({
                 source: { pointer: `/data/attributes/${keyPrefix}${key}` },
