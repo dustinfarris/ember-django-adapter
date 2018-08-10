@@ -56,7 +56,8 @@ module('Acceptance: CRUD Failure', {
         return [400, {'Content-Type': 'application/json'}, JSON.stringify({
           post: {
             post_title: ['This field is required.'],
-            body: ['This field is required.', 'This field cannot be blank.']
+            body: ['This field is required.', 'This field cannot be blank.'],
+            non_field_errors: ['error 2', 'error 3']
           }
         })];
       });
@@ -178,7 +179,7 @@ test('Create field errors', function(assert) {
 });
 
 test('Created nested field errors', function(assert) {
-  assert.expect(8);
+  assert.expect(17);
 
   return run(function() {
     var post = store.createRecord('post');
@@ -204,14 +205,30 @@ test('Created nested field errors', function(assert) {
       Related discussion: https://github.com/json-api/json-api/issues/899
       */
 
+      let postErrors = comment.get('errors.post');
       let postBodyErrors = comment.get('errors.post/body');
       let postPostTitleErrors = comment.get('errors.post/post_title');
 
+      assert.equal(postErrors.length, 2);
+      assert.equal(postErrors[0].message, 'error 2');
+      assert.equal(postErrors[1].message, 'error 3');
       assert.equal(postBodyErrors.length, 2);
       assert.equal(postBodyErrors[0].message, 'This field is required.');
       assert.equal(postBodyErrors[1].message, 'This field cannot be blank.');
       assert.equal(postPostTitleErrors.length, 1);
       assert.equal(postPostTitleErrors[0].message, 'This field is required.');
+
+      let nonFieldError1 = response.errors[3];
+      let nonFieldError2 = response.errors[4];
+
+      assert.equal(nonFieldError1.detail, 'error 2');
+      assert.equal(nonFieldError1.source.pointer, '/data/attributes/post');
+      assert.equal(nonFieldError1.title, 'Validation Error');
+
+      assert.equal(nonFieldError2.detail, 'error 3');
+      assert.equal(nonFieldError2.source.pointer, '/data/attributes/post');
+      assert.equal(nonFieldError2.title, 'Validation Error');
+
     });
   });
 });
