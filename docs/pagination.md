@@ -4,98 +4,127 @@ Pagination is supported using the metadata support that is built into Ember Data
 Metadata from Django REST Framework paginated list views is updated on every request
 to the server.
 
+The pagination support in EDA works with the default pagination setup in DRF 3.0 and the
+[PageNumberPagination](http://www.django-rest-framework.org/api-guide/pagination/#pagenumberpagination)
+class in DRF 3.1. It's possible to use the other DRF 3.1 pagination classes by
+overriding `extractMeta` (see [customizing the Metadata](#customizing-the-metadata) below).
 
-## Retrieving the Metadata
 
-To get a page of records, simply run a find request with the `page` query param:
+## Accessing the Metadata
 
-```js
-var result = this.store.find("post", {
-  page: 2
-});
-```
-
-After the request returns, you can access the metadata either with `store.metadataFor`:
+To get a page of records, simply run a `query` request with the `page` query param.
 
 ```js
-var meta = this.store.metadataFor("post");
+let result = this.store.query('post', {page: 1});
 ```
 
-Or you can access the metadata just for this query:
+All of the DRF metadata (including the pagination metadata) can be access through the
+`meta` property of the result once the promise is fulfilled.
 
 ```js
-var meta = result.get("content.meta");
+let meta = result.get('meta');
 ```
 
-**NB** Running a find request against a paginated list view without query params will
-retrieve the first page with metadata set in only `store.metadataFor`. This is how
-metadata works in Ember Data.
+**Note:** The `meta` property will only be set on results of `query` requests.
 
 
-## Metadata Properties
+## Pagination Metadata
 
-The metadata consists of three properties that give the application enough information
-to paginate through a Django REST Framework paginated list view.
+The pagination metadata consists of three properties that give the application enough
+information to paginate through a Django REST Framework paginated list view.
 
 * `next` - The next page number or `null` when there is no next page (i.e. the last
            page).
 * `previous` - The previous page number or `null` when there is no previous page (i.e.
                the first page).
 * `count` - The total number of records available. This can be used along with the page
-            size to calculate the total number of pages.
+            size to calculate the total number of pages (see
+            [customizing the Metadata](#customizing-the-metadata) below).
 
 
 The `next` and `previous` page number can be used directly as the value of the `page`
 query param. `null` is not a valid value for the `page` query param so applications need
-to check this condition before using it.
+to check if `next` and `previous` are null before using them.
 
 ```js
 if (meta.next) {
-  store.find('post', {page: meta.next})
+  result = store.query('post', {page: meta.next})
 }
 ```
 
-## Django REST Framework settings
+## Customizing the Metadata
 
-Django REST Framework has a number of settings that can be used to customise the
-pagination behaviour of generic views.
-
-One useful setting is `PAGINATE_BY_PARAM` / `paginate_by_param`. If this is enabled,
-it's possible to override the server-side page size by including the query param
-name that you set in the find request. For example, if you set
-`PAGINATE_BY_PARAM = 'page_size'`, you would run the find request with the `page`
- and `page_size` query params. For example:
+You can customize the metadata by overriding the `extractMeta` and adding and / or removing
+metadata as indicated in this template.
 
 ```js
-var result = this.store.find("post", {
-  page: 1,
-  page_size: 10
+// app/serializer/<model>.js
+
+import Ember from 'ember';
+import DRFSerializer from './drf';
+
+export default DRFSerializer.extend({
+  extractMeta: function(store, type, payload) {
+    let meta = this._super(store, type, payload);
+    if (!Ember.isNone(meta)) {
+
+      // Add or remove metadata here.
+
+    }
+    return meta;
+  }
 });
 ```
 
-If you use the `PAGINATE_BY_PARAM` or `paginate_by_param` setting, it's advisable to also
-set `MAX_PAGINATE_BY`.
+This version of `extractMeta` adds the total page count to the `post` metadata.
 
-These global settings serve as a good starting point for your Django REST Framework pagination configuration:
+```js
+// app/serializer/post.js
 
-```Python
-REST_FRAMEWORK = {
-    'PAGINATE_BY': 10,                 # Default to 10
-    'PAGINATE_BY_PARAM': 'page_size',  # Allow client to override, using `?page_size=xxx`.
-    'MAX_PAGINATE_BY': 100             # Maximum limit allowed when using `?page_size=xxx`.
-}
+import Ember from 'ember';
+import DRFSerializer from './drf';
+
+export default DRFSerializer.extend({
+  extractMeta: function(store, type, payload) {
+    let meta = this._super(store, type, payload);
+    if (!Ember.isNone(meta)) {
+      // Add totalPages to metadata.
+      let totalPages = 1;
+      if (!Ember.isNone(meta.next)) {
+        // Any page that is not the last page.
+        totalPages = Math.ceil(meta.count / payload[type.modelName].length);
+      } else if (Ember.isNone(meta.next) && !Ember.isNone(meta.previous)) {
+        // The last page when there is more than one page.
+        totalPages = meta.previous + 1;
+      }
+      meta['totalPages'] = totalPages;
+    }
+    return meta;
+  }
+});
 ```
 
-The complete pagination configuration documentation is available in Django REST Framework docs.
+## Cursor Pagination
 
-[http://www.django-rest-framework.org/api-guide/pagination/#pagination-in-the-generic-views](http://www.django-rest-framework.org/api-guide/pagination/#pagination-in-the-generic-views)
+To use [`CursorPagination`](http://www.django-rest-framework.org/api-guide/pagination/#cursorpagination), override `extractPageNumber` in the serializer to extract the `cursor`.
 
+```js
+// app/serializer/drf.js
 
-## Integration with 3rd Party Libraries
+import DRFSerializer from 'ember-django-adapter/serializers/drf';
 
-* Ember CLI Pagination
+export default DRFSerializer.extend({
+  extractPageNumber: function(url) {
+    var match = /.*?[\?&]cursor=([A-Za-z0-9]+).*?/.exec(url);
+    if (match) {
+      return match[1];
+    }
+    return null;
+  }
+});
+```
 
-[https://github.com/mharris717/ember-cli-pagination](https://github.com/mharris717/ember-cli-pagination)
-
-It's should be possible to use the pagination metadata with Ember CLI Pagination. If you
-get this working, please consider submitting a pull request documenting the configuration.
+If you don't use the `PageNumberPagination` for pagination with DRF 3.1 you can also add
+the metadata for the pagination scheme you use here. We may add support for the other
+pagination classes in the future. If this is something you are interested in contributing,
+please file an issue on github.

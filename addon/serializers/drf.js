@@ -1,5 +1,6 @@
-import DS from 'ember-data';
-import Ember from 'ember';
+import { decamelize } from '@ember/string';
+import { isNone } from '@ember/utils';
+import RESTSerializer from 'ember-data/serializers/rest';
 
 /**
  * Handle JSON/REST (de)serialization.
@@ -10,7 +11,48 @@ import Ember from 'ember';
  * @class DRFSerializer
  * @extends DS.RESTSerializer
  */
-export default DS.RESTSerializer.extend({
+export default RESTSerializer.extend({
+  // Remove this in our 2.0 release.
+  isNewSerializerAPI: true,
+
+  /**
+   * Returns the resource's relationships formatted as a JSON-API "relationships object".
+   *
+   * http://jsonapi.org/format/#document-resource-object-relationships
+   *
+   * This version adds a 'links'hash with relationship urls before invoking the
+   * JSONSerializer's version.
+   *
+   * @method extractRelationships
+   * @param {Object} modelClass
+   * @param {Object} resourceHash
+   * @return {Object}
+   */
+  extractRelationships: function (modelClass, resourceHash) {
+    if (!resourceHash.hasOwnProperty('links')) {
+      resourceHash['links'] = {};
+    }
+
+    modelClass.eachRelationship(function(key, relationshipMeta) {
+      let payloadRelKey = this.keyForRelationship(key);
+
+      if (!resourceHash.hasOwnProperty(payloadRelKey)) {
+        return;
+      }
+
+      if (relationshipMeta.kind === 'hasMany' || relationshipMeta.kind === 'belongsTo') {
+        // Matches strings starting with: https://, http://, //, /
+        var payloadRel = resourceHash[payloadRelKey];
+        if (!isNone(payloadRel) && !isNone(payloadRel.match) &&
+          typeof(payloadRel.match) === 'function' && payloadRel.match(/^((https?:)?\/\/|\/)\w/)) {
+          resourceHash['links'][key] = resourceHash[payloadRelKey];
+          delete resourceHash[payloadRelKey];
+        }
+      }
+    }, this);
+
+    return this._super(modelClass, resourceHash);
+  },
 
   /**
    *  Returns the number extracted from the page number query param of
@@ -24,7 +66,7 @@ export default DS.RESTSerializer.extend({
    * @return {Number} page number
    */
   extractPageNumber: function(url) {
-    var match = /.*?[\?&]page=(\d+).*?/.exec(url);
+    var match = /.*?[?&]page=(\d+).*?/.exec(url);
     if (match) {
       return Number(match[1]).valueOf();
     }
@@ -32,70 +74,60 @@ export default DS.RESTSerializer.extend({
   },
 
   /**
-   * `extractMeta` is used to deserialize any meta information in the
-   * adapter payload. By default Ember Data expects meta information to
-   * be located on the `meta` property of the payload object.
+   * Converts DRF API server responses into the format expected by the RESTSerializer.
    *
-   * @method extractMeta
-   * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
-   * @param {Object} payload
-   */
-  extractMeta: function(store, type, payload) {
-    if (payload && payload.results) {
-      // Sets the metadata for the type.
-      store.setMetadataFor(type, {
-        count: payload.count,
-        next: this.extractPageNumber(payload.next),
-        previous: this.extractPageNumber(payload.previous)
-      });
-
-      // Keep ember data from trying to parse the metadata as a records
-      delete payload.count;
-      delete payload.next;
-      delete payload.previous;
-    }
-  },
-
-  /**
-   * `extractSingle` is used to deserialize a single record returned
-   * from the adapter.
+   * If the payload has DRF metadata and results properties, all properties that aren't in
+   * the results are added to the 'meta' hash so that Ember Data can use these properties
+   * for metadata. The next and previous pagination URLs are parsed to make it easier to
+   * paginate data in applications. The RESTSerializer's version of this function is called
+   * with the converted payload.
    *
-   * @method extractSingle
+   * @method normalizeResponse
    * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
+   * @param {DS.Model} primaryModelClass
    * @param {Object} payload
-   * @param {String or Number} id
-   * @return {Object} json The deserialized payload
+   * @param {String|Number} id
+   * @param {String} requestType
+   * @return {Object} JSON-API Document
    */
-  extractSingle: function(store, type, payload, id) {
-    var convertedPayload = {};
-    convertedPayload[type.typeKey] = payload;
-    return this._super(store, type, convertedPayload, id);
-  },
+  normalizeResponse: function (store, primaryModelClass, payload, id, requestType) {
+    let convertedPayload = {};
 
-  /**
-   * `extractArray` is used to deserialize an array of records
-   * returned from the adapter.
-   *
-   * @method extractArray
-   * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
-   * @param {Object} payload
-   * @param {String or Number} id
-   * @return {Array} array An array of deserialized objects
-   */
-  extractArray: function(store, type, payload) {
-    // Convert payload to json format expected by the RESTSerializer.
-    // This function is being overridden instead of normalizePayload()
-    // because `results` will only be in lists.
-    var convertedPayload = {};
-    if (payload.results) {
-      convertedPayload[type.typeKey] = payload.results;
+    if (!isNone(payload) &&
+      payload.hasOwnProperty('next') &&
+      payload.hasOwnProperty('previous') &&
+      payload.hasOwnProperty('results')) {
+
+      // Move DRF metadata to the meta hash.
+      convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload.results));
+      delete payload.results;
+      convertedPayload['meta'] = JSON.parse(JSON.stringify(payload));
+
+      // The next and previous pagination URLs are parsed to make it easier to paginate data in applications.
+      if (!isNone(convertedPayload.meta['next'])) {
+        convertedPayload.meta['next'] = this.extractPageNumber(convertedPayload.meta['next']);
+      }
+      if (!isNone(convertedPayload.meta['previous'])) {
+        let pageNumber = this.extractPageNumber(convertedPayload.meta['previous']);
+        // The DRF previous URL doesn't always include the page=1 query param in the results for page 2. We need to
+        // explicitly set previous to 1 when the previous URL is defined but the page is not set.
+        if (isNone(pageNumber)) {
+           pageNumber = 1;
+        }
+        convertedPayload.meta['previous'] = pageNumber;
+      }
     } else {
-      convertedPayload[type.typeKey] = payload;
+      convertedPayload[primaryModelClass.modelName] = JSON.parse(JSON.stringify(payload));
     }
-    return this._super(store, type, convertedPayload);
+
+    // return single result for requestType 'queryRecord'
+    let records = convertedPayload[primaryModelClass.modelName];
+    if (requestType === 'queryRecord' && Array.isArray(records)) {
+      let first = records.length > 0 ? records[0] : null;
+      convertedPayload[primaryModelClass.modelName] = first;
+    }
+
+    return this._super(store, primaryModelClass, convertedPayload, id, requestType);
   },
 
   /**
@@ -117,7 +149,7 @@ export default DS.RESTSerializer.extend({
    * @param {Object} options
    */
   serializeIntoHash: function(hash, type, snapshot, options) {
-    Ember.merge(hash, this.serialize(snapshot, options));
+    Object.assign(hash, this.serialize(snapshot, options));
   },
 
   /**
@@ -129,7 +161,7 @@ export default DS.RESTSerializer.extend({
    * @return {String} normalized key
    */
   keyForAttribute: function(key) {
-    return Ember.String.decamelize(key);
+    return decamelize(key);
   },
 
   /**
@@ -139,10 +171,9 @@ export default DS.RESTSerializer.extend({
    *
    * @method keyForRelationship
    * @param {String} key
-   * @param {String} type The type of relationship
    * @return {String} normalized key
    */
   keyForRelationship: function(key) {
-    return Ember.String.decamelize(key);
+    return decamelize(key);
   }
 });

@@ -3,6 +3,10 @@
 When a record returns the IDs of records in a hasMany relationship, Ember Data
 allows us to opt-in to combine these requests into a single request.
 
+**Note:** Using [hyperlinked related fields](hyperlinked-related-fields.md) to retrieve related
+records in a single request is preferred over using coalesceFindRequests since there is a limit on
+the number of records per request on read-only fields due to URL length restrictions. 
+
 Suppose you have Ember models:
 
 ```js
@@ -111,8 +115,10 @@ class CoalesceFilterBackend(filters.BaseFilterBackend):
 
     """
     def filter_queryset(self, request, queryset, view):
-        id_list = request.QUERY_PARAMS.getlist('ids[]')
+        id_list = request.query_params.getlist('ids[]')
         if id_list:
+            # Disable pagination, so all records can load.
+            view.pagination_class = None
             queryset = queryset.filter(id__in=id_list)
         return queryset
 ```

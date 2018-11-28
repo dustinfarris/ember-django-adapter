@@ -1,5 +1,13 @@
-import DS from 'ember-data';
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import { dasherize } from '@ember/string';
+import RESTAdapter from 'ember-data/adapters/rest';
+import { InvalidError, AdapterError } from 'ember-data/-private';
+import { pluralize } from 'ember-inflector';
+
+const ERROR_MESSAGES = {
+  401: 'Unauthorized',
+  500: 'Internal Server Error'
+};
 
 /**
  * The Django REST Framework adapter allows your store to communicate
@@ -13,9 +21,11 @@ import Ember from 'ember';
  * @constructor
  * @extends DS.RESTAdapter
  */
-export default DS.RESTAdapter.extend({
+export default RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
   addTrailingSlashes: true,
+  nonFieldErrorsKey: 'non_field_errors',
+
 
   /**
    * Determine the pathname for a given type.
@@ -25,30 +35,32 @@ export default DS.RESTAdapter.extend({
    * @return {String} path
    */
   pathForType: function(type) {
-    var dasherized = Ember.String.dasherize(type);
-    return Ember.String.pluralize(dasherized);
+    var dasherized = dasherize(type);
+    return pluralize(dasherized);
   },
 
   /**
-   * Build a URL for a given type and optional ID.
-   *
-   * By default, it pluralizes the type's name (for example, 'post'
-   * becomes 'posts' and 'person' becomes 'people').
-   *
-   * If an ID is specified, it adds the ID to the path generated for
-   * the type, separated by a `/`.
-   *
-   * If the adapter has the property `addTrailingSlashes` set to
-   * true, a trailing slash will be appended to the result.
-   *
-   * @method buildURL
-   * @param {String} type
-   * @param {String} id
-   * @param {DS.Snapshot} snapshot
-   * @return {String} url
-   */
-  buildURL: function(type, id, snapshot, requestType) {
-    var url = this._super(type, id, snapshot, requestType);
+    Builds a URL for a given model name and optional ID.
+
+    By default, it pluralizes the type's name (for example, 'post'
+    becomes 'posts' and 'person' becomes 'people').
+
+    If an ID is specified, it adds the ID to the path generated
+    for the type, separated by a `/`.
+
+    If the adapter has the property `addTrailingSlashes` set to
+    true, a trailing slash will be appended to the result.
+
+    @method buildURL
+    @param {String} modelName
+    @param {(String|Array|Object)} id single id or array of ids or query
+    @param {(DS.Snapshot|Array)} snapshot single snapshot or array of snapshots
+    @param {String} requestType
+    @param {Object} query object of query parameters to send for query requests.
+    @return {String} url
+  */
+  buildURL: function(modelName, id, snapshot, requestType, query) {
+    var url = this._super(modelName, id, snapshot, requestType, query);
     if (this.get('addTrailingSlashes')) {
       if (url.charAt(url.length - 1) !== '/') {
         url += '/';
@@ -58,62 +70,128 @@ export default DS.RESTAdapter.extend({
   },
 
   /**
-   * Takes an ajax response, and returns an error payload.
-   *
-   * Returning a `DS.InvalidError` from this method will cause the
-   * record to transition into the `invalid` state and make the
-   * `errors` object available on the record.
-   *
-   * This function should return the entire payload as received from the
-   * server. Error object extraction and normalization of model errors
-   * should be performed by `extractErrors` on the serializer.
-   *
-   * @method ajaxError
-   * @param  {Object} jqXHR
-   * @return {DS.InvalidError} or {Object} jqXHR
-   */
-  ajaxError: function(jqXHR) {
-    var error = this._super(jqXHR);
+    Takes an ajax response, and returns the json payload or an error.
 
-    if (jqXHR && jqXHR.status === 400) {
+    By default this hook just returns the json payload passed to it.
+    You might want to override it in two cases:
 
-      var jsonErrors;
-      try {
-        jsonErrors = Ember.$.parseJSON(jqXHR.responseText);
-      } catch (SyntaxError) {
-        // This happens with some errors (e.g. 500).
-        return error;
-      }
+    1. Your API might return useful results in the response headers.
+    Response headers are passed in as the second argument.
 
-      // The field errors need to be in an `errors` hash to ensure
-      // `extractErrors` / `normalizeErrors` functions get called
-      // on the serializer.
-      var convertedJsonErrors = {};
-      convertedJsonErrors['errors'] = jsonErrors;
-      return new DS.InvalidError(convertedJsonErrors);
+    2. Your API might return errors as successful responses with status code
+    200 and an Errors text or object. You can return a `DS.InvalidError` or a
+    `DS.AdapterError` (or a sub class) from this hook and it will automatically
+    reject the promise and put your record into the invalid or error state.
 
-    } else {
-      return error;
+    Returning a `DS.InvalidError` from this method will cause the
+    record to transition into the `invalid` state and make the
+    `errors` object available on the record. When returning an
+    `DS.InvalidError` the store will attempt to normalize the error data
+    returned from the server using the serializer's `extractErrors`
+    method.
+
+    @method handleResponse
+    @param  {Number} status
+    @param  {Object} headers
+    @param  {Object} payload
+    @return {Object | DS.AdapterError} response
+  */
+  handleResponse: function(status, headers, payload) {
+    if (this.isSuccess(status, headers, payload)) {
+      return payload;
+    } else if (this.isInvalid(status, headers, payload)) {
+      return new InvalidError(this._drfToJsonAPIValidationErrors(payload));
     }
+
+    if (Object.getOwnPropertyNames(payload).length === 0) {
+      payload = '';
+    } else if (payload.detail) {
+      payload = payload.detail;
+    }
+    let errors = this.normalizeErrorResponse(status, headers, payload);
+
+    if (ERROR_MESSAGES[status]) {
+      return new AdapterError(errors, ERROR_MESSAGES[status]);
+    }
+    return new AdapterError(errors);
+  },
+
+  isInvalid: function(status) {
+    return status === 400;
   },
 
   /**
-   * Fetch several records together if `coalesceFindRequests` is true.
+    Convert validation errors to a JSON API object.
+
+    Non-field errors are converted to an object that points at /data.  Field-
+    specific errors are converted to an object that points at the respective
+    attribute.  Nested field-specific errors are converted to an object that
+    include a slash-delimited pointer to the nested attribute.
+
+    NOTE: Because JSON API does not technically support nested resource objects
+          at this time, any nested errors are literally "in name" only.  The
+          error object will be attached to the parent resource and the nested
+          object's isValid property will continue to be true.
+
+    @method _drfToJsonAPIValidationErrors
+    @param {Object} payload
+    @param {String} keyPrefix Used to recursively process nested errors
+    @return {Array} A list of JSON API compliant error objects
+  */
+  _drfToJsonAPIValidationErrors(payload, keyPrefix='') {
+    let out = [];
+
+    payload = this._formatPayload(payload);
+
+    for (let key in payload) {
+      /*jshint loopfunc: true */
+      if (payload.hasOwnProperty(key)) {
+        if (isArray(payload[key])) {
+          payload[key].forEach(error => {
+            if (key === this.get('nonFieldErrorsKey')) {
+              out.push({
+                source: { pointer: '/data' },
+                detail: error,
+                title: 'Validation Error'
+              });
+            } else {
+              out.push({
+                source: { pointer: `/data/attributes/${keyPrefix}${key}` },
+                detail: error,
+                title: 'Invalid Attribute'
+              });
+            }
+          });
+        } else {
+          out = out.concat(
+            this._drfToJsonAPIValidationErrors(payload[key], `${keyPrefix}${key}/`)
+          );
+        }
+      }
+    }
+    return out;
+  },
+
+  /**
+   * This is used by RESTAdapter._drfToJsonAPIValidationErrors.
    *
-   * @method findMany
-   * @param {DS.Store} store
-   * @param {subclass of DS.Model} type
-   * @param {Array} ids
-   * @param {Array} snapshots
-   * @return {Promise} promise
+   * Map string values to arrays because improperly formatted payloads cause
+   * a maximum call stack size exceeded error
+   *
+   * @method _formatPayload
+   * @param {Object} payload
+   * @return {Object} payload
    */
-  findMany: function(store, type, ids, snapshots) {
-    Ember.Logger.warn('WARNING: You are fetching several records in a single request because ' +
-                      'you have set `coalesceFindRequests=true` on the adapter.  For this to ' +
-                      'work, you MUST implement a custom filter in Django REST Framework.  See ' +
-                      'http://dustinfarris.com/ember-django-adapter/coalesce-find-requests/ ' +
-                      'for more information.');
-    return this._super(store, type, ids, snapshots);
+  _formatPayload: function(payload) {
+    for (let key in payload) {
+      if (payload.hasOwnProperty(key)) {
+        if (typeof payload[key] === 'string') {
+          payload[key] = [payload[key]];
+        }
+      }
+    }
+
+    return payload;
   },
 
   /**
@@ -130,6 +208,6 @@ export default DS.RESTAdapter.extend({
    * @return {String} url
    */
   _stripIDFromURL: function(store, snapshot) {
-    return this.buildURL(snapshot.typeKey);
+    return this.buildURL(snapshot.modelName);
   }
 });

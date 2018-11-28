@@ -1,15 +1,45 @@
+/* eslint-env node */
 module.exports = {
+  useYarn: true,
   scenarios: [
     {
-      name: 'ember-data-beta',
-      dependencies: {
-        'ember-data': '1.0.0-beta.16.1'
+      name: 'ember-lts-2.12',
+      npm: {
+        dependencies: {
+          'ember-data': '^2.12.0'
+        }
       }
     },
     {
-      name: 'ember-data-canary',
-      dependencies: {
-        'ember-data': 'canary'
+      name: 'ember-lts-2.16',
+      npm: {
+        dependencies: {
+          'ember-data': '^2.16.0'
+        }
+      }
+    },
+    {
+      name: 'ember-release',
+      npm: {
+        dependencies: {
+          'ember-data': 'emberjs/data#release'
+        }
+      }
+    },
+    {
+      name: 'ember-beta',
+      npm: {
+        dependencies: {
+          'ember-data': 'emberjs/data#beta'
+        }
+      }
+    },
+    {
+      name: 'ember-canary',
+      npm: {
+        dependencies: {
+          'ember-data': 'emberjs/data#master'
+        }
       }
     }
   ]

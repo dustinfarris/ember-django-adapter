@@ -1,4 +1,6 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { merge } from '@ember/polyfills';
+import $ from 'jquery';
 import {
   module,
   test
@@ -35,7 +37,7 @@ module('Acceptance: CRUD Success', {
   beforeEach: function() {
     application = startApp();
 
-    store = application.__container__.lookup('store:main');
+    store = application.__container__.lookup('service:store');
 
     server = new Pretender(function() {
 
@@ -49,32 +51,31 @@ module('Acceptance: CRUD Success', {
       });
 
       // Retrieve single record
-      this.get('/test-api/posts/1/', function(request) {
+      this.get('/test-api/posts/1/', function() {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(posts[0])];
       });
 
       // Create record
       this.post('/test-api/posts/', function(request) {
-        var data = Ember.$.parseJSON(request.requestBody);
-        data['id'] = 4;
+        var data = $.parseJSON(request.requestBody);
         return [201, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
 
       // Update record
       this.put('/test-api/posts/1/', function(request) {
-        var data = Ember.merge(posts[0], Ember.$.parseJSON(request.requestBody));
+        var data = merge(posts[0], $.parseJSON(request.requestBody));
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
 
       // Delete record
-      this.delete('/test-api/posts/1/', function(request) {
+      this.delete('/test-api/posts/1/', function() {
         return [204];
       });
     });
   },
 
   afterEach: function() {
-    Ember.run(application, 'destroy');
+    run(application, 'destroy');
     server.shutdown();
   }
 });
@@ -82,7 +83,7 @@ module('Acceptance: CRUD Success', {
 test('Retrieve list of non-paginated records', function(assert) {
   assert.expect(4);
 
-  return store.find('post').then(function(posts) {
+  return store.findAll('post').then(function(posts) {
 
     assert.ok(posts);
     assert.equal(posts.get('length'), 3);
@@ -94,12 +95,25 @@ test('Retrieve list of non-paginated records', function(assert) {
   });
 });
 
-test('Retrieve single record', function(assert) {
+test('Retrieve single record with findRecord', function(assert) {
   assert.expect(3);
 
-  return Ember.run(function() {
+  return run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
+      assert.ok(post);
+      assert.equal(post.get('postTitle'), 'post title 1');
+      assert.equal(post.get('body'), 'post body 1');
+    });
+  });
+});
+
+test('Retrieve single record with queryRecord', function(assert) {
+  assert.expect(3);
+
+  return run(function() {
+
+    return store.queryRecord('post', { slug: 'post-title-1' }).then(function(post) {
 
       assert.ok(post);
       assert.equal(post.get('postTitle'), 'post title 1');
@@ -111,9 +125,9 @@ test('Retrieve single record', function(assert) {
 test('Retrieve via query', function(assert) {
   assert.expect(3);
 
-  return Ember.run(function() {
+  return run(function() {
 
-    return store.find('post', {post_title: 'post title 2'}).then(function(post) {
+    return store.query('post', {post_title: 'post title 2'}).then(function(post) {
 
       assert.ok(post);
 
@@ -125,11 +139,12 @@ test('Retrieve via query', function(assert) {
 });
 
 test('Create record', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
 
-  return Ember.run(function() {
+  return run(function() {
 
     var post = store.createRecord('post', {
+      id: 4,
       postTitle: 'my new post title',
       body: 'my new post body'
     });
@@ -140,6 +155,10 @@ test('Create record', function(assert) {
       assert.equal(post.get('id'), 4);
       assert.equal(post.get('postTitle'), 'my new post title');
       assert.equal(post.get('body'), 'my new post body');
+
+      var requestBody = (JSON.parse(server.handledRequests.pop().requestBody));
+      assert.equal(requestBody.id, 4);
+
     });
   });
 });
@@ -147,23 +166,23 @@ test('Create record', function(assert) {
 test('Update record', function(assert) {
   assert.expect(7);
 
-  return Ember.run(function() {
+  return run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
-      assert.equal(post.get('isDirty'), false);
+      assert.equal(post.get('hasDirtyAttributes'), false);
 
-      return Ember.run(function() {
+      return run(function() {
 
         post.set('postTitle', 'new post title');
         post.set('body', 'new post body');
-        assert.equal(post.get('isDirty'), true);
+        assert.equal(post.get('hasDirtyAttributes'), true);
 
         return post.save().then(function(post) {
 
           assert.ok(post);
-          assert.equal(post.get('isDirty'), false);
+          assert.equal(post.get('hasDirtyAttributes'), false);
           assert.equal(post.get('postTitle'), 'new post title');
           assert.equal(post.get('body'), 'new post body');
         });
@@ -175,9 +194,9 @@ test('Update record', function(assert) {
 test('Delete record', function(assert) {
   assert.expect(2);
 
-  return Ember.run(function() {
+  return run(function() {
 
-    return store.find('post', 1).then(function(post) {
+    return store.findRecord('post', 1).then(function(post) {
 
       assert.ok(post);
 
