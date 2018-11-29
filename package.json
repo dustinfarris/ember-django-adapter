@@ -22,7 +22,7 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.6.0",
+    "ember-cli-babel": "^6.16.0",
     "ember-data": "^3.0.0",
     "ember-inflector": "^2.1.0"
   },
@@ -46,15 +46,14 @@
     "ember-qunit": "^3.4.1",
     "ember-resolver": "^4.0.0",
     "ember-sinon": "1.0.1",
-    "ember-source": "~3.0.0",
-    "ember-source-channel-url": "^1.0.1",
+    "ember-source": "^3.0.0",
     "ember-try": "^1.1.0",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^6.0.1",
     "loader.js": "^4.2.3"
   },
   "engines": {
-    "node": "^4.5 || 6.* || >= 7.*"
+    "node": "6.* || 8.* || >= 10.*"
   },
   "ember-addon": {
     "after": "ember-data",
