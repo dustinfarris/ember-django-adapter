@@ -1,12 +1,10 @@
-import { run } from '@ember/runloop';
 import {
   module,
   test
 } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import Pretender from 'pretender';
-import startApp from 'dummy/tests/helpers/start-app';
 
-var application;
 var store;
 var server;
 
@@ -49,11 +47,11 @@ var posts = [
   }
 ];
 
-module('Acceptance: Pagination', {
-  beforeEach: function() {
-    application = startApp();
+module('Acceptance: Pagination', function(hooks) {
+  setupApplicationTest(hooks);
 
-    store = application.__container__.lookup('service:store');
+  hooks.beforeEach(function() {
+    store = this.owner.lookup('service:store');
 
     // The implementation of the paginated Pretender server is dynamic
     // so it can be used with all of the pagination tests. Otherwise,
@@ -105,81 +103,80 @@ module('Acceptance: Pagination', {
         })];
       });
     });
-  },
+  });
 
-  afterEach: function() {
-    run(application, 'destroy');
+  hooks.afterEach(function() {
     server.shutdown();
-  }
-});
-
-test('Retrieve list of paginated records', function(assert) {
-  assert.expect(7);
-
-  return store.query('post', {page: 1}).then(function(response) {
-    assert.ok(response);
-
-    assert.equal(response.get('length'), 4);
-
-    // Test the camelCase and non-camelCase fields of a paginated result.
-    var post = response.objectAt(1);
-    assert.equal(post.get('postTitle'), 'post title 2');
-    assert.equal(post.get('body'), 'post body 2');
-
-    var metadata = response.get('meta');
-    assert.equal(metadata.count, 6);
-    assert.equal(metadata.next, 2);
-    assert.equal(metadata.previous, null);
   });
-});
 
-test('queryRecord with paginated results returns a single record', function(assert) {
-  return store.queryRecord('post', { title: 'post title 1' }).then(function(post) {
-    assert.ok(post);
-    assert.equal(post.get('postTitle'), 'post title 1');
-    assert.equal(post.get('body'), 'post body 1');
+  test('Retrieve list of paginated records', function(assert) {
+    assert.expect(7);
+
+    return store.query('post', {page: 1}).then(function(response) {
+      assert.ok(response);
+
+      assert.equal(response.get('length'), 4);
+
+      // Test the camelCase and non-camelCase fields of a paginated result.
+      var post = response.objectAt(1);
+      assert.equal(post.get('postTitle'), 'post title 2');
+      assert.equal(post.get('body'), 'post body 2');
+
+      var metadata = response.get('meta');
+      assert.equal(metadata.count, 6);
+      assert.equal(metadata.next, 2);
+      assert.equal(metadata.previous, null);
+    });
   });
-});
 
-test("Type metadata doesn't have previous", function(assert) {
-  assert.expect(4);
-
-  return store.query('post', {page: 1}).then(function(response) {
-    assert.ok(response);
-
-    var metadata = response.get('meta');
-    assert.equal(metadata.count, 6);
-    assert.equal(metadata.next, 2);
-    assert.equal(metadata.previous, null);
+  test('queryRecord with paginated results returns a single record', function(assert) {
+    return store.queryRecord('post', { title: 'post title 1' }).then(function(post) {
+      assert.ok(post);
+      assert.equal(post.get('postTitle'), 'post title 1');
+      assert.equal(post.get('body'), 'post body 1');
+    });
   });
-});
 
+  test("Type metadata doesn't have previous", function(assert) {
+    assert.expect(4);
 
-test("Type metadata doesn't have next", function(assert) {
-  assert.expect(5);
+    return store.query('post', {page: 1}).then(function(response) {
+      assert.ok(response);
 
-  return store.query('post', {page: 2}).then(function(response) {
-    assert.ok(response);
-    assert.equal(response.get('length'), 2);
-
-    var metadata = response.get('meta');
-    assert.equal(metadata.count, 6);
-    assert.equal(metadata.next, null);
-    assert.equal(metadata.previous, 1);
+      var metadata = response.get('meta');
+      assert.equal(metadata.count, 6);
+      assert.equal(metadata.next, 2);
+      assert.equal(metadata.previous, null);
+    });
   });
-});
 
 
-test("Test page_size query param", function(assert) {
-  assert.expect(5);
+  test("Type metadata doesn't have next", function(assert) {
+    assert.expect(5);
 
-  return store.query('post', {page: 2, page_size: 2}).then(function(response) {
-    assert.ok(response);
-    assert.equal(response.get('length'), 2);
+    return store.query('post', {page: 2}).then(function(response) {
+      assert.ok(response);
+      assert.equal(response.get('length'), 2);
 
-    var metadata = response.get('meta');
-    assert.equal(metadata.count, 6);
-    assert.equal(metadata.previous, 1);
-    assert.equal(metadata.next, 3);
+      var metadata = response.get('meta');
+      assert.equal(metadata.count, 6);
+      assert.equal(metadata.next, null);
+      assert.equal(metadata.previous, 1);
+    });
+  });
+
+
+  test("Test page_size query param", function(assert) {
+    assert.expect(5);
+
+    return store.query('post', {page: 2, page_size: 2}).then(function(response) {
+      assert.ok(response);
+      assert.equal(response.get('length'), 2);
+
+      var metadata = response.get('meta');
+      assert.equal(metadata.count, 6);
+      assert.equal(metadata.previous, 1);
+      assert.equal(metadata.next, 3);
+    });
   });
 });
