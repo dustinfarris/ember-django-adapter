@@ -1,0 +1,38 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:8-browsers
+    steps:
+      - checkout
+      - run: yarn install
+      - run: yarn test
+
+  deploy:
+    docker:
+      - image: circleci/python:3.6.5
+    working_directory: ~/circleci-docs-deploy
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
+      - checkout      
+      - run: sudo pip install mkdocs
+      - run: "mkdocs gh-deploy --message=\"Deployed {sha} with MkDocs version: {version} [ci skip]\""
+
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - test:
+          filters:  # required since `deploy` has tag filters AND requires `test`
+            tags:
+              only: /.*/
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
