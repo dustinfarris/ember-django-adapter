@@ -53,7 +53,8 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[1]
             }
-          }
+          },
+          allowedToFail: true
         },
         {
           name: 'ember-canary',
@@ -64,7 +65,8 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[2]
             }
-          }
+          },
+          allowedToFail: true
         }
       ]
     }
