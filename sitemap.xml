@@ -1,84 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-    
     <url>
-     <loc>/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/configuring/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/extending/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/trailing-slashes/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/embedded-records/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/pagination/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/coalesce-find-requests/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/hyperlinked-related-fields/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/contributing/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
-    
     <url>
-     <loc>/changelog/</loc>
-     <lastmod>2018-01-04</lastmod>
+     <loc>None</loc>
+     <lastmod>2019-01-14</lastmod>
      <changefreq>daily</changefreq>
     </url>
-    
-
 </urlset>
