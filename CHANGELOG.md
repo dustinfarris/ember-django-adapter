@@ -2,6 +2,24 @@ ember-django-adapter Changelog
 ==============================
 
 
+2.1.0
+-----
+
+### Enhancements
+
+* [#215](https://github.com/dustinfarris/ember-django-adapter/pull/215): Support ember-data 3.0 (@benmurden, @OleRoel)
+
+
+### Internal
+
+* [#217](https://github.com/dustinfarris/ember-django-adapter/pull/217): Upgrade to CircleCI 2.0 (@benmurden)
+
+
+### Docs
+
+* [#209](https://github.com/dustinfarris/ember-django-adapter/pull/209): Update coalesce-find-requests code sample (@arnebit)
+
+
 2.0.0
 -----
 

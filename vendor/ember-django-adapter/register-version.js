@@ -1,1 +1,1 @@
-Ember.libraries.register('Ember Django Adapter', '2.0.0');
+Ember.libraries.register('Ember Django Adapter', '2.1.0');
