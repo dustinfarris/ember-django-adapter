@@ -1,7 +1,7 @@
 import { isArray } from '@ember/array';
 import { dasherize } from '@ember/string';
 import RESTAdapter from 'ember-data/adapters/rest';
-import { InvalidError, AdapterError } from 'ember-data/adapters/errors';
+import AdapterError, { InvalidError} from '@ember-data/adapter/error';
 import { pluralize } from 'ember-inflector';
 
 const ERROR_MESSAGES = {
