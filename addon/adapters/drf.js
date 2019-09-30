@@ -1,8 +1,10 @@
 import { isArray } from '@ember/array';
 import { dasherize } from '@ember/string';
 import RESTAdapter from 'ember-data/adapters/rest';
-import { InvalidError, AdapterError } from 'ember-data/adapters/errors';
 import { pluralize } from 'ember-inflector';
+import DS from "ember-data";
+
+const { AdapterError, InvalidError } = DS;
 
 const ERROR_MESSAGES = {
   401: 'Unauthorized',
