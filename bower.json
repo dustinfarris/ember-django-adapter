@@ -1,9 +1,0 @@
-{
-  "name": "ember-django-adapter",
-  "dependencies": {
-    "ember": "~2.9.0",
-    "ember-cli-shims": "0.1.3",
-    "sinonjs": "1.17.1",
-    "pretender": "^0.10.0"
-  }
-}

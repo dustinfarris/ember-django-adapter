@@ -1,12 +1,11 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import {
   module,
   test
 } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import Pretender from 'pretender';
-import startApp from 'dummy/tests/helpers/start-app';
 
-var application;
 var store;
 var server;
 
@@ -48,11 +47,11 @@ var comments = [
   }
 ];
 
-module('Acceptance: Relationship Links', {
-  beforeEach: function() {
-    application = startApp();
+module('Acceptance: Relationship Links', function(hooks) {
+  setupApplicationTest(hooks);
 
-    store = application.__container__.lookup('service:store');
+  hooks.beforeEach(function() {
+    store = this.owner.lookup('service:store');
 
     server = new Pretender(function() {
       this.get('/test-api/posts/:id/', function(request) {
@@ -71,48 +70,47 @@ module('Acceptance: Relationship Links', {
         return [200, {'Content-Type': 'application/json'}, JSON.stringify(comments[request.params.id - 1])];
       });
     });
-  },
+  });
 
-  afterEach: function() {
-    Ember.run(application, 'destroy');
+  hooks.afterEach(function() {
     server.shutdown();
-  }
-});
+  });
 
-test('belongsTo', function(assert) {
-  assert.expect(2);
+  test('belongsTo', function(assert) {
+    assert.expect(2);
 
-  return Ember.run(function() {
+    return run(function() {
 
-    return store.findRecord('comment', 2).then(function(comment) {
+      return store.findRecord('comment', 2).then(function(comment) {
 
-      assert.ok(comment);
+        assert.ok(comment);
 
-      return comment.get('post').then(function(post) {
-        assert.ok(post);
+        return comment.get('post').then(function(post) {
+          assert.ok(post);
+        });
       });
     });
   });
-});
 
-test('hasMany', function(assert) {
-  assert.expect(9);
+  test('hasMany', function(assert) {
+    assert.expect(9);
 
-  return Ember.run(function() {
+    return run(function() {
 
-    return store.findRecord('post', 1).then(function(post) {
+      return store.findRecord('post', 1).then(function(post) {
 
-      assert.ok(post);
+        assert.ok(post);
 
-      return post.get('comments').then(function(related_comments) {
-        assert.ok(related_comments);
-        assert.equal(related_comments.get('length'), 3);
-        assert.ok(related_comments.objectAt(0));
-        assert.equal(related_comments.objectAt(0).id, comments[0].id);
-        assert.ok(related_comments.objectAt(1));
-        assert.equal(related_comments.objectAt(1).id, comments[2].id);
-        assert.ok(related_comments.objectAt(2));
-        assert.equal(related_comments.objectAt(2).id, comments[3].id);
+        return post.get('comments').then(function(related_comments) {
+          assert.ok(related_comments);
+          assert.equal(related_comments.get('length'), 3);
+          assert.ok(related_comments.objectAt(0));
+          assert.equal(related_comments.objectAt(0).id, comments[0].id);
+          assert.ok(related_comments.objectAt(1));
+          assert.equal(related_comments.objectAt(1).id, comments[2].id);
+          assert.ok(related_comments.objectAt(2));
+          assert.equal(related_comments.objectAt(2).id, comments[3].id);
+        });
       });
     });
   });

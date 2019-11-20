@@ -115,7 +115,7 @@ class CoalesceFilterBackend(filters.BaseFilterBackend):
 
     """
     def filter_queryset(self, request, queryset, view):
-        id_list = request.QUERY_PARAMS.getlist('ids[]')
+        id_list = request.query_params.getlist('ids[]')
         if id_list:
             # Disable pagination, so all records can load.
             view.pagination_class = None

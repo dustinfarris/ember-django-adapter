@@ -1,12 +1,12 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import $ from 'jquery';
 import {
   module,
   test
 } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
 import Pretender from 'pretender';
-import startApp from 'dummy/tests/helpers/start-app';
 
-var application;
 var store;
 var server;
 
@@ -53,11 +53,11 @@ var posts = [
   }
 ];
 
-module('Acceptance: Embedded Records', {
-  beforeEach: function() {
-    application = startApp();
+module('Acceptance: Embedded Records', function(hooks) {
+  setupApplicationTest(hooks);
 
-    store = application.__container__.lookup('service:store');
+  hooks.beforeEach(function() {
+    store = this.owner.lookup('service:store');
 
     server = new Pretender(function() {
 
@@ -74,87 +74,86 @@ module('Acceptance: Embedded Records', {
       });
 
       this.post('/test-api/embedded-post-comments/', function(request) {
-        let data = Ember.$.parseJSON(request.requestBody);
+        let data = $.parseJSON(request.requestBody);
         data['id'] = 8;
         data['post'] = posts[0];
         return [201, {'Content-Type': 'application/json'}, JSON.stringify(data)];
       });
 
     });
-  },
+  });
 
-  afterEach: function() {
-    Ember.run(application, 'destroy');
+  hooks.afterEach(function() {
     server.shutdown();
-  }
-});
-
-test('belongsTo retrieve', function(assert) {
-  assert.expect(6);
-
-  return Ember.run(function() {
-
-    return store.findRecord('embedded-post-comment', 5).then(function(comment) {
-      assert.ok(comment);
-      assert.equal(comment.get('body'), 'comment body 5');
-
-      let post = comment.get('post');
-      assert.ok(post);
-      assert.equal(post.get('postTitle'), 'post title 6');
-      assert.equal(post.get('body'), 'post body 6');
-
-      assert.equal(server.handledRequests.length, 1);
-    });
   });
-});
 
-test('hasMany retrieve', function(assert) {
-  assert.expect(12);
+  test('belongsTo retrieve', function(assert) {
+    assert.expect(6);
 
-  return Ember.run(function() {
+    return run(function() {
 
-    return store.findRecord('embedded-comments-post', 1).then(function(post) {
-      assert.ok(post);
-      assert.equal(post.get('postTitle'), 'post title 1');
-      assert.equal(post.get('body'), 'post body 1');
-
-      let comments = post.get('comments');
-      assert.ok(comments);
-      assert.equal(comments.get('length'), 3);
-      assert.ok(comments.objectAt(0));
-      assert.equal(comments.objectAt(0).get('body'), 'comment body 2');
-      assert.ok(comments.objectAt(1));
-      assert.equal(comments.objectAt(1).get('body'), 'comment body 3');
-      assert.ok(comments.objectAt(2));
-      assert.equal(comments.objectAt(2).get('body'), 'comment body 4');
-
-      assert.equal(server.handledRequests.length, 1);
-    });
-  });
-});
-
-test('belongsTo create', function(assert) {
-  assert.expect(6);
-
-  return Ember.run(function() {
-
-    return store.findRecord('post', 7).then(function(post) {
-
-      let comment = store.createRecord('embedded-post-comment', {
-        body: 'comment body 9',
-        post: post
-      });
-
-      return comment.save().then(function(comment) {
-
+      return store.findRecord('embedded-post-comment', 5).then(function(comment) {
         assert.ok(comment);
-        assert.ok(comment.get('id'));
-        assert.equal(comment.get('body'), 'comment body 9');
-        assert.ok(comment.get('post'));
+        assert.equal(comment.get('body'), 'comment body 5');
 
-        assert.equal(server.handledRequests.length, 2);
-        let requestBody = (JSON.parse(server.handledRequests.pop().requestBody));
-        assert.equal(requestBody.post, 7);
+        let post = comment.get('post');
+        assert.ok(post);
+        assert.equal(post.get('postTitle'), 'post title 6');
+        assert.equal(post.get('body'), 'post body 6');
+
+        assert.equal(server.handledRequests.length, 1);
+      });
+    });
+  });
+
+  test('hasMany retrieve', function(assert) {
+    assert.expect(12);
+
+    return run(function() {
+
+      return store.findRecord('embedded-comments-post', 1).then(function(post) {
+        assert.ok(post);
+        assert.equal(post.get('postTitle'), 'post title 1');
+        assert.equal(post.get('body'), 'post body 1');
+
+        let comments = post.get('comments');
+        assert.ok(comments);
+        assert.equal(comments.get('length'), 3);
+        assert.ok(comments.objectAt(0));
+        assert.equal(comments.objectAt(0).get('body'), 'comment body 2');
+        assert.ok(comments.objectAt(1));
+        assert.equal(comments.objectAt(1).get('body'), 'comment body 3');
+        assert.ok(comments.objectAt(2));
+        assert.equal(comments.objectAt(2).get('body'), 'comment body 4');
+
+        assert.equal(server.handledRequests.length, 1);
+      });
+    });
+  });
+
+  test('belongsTo create', function(assert) {
+    assert.expect(6);
+
+    return run(function() {
+
+      return store.findRecord('post', 7).then(function(post) {
+
+        let comment = store.createRecord('embedded-post-comment', {
+          body: 'comment body 9',
+          post: post
+        });
+
+        return comment.save().then(function(comment) {
+
+          assert.ok(comment);
+          assert.ok(comment.get('id'));
+          assert.equal(comment.get('body'), 'comment body 9');
+          assert.ok(comment.get('post'));
+
+          assert.equal(server.handledRequests.length, 2);
+          let requestBody = (JSON.parse(server.handledRequests.pop().requestBody));
+          assert.equal(requestBody.post, 7);
+        });
       });
     });
   });

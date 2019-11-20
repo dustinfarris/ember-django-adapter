@@ -1,5 +1,10 @@
-import DS from 'ember-data';
-import Ember from 'ember';
+import { isArray } from '@ember/array';
+import { dasherize } from '@ember/string';
+import RESTAdapter from 'ember-data/adapters/rest';
+import { pluralize } from 'ember-inflector';
+import DS from "ember-data";
+
+const { AdapterError, InvalidError } = DS;
 
 const ERROR_MESSAGES = {
   401: 'Unauthorized',
@@ -18,7 +23,7 @@ const ERROR_MESSAGES = {
  * @constructor
  * @extends DS.RESTAdapter
  */
-export default DS.RESTAdapter.extend({
+export default RESTAdapter.extend({
   defaultSerializer: "DS/djangoREST",
   addTrailingSlashes: true,
   nonFieldErrorsKey: 'non_field_errors',
@@ -32,8 +37,8 @@ export default DS.RESTAdapter.extend({
    * @return {String} path
    */
   pathForType: function(type) {
-    var dasherized = Ember.String.dasherize(type);
-    return Ember.String.pluralize(dasherized);
+    var dasherized = dasherize(type);
+    return pluralize(dasherized);
   },
 
   /**
@@ -97,7 +102,7 @@ export default DS.RESTAdapter.extend({
     if (this.isSuccess(status, headers, payload)) {
       return payload;
     } else if (this.isInvalid(status, headers, payload)) {
-      return new DS.InvalidError(this._drfToJsonAPIValidationErrors(payload));
+      return new InvalidError(this._drfToJsonAPIValidationErrors(payload));
     }
 
     if (Object.getOwnPropertyNames(payload).length === 0) {
@@ -108,9 +113,9 @@ export default DS.RESTAdapter.extend({
     let errors = this.normalizeErrorResponse(status, headers, payload);
 
     if (ERROR_MESSAGES[status]) {
-      return new DS.AdapterError(errors, ERROR_MESSAGES[status]);
+      return new AdapterError(errors, ERROR_MESSAGES[status]);
     }
-    return new DS.AdapterError(errors);
+    return new AdapterError(errors);
   },
 
   isInvalid: function(status) {
@@ -143,7 +148,7 @@ export default DS.RESTAdapter.extend({
     for (let key in payload) {
       /*jshint loopfunc: true */
       if (payload.hasOwnProperty(key)) {
-        if (Ember.isArray(payload[key])) {
+        if (isArray(payload[key])) {
           payload[key].forEach(error => {
             if (key === this.get('nonFieldErrorsKey')) {
               out.push({
