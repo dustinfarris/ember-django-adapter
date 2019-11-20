@@ -1,6 +1,14 @@
 ember-django-adapter Changelog
 ==============================
 
+2.1.1
+-----
+
+### Internal
+
+* [#225](https://github.com/dustinfarris/ember-django-adapter/pull/225): Update error class imports (@gojefferson)
+* [#220](https://github.com/dustinfarris/ember-django-adapter/pull/220): Update adapter errors imports & make ember-data a peer dependency (@gojefferson)
+
 
 2.1.0
 -----
