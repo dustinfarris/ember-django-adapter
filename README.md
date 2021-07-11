@@ -22,7 +22,7 @@ Community
 
 * IRC: #ember-django-adapter on freenode
 * Issues: [ember-django-adapter/issues][]
-* Website: [dustinfarris.com/ember-django-adapter][]
+* Website: [dustinfarris.github.io/ember-django-adapter][]
 
 
 Development Hints
@@ -74,5 +74,5 @@ Goals
 [Django REST Framework]: http://www.django-rest-framework.org/
 [ember-cli]: http://www.ember-cli.com/
 [ember-django-adapter/issues]: https://github.com/dustinfarris/ember-django-adapter/issues
-[dustinfarris.com/ember-django-adapter]: http://dustinfarris.com/ember-django-adapter/
+[dustinfarris.github.io/ember-django-adapter]: https://dustinfarris.github.io/ember-django-adapter/
 [coalesce-find-requests-option]: http://emberjs.com/api/data/classes/DS.RESTAdapter.html#property_coalesceFindRequests
