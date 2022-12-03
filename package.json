@@ -25,8 +25,8 @@
     "ember-data": "^3.0.0"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.16.0",
-    "ember-inflector": "^2.1.0"
+    "ember-cli-babel": "^7.26.11",
+    "ember-inflector": "^4.0.2"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
