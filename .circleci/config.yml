@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:8-browsers
+      - image: cimg/node:10.22-browsers
     steps:
       - checkout
       - run: yarn install
@@ -16,7 +16,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00"
-      - checkout      
+      - checkout
       - run: sudo pip install mkdocs
       - run: "mkdocs gh-deploy --message=\"Deployed {sha} with MkDocs version: {version} [ci skip]\""
 
