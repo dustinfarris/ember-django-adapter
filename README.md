@@ -1,3 +1,9 @@
+Call for maintainers
+--------------------
+
+This repo is several years out of date.  If anyone is interested in modernizing
+the dependencies and code base, please let me know.
+
 Ember Django Adapter
 ====================
 
